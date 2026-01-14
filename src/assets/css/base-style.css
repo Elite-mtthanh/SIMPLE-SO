@@ -2,14 +2,37 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Arial, sans-serif;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
 }
 
 :root {
-  --display-resolution-width: 1920px;
-  --display-resolution-height: 1200px;
+  --display-resolution-width: 100%;
+  --display-resolution-height: 100%;
 
   width: var(--display-resolution-width);
-  background-color: #000;
+
+  /* Colors for Buttons */
+  --btn-primary: #b02a37;
+  --btn-accent: #ee5c5c;
+  --btn-neutral: #757575;
+  --btn-muted: #cbbaba;
+  --btn-soft: #ffe5d0;
+  --btn-active: #EF9E9E;
+
+  /* Color for Text */
+  --text-primary: #000000;
+  --text-inverse: #ffffff;
+  --text-accent: #e3242a;
+  --text-link: #475191;
+  --text-success: #26BD67;
+
+  /* Background Colors */
+  --background-dialog: #fffcf5;
+  --background-items-guide: #d1e7dd;
 }
 
 body {
@@ -17,4 +40,39 @@ body {
   height: var(--display-resolution-height);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Arial, sans-serif;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  background-color: #fffcf5;
 }
+
+.text-primary {
+  color: var(--text-primary);
+} /* màu chữ (đen) */
+.text-inverse {
+  color: var(--text-inverse);
+} /* màu chữ (trắng) */
+.text-accent {
+  color: var(--text-accent);
+} /* màu chữ (đỏ) */
+.text-link {
+  color: var(--text-link);
+} /* màu chữ (xanh) */
+
+.bg-button-primary {
+  background: var(--btn-primary);
+} /* nút chính (đỏ đậm) */
+.bg-button-accent {
+  background: var(--btn-accent);
+} /* nút nhấn / badge (đỏ nhạt) */
+.bg-button-neutral {
+  background: var(--btn-neutral);
+} /* nút (xám) */
+.bg-button-muted {
+  background: var(--btn-muted);
+} /* nút disabled (xám nhạt) */
+.bg-button-soft {
+  background: var(--btn-soft);
+} /* nút nền nhẹ (cam nhạt) */

@@ -1,22 +1,39 @@
 import { EmitEvent, GlobalEvent, PageArgs } from '@/logic/common/GlobalEvent';
+import { DialogArgs } from '@/model/Dialog';
 import { PageStack, PageStackType } from '@/model/PageStack';
-import { computed, ComputedRef } from 'vue';
+import { computed, ComputedRef, reactive } from 'vue';
 
 export class TopLogic {
   public currentPageName: ComputedRef<string>;
+  public readonly commonDialogSettings: {
+    isShow: boolean;
+    info: DialogArgs | null;
+  };
 
   constructor() {
     this.currentPageName = computed(() => {
       return PageStack.Instance.currentPageName.value;
     });
+    this.commonDialogSettings = reactive({
+      isShow: false,
+      info: null,
+    });
     this.registerEvents();
   }
 
   private registerEvents(): void {
-    const globalEvent = GlobalEvent.Instance;
-
-    globalEvent.on(EmitEvent.ChangeScreen, (page: PageArgs) => {
+    GlobalEvent.Instance.on(EmitEvent.ChangeScreen, (page: PageArgs) => {
       this.handleChangeScreen(page.Name, page.Type);
+    });
+
+    GlobalEvent.Instance.on(EmitEvent.ShowCommonDialog, (args: DialogArgs) => {
+      this.commonDialogSettings.isShow = true;
+      this.commonDialogSettings.info = args;
+    });
+
+    GlobalEvent.Instance.on(EmitEvent.HideCommonDialog, () => {
+      this.commonDialogSettings.isShow = false;
+      this.commonDialogSettings.info = null;
     });
   }
 

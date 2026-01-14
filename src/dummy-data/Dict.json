@@ -1,0 +1,230 @@
+{
+  "DESK_NUMBER_LABEL": {
+    "key": "DESK_NUMBER_LABEL",
+    "text1": "卓番",
+    "text2": "表数",
+    "text3": "Desk Number"
+  },
+  "GUIDE_1_LABEL": {
+    "key": "GUIDE_1_LABEL",
+    "text1": "タブレッドで 商品を選択",
+    "text2": "在红色选项卡中选择产品",
+    "text3": "Selecting products on a tablet"
+  },
+  "GUIDE_2_LABEL": {
+    "key": "GUIDE_2_LABEL",
+    "text1": "カードに追加",
+    "text2": "添加到卡片",
+    "text3": "Add to cart"
+  },
+  "GUIDE_3_LABEL": {
+    "key": "GUIDE_3_LABEL",
+    "text1": "注文",
+    "text2": "次序",
+    "text3": "Order"
+  },
+  "GUIDE_4_LABEL": {
+    "key": "GUIDE_4_LABEL",
+    "text1": "食べる",
+    "text2": "吃",
+    "text3": "Eat"
+  },
+  "GUIDE_5_LABEL": {
+    "key": "GUIDE_5_LABEL",
+    "text1": "支払い",
+    "text2": "付款",
+    "text3": "Payment"
+  },
+  "START_LABEL": {
+    "key": "START_LABEL",
+    "text1": "画面をタッチして注文ください。",
+    "text2": "触摸屏幕下订单。",
+    "text3": "Touch the screen to place your order."
+  },
+  "LANGUAGE_BUTTON": {
+    "key": "LANGUAGE_BUTTON",
+    "text1": "日本語",
+    "text2": "中文",
+    "text3": "English"
+  },
+  "CALL_STAFF_BUTTON": {
+    "key": "CALL_STAFF_BUTTON",
+    "text1": "店員呼び出す",
+    "text2": "致电店员",
+    "text3": "Call the clerk"
+  },
+  "ALLERGEN_BUTTON": {
+    "key": "ALLERGEN_BUTTON",
+    "text1": "アレルゲン",
+    "text2": "过敏原",
+    "text3": "Allergen"
+  },
+  "YEAR_LABEL": {
+    "key": "YEAR_LABEL",
+    "text1": "年",
+    "text2": "年",
+    "text3": "Year"
+  },
+  "MONTH_LABEL": {
+    "key": "MONTH_LABEL",
+    "text1": "月",
+    "text2": "月",
+    "text3": "Month"
+  },
+  "DAY_LABEL": {
+    "key": "DAY_LABEL",
+    "text1": "日",
+    "text2": "日",
+    "text3": "Day"
+  },
+  "CALL_STAFF_CONFIRM_MESSAGE": {
+    "key": "CALL_STAFF_CONFIRM_MESSAGE",
+    "text1": "店員を呼び出しますか？",
+    "text2": "您要打电话给店员吗？",
+    "text3": "Do you want to call the clerk?"
+  },
+  "CALL_STAFF_SUCCESS_MESSAGE": {
+    "key": "CALL_STAFF_SUCCESS_MESSAGE",
+    "text1": "店員呼び出しました !",
+    "text2": "店员打来了电话！",
+    "text3": "The clerk called!"
+  },
+  "CALL_STAFF_SUCCESSE_COMMENT": {
+    "key": "CALL_STAFF_SUCCESSE_COMMENT",
+    "text1": "少々おまちください。",
+    "text2": "请给我一点时间。",
+    "text3": "Please give me a moment."
+  },
+  "CALL_STAFF_ERROR_MESSAGE": {
+    "key": "CALL_STAFF_ERROR_MESSAGE",
+    "text1": "店員呼び出す",
+    "text2": "致电店员",
+    "text3": "Call the clerk"
+  },
+  "CALL_STAFF_ERROR_COMMENT": {
+    "key": "CALL_STAFF_ERROR_COMMENT",
+    "text1": "エラーが発生しました。",
+    "text2": "发生错误",
+    "text3": "An error has occurred"
+  },
+  "CLOSE_BUTTON": {
+    "key": "CLOSE_BUTTON",
+    "text1": "閉じる",
+    "text2": "关闭",
+    "text3": "Close"
+  },
+  "ALLERGEN_LABEL": {
+    "key": "ALLERGEN_LABEL",
+    "text1": "アレルゲンについて",
+    "text2": "关于过敏原",
+    "text3": "About allergens"
+  },
+  "CATEGORY_LABEL": {
+    "key": "CATEGORY_LABEL",
+    "text1": "カテゴリーリスト",
+    "text2": "类别列表",
+    "text3": "Category List"
+  },
+  "SINGLE_MENU_LABEL": {
+    "key": "SINGLE_MENU_LABEL",
+    "text1": "単品",
+    "text2": "只",
+    "text3": "Only"
+  },
+  "HAS_TOPPING_LABEL": {
+    "key": "HAS_TOPPING_LABEL",
+    "text1": "トッピング",
+    "text2": "配料",
+    "text3": "Topping"
+  },
+  "CANCEL_BUTTON": {
+    "key": "CANCEL_BUTTON",
+    "text1": "キャンセル",
+    "text2": "取消",
+    "text3": "Cancel"
+  },
+  "CONFIRM_BUTTON": {
+    "key": "CONFIRM_BUTTON",
+    "text1": "確定",
+    "text2": "决定",
+    "text3": "Confirm"
+  },
+  "LIST_ORDER_LABEL": {
+    "key": "LIST_ORDER_LABEL",
+    "text1": "注文ーリスト",
+    "text2": "订单清单",
+    "text3": "Order list"
+  },
+  "NUMBER_ORDER_LABEL": {
+    "key": "NUMBER_ORDER_LABEL",
+    "text1": "個",
+    "text2": "块",
+    "text3": "Piece"
+  },
+  "BACK_BUTTON": {
+    "key": "BACK_BUTTON",
+    "text1": "戻る",
+    "text2": "返回",
+    "text3": "Back"
+  },
+  "ORDER_BUTTON": {
+    "key": "ORDER_BUTTON",
+    "text1": "注文する",
+    "text2": "下单",
+    "text3": "Order"
+  },
+  "TOTAL_LABEL": {
+    "key": "TOTAL_LABEL",
+    "text1": "合計",
+    "text2": "和",
+    "text3": "Total"
+  },
+  "DELETE_CONFIRM_MESSAGE": {
+    "key": "DELETE_CONFIRM_MESSAGE",
+    "text1": "本当に削除うしますか",
+    "text2": "您确定要删除它吗？",
+    "text3": "Are you sure you want to delete it?"
+  },
+  "AGREE_BUTTON": {
+    "key": "AGREE_BUTTON",
+    "text1": "はい",
+    "text2": "是的",
+    "text3": "Yes"
+  },
+  "ORDER_SUCCESS_MESSAGE": {
+    "key": "ORDER_SUCCESS_MESSAGE",
+    "text1": "ご注文ありがとうございました",
+    "text2": "感谢您的订单",
+    "text3": "Thank you for your order"
+  },
+  "ORDER_ERROR_MESSAGE": {
+    "key": "ORDER_ERROR_MESSAGE",
+    "text1": "エラーが発生しました。",
+    "text2": "发生错误。",
+    "text3": "An error has occurred."
+  },
+  "ORDER_ERROR_COMMENT": {
+    "key": "ORDER_ERROR_COMMENT",
+    "text1": "店員を呼び出してくだい。",
+    "text2": "打电话给店员。",
+    "text3": "Call the clerk."
+  },
+  "ORDER_CONFIRM_MESSAGE": {
+    "key": "ORDER_CONFIRM_MESSAGE",
+    "text1": "注文を行います。",
+    "text2": "下订单。",
+    "text3": "Please call the staff"
+  },
+  "ORDER_CONFIRM_COMMENT": {
+    "key": "ORDER_CONFIRM_COMMENT",
+    "text1": "よろしでしょうか？",
+    "text2": "你确定吗？",
+    "text3": "Are you sure?"
+  },
+  "OVER_QUANTITY_MESSAGE": {
+    "key": "OVER_QUANTITY_MESSAGE",
+    "text1": "カートに許容される数量を超える",
+    "text2": "超出购物车中允许的数量 ...",
+    "text3": "Exceeding the quantity allowed in the cart"
+  }
+}

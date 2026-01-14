@@ -3,6 +3,7 @@ import App from '../page/Top.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { ServiceIF } from '@/services/ServiceIF';
 import { PageStack } from '@/model/PageStack';
+import { AppConfig } from '@/model/AppConfig';
 
 export class BaseMain {
   private app: any | null = null;
@@ -11,7 +12,7 @@ export class BaseMain {
     if (process.env.NODE_ENV == 'development') {
       ServiceIF.enableMock();
     }
-
+    AppConfig.init();
     GlobalEvent.init();
     PageStack.init();
 

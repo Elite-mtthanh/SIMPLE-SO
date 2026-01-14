@@ -3,6 +3,10 @@
     <keep-alive>
       <component :is="currentPageName" :key="currentPageName" />
     </keep-alive>
+
+    <keep-alive v-if="commonDialogSettings.isShow && commonDialogSettings.info">
+      <GlobalDialog :dialog-args="commonDialogSettings.info" />
+    </keep-alive>
   </div>
 </template>
 
@@ -10,16 +14,19 @@
 import { defineComponent } from 'vue';
 import { TopLogic } from '@/logic/page/TopLogic';
 import StartPage from '@/page/StartPage.vue';
+import GlobalDialog from '@/component/common/GlobalDialog.vue';
 
 export default defineComponent({
   name: 'top-page',
   components: {
     StartPage,
+    GlobalDialog,
   },
   setup() {
     let logic = new TopLogic();
     return {
       currentPageName: logic.currentPageName,
+      commonDialogSettings: logic.commonDialogSettings,
     };
   },
 });
@@ -30,6 +37,5 @@ export default defineComponent({
   position: relative;
   width: var(--display-resolution-width);
   height: var(--display-resolution-height);
-  background-color: #fff;
 }
 </style>

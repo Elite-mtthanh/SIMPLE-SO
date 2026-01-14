@@ -1,5 +1,7 @@
+import { SplashConfig } from '@/model/Splash';
 import { IService } from './IService';
 import { Mock } from './Mock';
+import { Dict } from '@/model/Dict';
 
 declare let SVS: IService;
 
@@ -12,5 +14,15 @@ export class ServiceIF {
 
   static getConfig(): any {
     return JSON.parse(this.TIF.GetConfig());
+  }
+  static getSplashGuide(): SplashConfig {
+    return JSON.parse(this.TIF.GetSplashGuide());
+  }
+  static getDict(key: string): Dict | null {
+    const raw = this.TIF.GetString(key);
+    return raw ? JSON.parse(raw) : null;
+  }
+  static callStaff(): Promise<boolean> {
+    return this.TIF.callStaff();
   }
 }
