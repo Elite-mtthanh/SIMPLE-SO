@@ -14,7 +14,7 @@
                 <DictText keyName="CALL_STAFF_BUTTON" />
             </BaseButton>
 
-            <BaseButton type="soft" :icon="alertIcon" @confirm="$emit('open-allergen')">
+            <BaseButton type="soft" :icon="alertIcon" textColor="link" @confirm="$emit('open-allergen')">
                 <DictText keyName="ALLERGEN_BUTTON" />
             </BaseButton>
         </div>

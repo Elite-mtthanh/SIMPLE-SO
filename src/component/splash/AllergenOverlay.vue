@@ -15,12 +15,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import BaseOverlay from '@/component/common/BaseOverlay.vue';
 import BaseButton from '@/component/common/BaseButton.vue';
 import DictText from '@/component/common/DictText.vue';
-
-import allergenImage from '@/assets/Image/guide/allergen-list.png';
+import { Language } from '@/model/Splash';
+import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpg';
+import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
+import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
 
 export default defineComponent({
     name: 'AllergenOverlay',
@@ -29,13 +31,30 @@ export default defineComponent({
         BaseButton,
         DictText,
     },
+    props: {
+        currentLang: {
+            type: Number as PropType<Language>,
+            required: true,
+        },
+    },
     emits: ['close'],
-    setup() {
-        return {
-            image: allergenImage,
-        };
+    setup(props) {
+        const image = computed(() => {
+            switch (props.currentLang) {
+                case Language.JA:
+                    return allergenListJapan;
+                case Language.ZH:
+                    return allergenListChina;
+                case Language.EN:
+                default:
+                    return allergenListEnglish;
+            }
+        });
+
+        return { image };
     },
 });
+
 </script>
 
 <style scoped>

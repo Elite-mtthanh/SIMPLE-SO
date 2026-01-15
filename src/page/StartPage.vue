@@ -19,7 +19,7 @@
       :year="2024" :month="12" :day="3" time="10 : 00" @call-staff="onCallStaff" @open-allergen="onOpenAllergen" />
   </div>
 
-  <AllergenOverlay v-if="showAllergen" @close="onCloseAllergen" />
+  <AllergenOverlay v-if="showAllergen" :currentLang="currentLang" @close="onCloseAllergen" />
 </template>
 
 
