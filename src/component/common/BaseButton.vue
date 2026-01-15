@@ -1,30 +1,38 @@
 <template>
-  <div ref="el" class="base-button" :class="[
-    `bg-button-${type}`,
-    { disabled, pressed, 'has-icon': !!icon }
-  ]" @mousedown="onMouseDown" @mouseup="onMouseUp" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave"
-    @touchstart="onTouchStart" @touchend="onTouchEnd" @touchmove="onTouchMove" @touchcancel="onTouchCancel">
+  <div
+    ref="el"
+    class="base-button"
+    :class="[`bg-button-${type}`, { disabled, pressed, 'has-icon': !!icon }]"
+    @mousedown="onMouseDown"
+    @mouseup="onMouseUp"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
+    @touchstart="onTouchStart"
+    @touchend="onTouchEnd"
+    @touchmove="onTouchMove"
+    @touchcancel="onTouchCancel"
+  >
     <div v-if="icon && iconPosition === 'left'" class="btn-side">
-      <img :src="icon" class="btn-icon" />
+      <ImageView :src="icon" class="btn-icon" />
     </div>
 
-    <span class="base-text" :class="[
-      `text-${textColor}`,
-      { 'center-text': !icon }
-    ]">
+    <span
+      class="base-text"
+      :class="[`text-${textColor}`, { 'center-text': !icon }]"
+    >
       <slot v-if="!text" />
       <template v-else>{{ text }}</template>
     </span>
 
     <div v-if="icon && iconPosition === 'right'" class="btn-side">
-      <img :src="icon" class="btn-icon" />
+      <ImageView :src="icon" class="btn-icon" />
     </div>
   </div>
 </template>
 
-
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import ImageView from './ImageView.vue';
 
 export default defineComponent({
   name: 'BaseButton',
@@ -58,6 +66,9 @@ export default defineComponent({
       default: 'left',
     },
   },
+  components: {
+    ImageView,
+  },
   emits: ['confirm'],
   setup(props, { emit }) {
     const el = ref<HTMLElement | null>(null);
@@ -68,10 +79,7 @@ export default defineComponent({
       if (!el.value) return false;
       const rect = el.value.getBoundingClientRect();
       return (
-        x >= rect.left &&
-        x <= rect.right &&
-        y >= rect.top &&
-        y <= rect.bottom
+        x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom
       );
     };
 
@@ -161,11 +169,17 @@ export default defineComponent({
 .btn-side {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
 }
 
 .btn-icon {
-  width: 32px;
-  height: 32px;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
 }
 

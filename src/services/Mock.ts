@@ -1,8 +1,9 @@
 import { IService } from './IService';
-import SplashData from '@/dummy-data/SplashConfig.json';
+import SplashData from '@/dummy-data/Config.json';
 import DictData from '@/dummy-data/Dict.json';
 
 export class Mock implements IService {
+  private isCallStaffSuccess: number | null = null;
   constructor() {
   }
 
@@ -21,9 +22,17 @@ export class Mock implements IService {
     return JSON.stringify(info);
   }
 
-  async callStaff(): Promise<boolean> {
-    await new Promise(r => setTimeout(r, 800));
+  setCallStaffResult(value: 0 | 1) {
+    this.isCallStaffSuccess = value;
+  }
 
-    return Math.random() > 0.9;
+  async CallStaff(): Promise<number> {
+    await new Promise(r => setTimeout(r, 3000));
+
+    if (this.isCallStaffSuccess !== null) {
+      return this.isCallStaffSuccess;
+    }
+
+    return Math.random() > 0.5 ? 1 : 0;
   }
 }

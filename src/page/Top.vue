@@ -1,12 +1,16 @@
 <template>
-  <div class="top-main">
-    <keep-alive>
-      <component :is="currentPageName" :key="currentPageName" />
-    </keep-alive>
+  <div class="kiosk-root">
+    <div class="top-main">
+      <keep-alive>
+        <component :is="currentPageName" :key="currentPageName" />
+      </keep-alive>
 
-    <keep-alive v-if="commonDialogSettings.isShow && commonDialogSettings.info">
-      <GlobalDialog :dialog-args="commonDialogSettings.info" />
-    </keep-alive>
+      <keep-alive
+        v-if="commonDialogSettings.isShow && commonDialogSettings.info"
+      >
+        <GlobalDialog :dialog-args="commonDialogSettings.info" />
+      </keep-alive>
+    </div>
   </div>
 </template>
 
@@ -34,8 +38,10 @@ export default defineComponent({
 
 <style>
 .top-main {
-  position: relative;
   width: var(--display-resolution-width);
   height: var(--display-resolution-height);
+  background-color: var(--background-app);
+
+  transform-origin: var(--kiosk-scale);
 }
 </style>

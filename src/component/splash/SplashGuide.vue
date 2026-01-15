@@ -2,7 +2,7 @@
   <div class="item-splash">
     <div class="splash-step" v-for="(item, index) in splashGuideItems" :key="index">
       <div class="step-card">
-        <img :src="item.image" alt="" />
+        <ImageView :src="item.image" alt="" />
         <DictText :keyName="item.key" class="splash-text" />
       </div>
 
@@ -23,11 +23,13 @@ import cartIcon from '@/assets/Image/guide/cart-guide-icon.png';
 import reviewIcon from '@/assets/Image/guide/review-guide-icon.png';
 import addIcon from '@/assets/Image/guide/add-guide-icon.png';
 import creditCardIcon from '@/assets/Image/guide/creditcard-guide-icon.png';
+import ImageView from '../common/ImageView.vue';
 
 export default defineComponent({
   name: 'SplashGuide',
   components: {
     DictText,
+    ImageView,
   },
   setup() {
     const splashGuideItems = [
@@ -52,7 +54,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   gap: 12px;
-  margin-top: 40px;
+  margin-top: 60px;
 }
 
 .splash-step {
@@ -66,12 +68,10 @@ export default defineComponent({
   background-color: #d8ebe3;
   border-radius: 12px;
   border-radius: 6px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   text-align: center;
 }
 
@@ -79,7 +79,6 @@ export default defineComponent({
   width: 150px;
   height: 150px;
   object-fit: contain;
-  margin-bottom: 20px;
 }
 
 .splash-text {
@@ -88,7 +87,7 @@ export default defineComponent({
   line-height: 35px;
   text-align: center;
   vertical-align: middle;
-  padding: 0 14px;
+  padding: 20px 16px;
 }
 
 .step-arrow {

@@ -4,16 +4,18 @@
   box-sizing: border-box;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, Arial, sans-serif;
-  font-family: Inter;
   font-weight: 600;
   font-style: Semi Bold;
 }
 
 :root {
-  --display-resolution-width: 100%;
-  --display-resolution-height: 100%;
+  --display-resolution-width: 1680px;
+  --display-resolution-height: 1050px;
 
   width: var(--display-resolution-width);
+
+  --z-overlay: 1000;
+  --z-dialog: 1100;
 
   /* Colors for Buttons */
   --btn-primary: #b02a37;
@@ -21,18 +23,20 @@
   --btn-neutral: #757575;
   --btn-muted: #cbbaba;
   --btn-soft: #ffe5d0;
-  --btn-active: #EF9E9E;
+  --btn-active: #ef9e9e;
 
   /* Color for Text */
   --text-primary: #000000;
   --text-inverse: #ffffff;
   --text-accent: #e3242a;
   --text-link: #475191;
-  --text-success: #26BD67;
+  --text-success: #26bd67;
+  --text-accent-dialog: #b02a37;
 
   /* Background Colors */
   --background-dialog: #fffcf5;
   --background-items-guide: #d1e7dd;
+  --background-app: #fffcf5;
 }
 
 body {
@@ -42,10 +46,8 @@ body {
   -webkit-user-select: none;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, Arial, sans-serif;
-  font-family: Inter;
   font-weight: 600;
   font-style: Semi Bold;
-  background-color: #fffcf5;
 }
 
 .text-primary {
@@ -63,6 +65,9 @@ body {
 .text-success {
   color: var(--text-success);
 } /* màu chữ (xanh lá) */
+.text-accent-dialog {
+  color: var(--text-accent-dialog);
+} /* màu chữ dialog (đỏ đậm) */
 
 .bg-button-primary {
   background: var(--btn-primary);

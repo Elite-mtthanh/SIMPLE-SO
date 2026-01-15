@@ -7,20 +7,36 @@
         </span>
       </div>
 
-      <p v-else class="dialog-message">
-        <DictText :keyName="dialogArgs.message" :class="getMessageType()" />
-      </p>
+      <div v-else class="dialog-message">
+        <div v-if="dialogArgs.iconButton" class="dialog-icon">
+          <ImageView :src="dialogArgs.iconButton" alt="icon" />
+        </div>
+        <div class="message-content">
+          <DictText :keyName="dialogArgs.message" :class="getMessageType()" />
+          <div v-if="dialogArgs.comment">
+            <DictText :keyName="dialogArgs.comment" :class="getMessageType()" />
+          </div>
+        </div>
+      </div>
 
-      <div class="dialog-actions" :class="{
-        'two-buttons': dialogArgs.buttons.length === 2,
-        'one-button': dialogArgs.buttons.length === 1
-      }">
-        <BaseButton v-for="btn in dialogArgs.buttons" :key="btn.id" :id="btn.id" :type="getButtonType(btn.id)"
-          text-color="inverse" @confirm="onClick">
+      <div
+        class="dialog-actions"
+        :class="{
+          'two-buttons': dialogArgs.buttons.length === 2,
+          'one-button': dialogArgs.buttons.length === 1,
+        }"
+      >
+        <BaseButton
+          v-for="btn in dialogArgs.buttons"
+          :key="btn.id"
+          :id="btn.id"
+          :type="getButtonType(btn.id)"
+          text-color="inverse"
+          @confirm="onClick"
+        >
           <DictText :keyName="btn.text" />
         </BaseButton>
       </div>
-
     </div>
   </BaseOverlay>
 </template>
@@ -31,7 +47,9 @@ import BaseButton from './BaseButton.vue';
 import BaseOverlay from './BaseOverlay.vue';
 import DictText from '@/component/common/DictText.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
-import { DialogArgs, DialogButtonId, DialogMessageType } from '@/model/Dialog';
+import { DialogButtonId, DialogMessageType } from '@/model/enums';
+import { DialogArgs } from '@/model/Dialog';
+import ImageView from './ImageView.vue';
 
 export default defineComponent({
   name: 'GlobalDialog',
@@ -39,6 +57,7 @@ export default defineComponent({
     BaseButton,
     BaseOverlay,
     DictText,
+    ImageView,
   },
   props: {
     dialogArgs: {
@@ -65,8 +84,8 @@ export default defineComponent({
 
     const getMessageType = () => {
       switch (props.dialogArgs.messageType) {
-        case DialogMessageType.Default:
-          return 'text-accent';
+        case DialogMessageType.Error:
+          return 'text-accent-dialog';
         case DialogMessageType.Success:
           return 'text-success';
         default:
@@ -78,12 +97,11 @@ export default defineComponent({
       onClick,
       DialogButtonId,
       getButtonType,
-      getMessageType
+      getMessageType,
     };
   },
 });
 </script>
-
 
 <style scoped>
 .dialog-card {
@@ -94,7 +112,7 @@ export default defineComponent({
   padding: 30px 10px;
   box-sizing: border-box;
   text-align: center;
-  min-width: 800px;
+  min-width: 1055px;
 }
 
 .dialog-header {
@@ -113,12 +131,26 @@ export default defineComponent({
   line-height: 1.4;
 }
 
+.dialog-icon {
+  width: 68px;
+  height: 68px;
+}
+
 .dialog-message {
   font-size: 40px;
   font-weight: 700;
   color: var(--text-accent);
   line-height: 1.4;
-  margin-bottom: 80px;
+  margin-bottom: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .dialog-actions {
@@ -136,11 +168,11 @@ export default defineComponent({
   padding: 0 40px;
 }
 
-.dialog-actions.two-buttons>* {
+.dialog-actions.two-buttons > * {
   min-width: 180px;
 }
 
-.dialog-actions.one-button>* {
+.dialog-actions.one-button > * {
   min-width: 200px;
 }
 </style>

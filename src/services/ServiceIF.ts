@@ -19,10 +19,15 @@ export class ServiceIF {
     return JSON.parse(this.TIF.GetSplashGuide());
   }
   static getDict(key: string): Dict | null {
-    const raw = this.TIF.GetString(key);
-    return raw ? JSON.parse(raw) : null;
+    return JSON.parse(this.TIF.GetString(key));
   }
-  static callStaff(): Promise<boolean> {
-    return this.TIF.callStaff();
+  static CallStaff(): Promise<number> {
+    return this.TIF.CallStaff();
+  }
+
+  static setCallStaffTestResult(value: 0 | 1): void {
+    if (this.TIF instanceof Mock) {
+      this.TIF.setCallStaffResult(value);
+    }
   }
 }

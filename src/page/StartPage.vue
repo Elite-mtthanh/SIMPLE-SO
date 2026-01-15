@@ -15,25 +15,37 @@
       <DictText keyName="START_LABEL" />
     </div>
 
-    <AppFooter :mode="FooterMode.Splash" v-model:currentLang="currentLang" :language-options="languageOptions"
-      :year="2024" :month="12" :day="3" time="10 : 00" @call-staff="onCallStaff" @open-allergen="onOpenAllergen" />
+    <AppFooter
+      :mode="FooterMode.Splash"
+      v-model:currentLang="currentLang"
+      :language-options="languageOptions"
+      :year="2024"
+      :month="12"
+      :day="3"
+      time="10 : 00"
+      @call-staff="onCallStaff"
+      @open-allergen="onOpenAllergen"
+    />
   </div>
 
-  <AllergenOverlay v-if="showAllergen" :currentLang="currentLang" @close="onCloseAllergen" />
+  <AllergenOverlay
+    v-if="showAllergen"
+    :currentLang="currentLang"
+    @close="onCloseAllergen"
+  />
 </template>
-
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
-import { Language, SplashType, type SplashConfig } from '@/model/Splash';
-import { FooterMode } from '@/model/FooterMode';
-
+import { type SplashConfig } from '@/model/Splash';
+import { FooterMode } from '@/model/enums';
 import SplashGuide from '@/component/splash/SplashGuide.vue';
 import SplashAd from '@/component/splash/SplashAd.vue';
 import DictText from '@/component/common/DictText.vue';
 import AppFooter from '@/component/common/AppFooter.vue';
 import AllergenOverlay from '@/component/splash/AllergenOverlay.vue';
+import { SplashType, Language } from '@/model/enums';
 
 export default defineComponent({
   name: 'splash-page',
@@ -71,8 +83,8 @@ export default defineComponent({
       languageOptions: logic.languageOptions,
       onCallStaff,
       showAllergen,
-      onOpenAllergen: () => showAllergen.value = true,
-      onCloseAllergen: () => showAllergen.value = false,
+      onOpenAllergen: () => (showAllergen.value = true),
+      onCloseAllergen: () => (showAllergen.value = false),
     };
   },
 });
@@ -80,8 +92,6 @@ export default defineComponent({
 
 <style>
 .splash-guide-page {
-  width: var(--display-resolution-width);
-  height: var(--display-resolution-height);
   display: flex;
   flex-direction: column;
 }
@@ -92,7 +102,6 @@ export default defineComponent({
   letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
-  margin-top: 20px;
   color: var(--text-link);
 }
 
@@ -104,12 +113,12 @@ export default defineComponent({
   gap: 32px;
   color: var(--text-link);
   font-weight: 700;
+  margin-top: 40px;
 }
 
 .guide-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
 }
 
 .hint-text {
@@ -127,8 +136,9 @@ export default defineComponent({
 }
 
 .footer-bar {
-  margin-top: 50px;
-  padding: 40px;
+  padding-top: 45px;
+  padding-left: 60px;
+  padding-right: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;

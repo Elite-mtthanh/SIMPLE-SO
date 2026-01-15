@@ -1,6 +1,7 @@
 import mitt from 'mitt';
 import { PageStackType } from '@/model/PageStack';
-import { ButtonInfo, DialogArgs, DialogButtonId } from '@/model/Dialog';
+import { DialogArgs } from '@/model/Dialog';
+import { DialogButtonId } from '@/model/enums';
 
 export enum EmitEvent {
   ChangeScreen = 'change-screen',

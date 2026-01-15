@@ -1,9 +1,10 @@
 import { AppConfig } from "@/model/AppConfig";
 import { SplashConfig } from "@/model/Splash";
 import { ServiceIF } from "@/services/ServiceIF";
-import { Language } from '@/model/Splash';
-import { DialogArgs, DialogButtonId, DialogMessageType } from "@/model/Dialog";
+import { DialogArgs } from "@/model/Dialog";
+import { DialogButtonId, DialogMessageType, Language } from "@/model/enums";
 import { GlobalEvent } from "../common/GlobalEvent";
+import bellIcon from '@/assets/Image/icon/bell-dialog-icon.png';
 
 export class StartPageLogic {
   splashData?: SplashConfig;
@@ -19,47 +20,44 @@ export class StartPageLogic {
     console.log(this.splashData)
   }
 
-  changeLanguage(lang: number) {
-    AppConfig.Instance.langIndex.value = lang;
+  changeLanguage(lang: Language) {
+    AppConfig.Instance.currentLang.value = lang;
   }
 
   async callStaff(): Promise<void> {
     const confirmDialog = new DialogArgs();
     confirmDialog.title = '';
+    confirmDialog.iconButton = bellIcon;
     confirmDialog.message = 'CALL_STAFF_CONFIRM_MESSAGE';
+    confirmDialog.messageType = DialogMessageType.Error;
     confirmDialog.buttons = [
       { id: DialogButtonId.Cancel, text: 'CANCEL_BUTTON' },
       { id: DialogButtonId.Confirm, text: 'AGREE_BUTTON' },
     ];
 
     const result = await GlobalEvent.Instance.showCommonDialog(confirmDialog);
-
     if (result !== DialogButtonId.Confirm) return;
 
-    try {
-      await ServiceIF.callStaff();
+    const isCallStaffSuccess = await ServiceIF.CallStaff();
 
-      const successDialog = new DialogArgs();
-      successDialog.title = '';
-      successDialog.message = 'CALL_STAFF_SUCCESS_MESSAGE';
-      successDialog.messageType = DialogMessageType.Success;
-      successDialog.buttons = [
-        { id: DialogButtonId.Ok, text: 'CLOSE_BUTTON' },
-      ];
+    const resultDialog = new DialogArgs();
+    resultDialog.title = '';
 
-      await GlobalEvent.Instance.showCommonDialog(successDialog);
-
-    } catch (e) {
-      const errorDialog = new DialogArgs();
-      errorDialog.title = '';
-      errorDialog.message = 'CALL_STAFF_ERROR_MESSAGE';
-      errorDialog.messageType = DialogMessageType.Error;
-      errorDialog.buttons = [
-        { id: DialogButtonId.Ok, text: 'CLOSE_BUTTON' },
-      ];
-
-      await GlobalEvent.Instance.showCommonDialog(errorDialog);
+    if (isCallStaffSuccess === 1) {
+      resultDialog.message = 'CALL_STAFF_SUCCESS_MESSAGE';
+      resultDialog.comment = 'CALL_STAFF_SUCCESSE_COMMENT';
+      resultDialog.messageType = DialogMessageType.Success;
+    } else {
+      resultDialog.message = 'CALL_STAFF_ERROR_MESSAGE';
+      resultDialog.comment = 'CALL_STAFF_ERROR_COMMENT';
+      resultDialog.messageType = DialogMessageType.Error;
     }
+
+    resultDialog.buttons = [
+      { id: DialogButtonId.Ok, text: 'CLOSE_BUTTON' },
+    ];
+
+    await GlobalEvent.Instance.showCommonDialog(resultDialog);
   }
 
   deactivate(): void {

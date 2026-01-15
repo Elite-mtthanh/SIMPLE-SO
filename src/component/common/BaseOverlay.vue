@@ -1,53 +1,51 @@
 <template>
-    <div class="overlay-mask" @click.self="onMaskClick">
-        <div class="overlay-content">
-            <slot />
-        </div>
+  <div class="overlay-mask" @click.self="onMaskClick">
+    <div class="overlay-content">
+      <slot />
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    name: 'BaseOverlay',
-    props: {
-        closeOnMask: {
-            type: Boolean,
-            default: false,
-        },
+  name: 'BaseOverlay',
+  props: {
+    closeOnMask: {
+      type: Boolean,
+      default: false,
     },
-    emits: ['close'],
-    setup(props, { emit }) {
-        const onMaskClick = () => {
-            if (props.closeOnMask) {
-                emit('close');
-            }
-        };
+  },
+  emits: ['close'],
+  setup(props, { emit }) {
+    const onMaskClick = () => {
+      if (props.closeOnMask) {
+        emit('close');
+      }
+    };
 
-        return {
-            onMaskClick,
-        };
-    },
+    return {
+      onMaskClick,
+    };
+  },
 });
 </script>
 
 <style scoped>
 .overlay-mask {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-
-    background: rgba(0, 0, 0, 0.8);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .overlay-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

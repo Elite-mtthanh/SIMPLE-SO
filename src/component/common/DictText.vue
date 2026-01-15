@@ -1,5 +1,5 @@
 <template>
-    <span>{{ text }}</span>
+  <span>{{ text }}</span>
 </template>
 
 <script lang="ts">
@@ -8,28 +8,27 @@ import { AppConfig } from '@/model/AppConfig';
 import { ServiceIF } from '@/services/ServiceIF';
 
 export default defineComponent({
-    name: 'DictText',
-    props: {
-        keyName: {
-            type: String,
-            required: true,
-        },
+  name: 'DictText',
+  props: {
+    keyName: {
+      type: String,
+      required: true,
     },
-    setup(props) {
-        const dict = ServiceIF.getDict(props.keyName);
+  },
 
-        const text = computed(() => {
-            if (!dict) return '';
+  setup(props) {
+    const dict = ServiceIF.getDict(props.keyName);
 
-            const idx = AppConfig.Instance.langIndex.value;
-            const texts = [dict.text1, dict.text2, dict.text3];
+    const text = computed(() => {
+      if (!dict) return '';
 
-            return texts[idx] ?? '';
-        });
+      const lang = AppConfig.Instance.currentLang.value;
+      return dict.texts[lang] ?? '';
+    });
 
-        return {
-            text,
-        };
-    }
+    return {
+      text,
+    };
+  },
 });
 </script>
