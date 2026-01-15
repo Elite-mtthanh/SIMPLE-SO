@@ -60,6 +60,9 @@ body {
 .text-link {
   color: var(--text-link);
 } /* màu chữ (xanh) */
+.text-success {
+  color: var(--text-success);
+} /* màu chữ (xanh lá) */
 
 .bg-button-primary {
   background: var(--btn-primary);

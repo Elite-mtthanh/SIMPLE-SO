@@ -15,52 +15,24 @@
       <DictText keyName="START_LABEL" />
     </div>
 
-    <div class="footer-bar">
-      <div class="footer-left">
-        <DropdownButton v-model="currentLang" :items="languageOptions" type="soft" textColor="link"
-          :icon="arrowDownIcon" @update:modelValue="onChangeLang">
-          <template #label>
-            <DictText keyName="LANGUAGE_BUTTON" />
-          </template>
-        </DropdownButton>
-
-        <BaseButton type="primary" :icon="bellIcon" textColor="inverse" @confirm="onCallStaff">
-          <DictText keyName="CALL_STAFF_BUTTON" />
-        </BaseButton>
-
-        <BaseButton :icon="alertIcon" type="soft" @confirm="onOpenAllergen">
-          <DictText keyName="ALLERGEN_BUTTON" />
-        </BaseButton>
-      </div>
-
-      <div class="footer-right">
-        <div class="date">
-          2024
-          <DictText keyName="YEAR_LABEL" />
-          12
-          <DictText keyName="MONTH_LABEL" />
-          03
-          <DictText keyName="DAY_LABEL" />
-        </div>
-        <div class="time">10 : 00</div>
-      </div>
-    </div>
+    <AppFooter :mode="FooterMode.Splash" v-model:currentLang="currentLang" :language-options="languageOptions"
+      :year="2024" :month="12" :day="3" time="10 : 00" @call-staff="onCallStaff" @open-allergen="onOpenAllergen" />
   </div>
+
   <AllergenOverlay v-if="showAllergen" @close="onCloseAllergen" />
 </template>
 
+
 <script lang="ts">
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
-import { defineComponent, onMounted, ref } from 'vue';
 import { Language, SplashType, type SplashConfig } from '@/model/Splash';
+import { FooterMode } from '@/model/FooterMode';
+
 import SplashGuide from '@/component/splash/SplashGuide.vue';
 import SplashAd from '@/component/splash/SplashAd.vue';
-import BaseButton from '@/component/common/BaseButton.vue';
 import DictText from '@/component/common/DictText.vue';
-import bellIcon from '@/assets/Image/icon/bell-icon.png';
-import alertIcon from '@/assets/Image/icon/fish-allergy-icon.png';
-import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
-import DropdownButton from '@/component/common/DropdownButton.vue';
+import AppFooter from '@/component/common/AppFooter.vue';
 import AllergenOverlay from '@/component/splash/AllergenOverlay.vue';
 
 export default defineComponent({
@@ -68,20 +40,15 @@ export default defineComponent({
   components: {
     SplashGuide,
     SplashAd,
-    BaseButton,
     DictText,
-    DropdownButton,
-    AllergenOverlay
+    AppFooter,
+    AllergenOverlay,
   },
   setup() {
     const logic = new StartPageLogic();
     const splashData = ref<SplashConfig | null>(null);
     const currentLang = ref<Language>(Language.JA);
     const showAllergen = ref(false);
-
-    const onChangeLang = (lang: Language) => {
-      logic.changeLanguage(lang);
-    };
 
     onMounted(async () => {
       await logic.activate();
@@ -92,28 +59,20 @@ export default defineComponent({
       await logic.callStaff();
     };
 
-    const onOpenAllergen = () => {
-      showAllergen.value = true;
-    };
-
-    const onCloseAllergen = () => {
-      showAllergen.value = false;
-    };
+    watch(currentLang, (lang) => {
+      logic.changeLanguage(lang);
+    });
 
     return {
       splashData,
       SplashType,
-      bellIcon,
-      alertIcon,
-      DropdownButton,
+      FooterMode,
       currentLang,
-      arrowDownIcon,
-      onChangeLang,
       languageOptions: logic.languageOptions,
       onCallStaff,
       showAllergen,
-      onOpenAllergen,
-      onCloseAllergen
+      onOpenAllergen: () => showAllergen.value = true,
+      onCloseAllergen: () => showAllergen.value = false,
     };
   },
 });

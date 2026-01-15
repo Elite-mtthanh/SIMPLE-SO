@@ -42,7 +42,7 @@ export class StartPageLogic {
       const successDialog = new DialogArgs();
       successDialog.title = '';
       successDialog.message = 'CALL_STAFF_SUCCESS_MESSAGE';
-      confirmDialog.messageType = DialogMessageType.Success;
+      successDialog.messageType = DialogMessageType.Success;
       successDialog.buttons = [
         { id: DialogButtonId.Ok, text: 'CLOSE_BUTTON' },
       ];
@@ -53,7 +53,7 @@ export class StartPageLogic {
       const errorDialog = new DialogArgs();
       errorDialog.title = '';
       errorDialog.message = 'CALL_STAFF_ERROR_MESSAGE';
-      confirmDialog.messageType = DialogMessageType.Error;
+      errorDialog.messageType = DialogMessageType.Error;
       errorDialog.buttons = [
         { id: DialogButtonId.Ok, text: 'CLOSE_BUTTON' },
       ];

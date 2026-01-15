@@ -46,7 +46,8 @@ export default defineComponent({
 }
 
 .overlay-content {
-    max-width: 90%;
-    max-height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

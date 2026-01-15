@@ -8,15 +8,19 @@
       </div>
 
       <p v-else class="dialog-message">
-        <DictText :keyName="dialogArgs.message" />
+        <DictText :keyName="dialogArgs.message" :class="getMessageType()" />
       </p>
 
-      <div class="dialog-actions">
+      <div class="dialog-actions" :class="{
+        'two-buttons': dialogArgs.buttons.length === 2,
+        'one-button': dialogArgs.buttons.length === 1
+      }">
         <BaseButton v-for="btn in dialogArgs.buttons" :key="btn.id" :id="btn.id" :type="getButtonType(btn.id)"
           text-color="inverse" @confirm="onClick">
           <DictText :keyName="btn.text" />
         </BaseButton>
       </div>
+
     </div>
   </BaseOverlay>
 </template>
@@ -27,7 +31,7 @@ import BaseButton from './BaseButton.vue';
 import BaseOverlay from './BaseOverlay.vue';
 import DictText from '@/component/common/DictText.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
-import { DialogArgs, DialogButtonId } from '@/model/Dialog';
+import { DialogArgs, DialogButtonId, DialogMessageType } from '@/model/Dialog';
 
 export default defineComponent({
   name: 'GlobalDialog',
@@ -47,6 +51,7 @@ export default defineComponent({
       props.dialogArgs.resolve?.(id);
       GlobalEvent.Instance.dismissCommonDialog();
     };
+
     const getButtonType = (id: DialogButtonId) => {
       switch (id) {
         case DialogButtonId.Confirm:
@@ -58,10 +63,22 @@ export default defineComponent({
       }
     };
 
+    const getMessageType = () => {
+      switch (props.dialogArgs.messageType) {
+        case DialogMessageType.Default:
+          return 'text-accent';
+        case DialogMessageType.Success:
+          return 'text-success';
+        default:
+          return 'text-link';
+      }
+    };
+
     return {
       onClick,
       DialogButtonId,
-      getButtonType
+      getButtonType,
+      getMessageType
     };
   },
 });
@@ -70,12 +87,14 @@ export default defineComponent({
 
 <style scoped>
 .dialog-card {
-  width: 520px;
+  width: auto;
+  height: auto;
   background: var(--background-dialog);
   border-radius: 10px;
-  padding: 32px 28px;
+  padding: 30px 10px;
   box-sizing: border-box;
   text-align: center;
+  min-width: 800px;
 }
 
 .dialog-header {
@@ -83,10 +102,8 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   gap: 12px;
-}
-
-.dialog-icon {
-  font-size: 22px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 .dialog-title {
@@ -101,12 +118,29 @@ export default defineComponent({
   font-weight: 700;
   color: var(--text-accent);
   line-height: 1.4;
+  margin-bottom: 80px;
 }
 
 .dialog-actions {
   margin-top: 28px;
   display: flex;
+  align-items: center;
+}
+
+.dialog-actions.one-button {
   justify-content: center;
-  gap: 16px;
+}
+
+.dialog-actions.two-buttons {
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.dialog-actions.two-buttons>* {
+  min-width: 180px;
+}
+
+.dialog-actions.one-button>* {
+  min-width: 200px;
 }
 </style>

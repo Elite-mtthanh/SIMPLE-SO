@@ -22,10 +22,8 @@ export class Mock implements IService {
   }
 
   async callStaff(): Promise<boolean> {
-    // mock delay
     await new Promise(r => setTimeout(r, 800));
 
-    // mock success / fail (80% success)
-    return Math.random() > 0.2;
+    return Math.random() > 0.9;
   }
 }
