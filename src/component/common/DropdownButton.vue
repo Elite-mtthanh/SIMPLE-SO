@@ -10,11 +10,11 @@
       <slot name="label" />
     </BaseButton>
 
-    <div v-if="open" class="dropdown-panel">
+    <div v-if="open" class="dropdown-wrapper-panel">
       <div
         v-for="item in items"
         :key="item.value"
-        class="dropdown-item"
+        class="dropdown-wrapper-panel-item"
         :class="{ active: item.value === modelValue }"
         @click="select(item.value)"
       >
@@ -84,20 +84,18 @@ export default defineComponent({
   position: relative;
 }
 
-.dropdown-panel {
+.dropdown-wrapper-panel {
   position: absolute;
   bottom: 100%;
   left: 0;
-
   width: 100%;
   margin-bottom: 8px;
-
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
-.dropdown-item {
+.dropdown-wrapper-panel-item {
   padding: 16px;
   font-size: 20px;
   cursor: pointer;
@@ -107,7 +105,7 @@ export default defineComponent({
   color: var(--text-link);
 }
 
-.dropdown-item.active {
+.dropdown-wrapper-panel-item.active {
   background: var(--btn-active);
   font-weight: 700;
 }

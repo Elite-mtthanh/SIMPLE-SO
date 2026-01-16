@@ -1,8 +1,8 @@
 <template>
   <BaseOverlay closeOnMask>
-    <div class="allergen-card">
+    <div class="allergen">
       <div class="allergen-header">
-        <div class="allergen-icon">
+        <div class="allergen-header-icon">
           <ImageView :src="allergenIcon" alt="allergen icon" />
         </div>
         <DictText keyName="ALLERGEN_LABEL" class="text-link" />
@@ -70,7 +70,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.allergen-card {
+.allergen {
   background: var(--background-dialog);
   border-radius: 10px;
   padding: 24px 32px 20px;
@@ -91,10 +91,9 @@ export default defineComponent({
   justify-content: center;
 }
 
-.allergen-icon {
+.allergen-header-icon {
   width: 70px;
   height: 70px;
-
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,21 +1,22 @@
 <template>
-  <div class="splash-guide-page">
-    <header class="start-page-header">
-      <span class="desk-label">
+  <div class="splash-page">
+    <header class="splash-page-header" @click="onGoToCategory()">
+      <span class="splash-page-header-desk-label">
         <DictText keyName="DESK_NUMBER_LABEL" /> : {{ splashData?.deskNumber }}
       </span>
     </header>
 
-    <div class="guide-wrapper">
+    <div class="splash-page-wrapper" @click.stop>
       <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
       <SplashAd v-else-if="splashData?.splashType === SplashType.SLIDESHOW" />
     </div>
 
-    <div class="hint-text">
+    <div class="splash-page-hint-text">
       <DictText keyName="START_LABEL" />
     </div>
 
     <AppFooter
+      @click.stop
       :mode="FooterMode.Splash"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
@@ -75,6 +76,10 @@ export default defineComponent({
       logic.changeLanguage(lang);
     });
 
+    const onGoToCategory = async () => {
+      await logic.goToCategoryPage();
+    };
+
     return {
       splashData,
       SplashType,
@@ -85,27 +90,19 @@ export default defineComponent({
       showAllergen,
       onOpenAllergen: () => (showAllergen.value = true),
       onCloseAllergen: () => (showAllergen.value = false),
+      onGoToCategory,
     };
   },
 });
 </script>
 
 <style>
-.splash-guide-page {
+.splash-page {
   display: flex;
   flex-direction: column;
 }
 
-.desk-label {
-  font-size: 200px;
-  line-height: 18px;
-  letter-spacing: 0%;
-  text-align: center;
-  vertical-align: middle;
-  color: var(--text-link);
-}
-
-.start-page-header {
+.splash-page-header {
   height: 200px;
   display: flex;
   align-items: center;
@@ -116,13 +113,21 @@ export default defineComponent({
   margin-top: 40px;
 }
 
-.guide-wrapper {
+.splash-page-header-desk-label {
+  font-size: 200px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  color: var(--text-link);
+}
+
+.splash-page-wrapper {
   display: flex;
   justify-content: center;
 }
 
-.hint-text {
-  margin-top: 150px;
+.splash-page-hint-text {
   text-align: center;
   font-size: 36px;
   font-weight: 700;
@@ -133,34 +138,7 @@ export default defineComponent({
   letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
-}
-
-.footer-bar {
-  padding-top: 45px;
-  padding-left: 60px;
-  padding-right: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.footer-left {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.footer-right {
-  text-align: right;
-  color: var(--text-link);
-  font-weight: 600;
-}
-
-.footer-right .date {
-  font-size: 20px;
-}
-
-.footer-right .time {
-  font-size: 28px;
+  padding-top: 150px;
+  padding-bottom: 50px;
 }
 </style>

@@ -1,17 +1,17 @@
 <template>
   <BaseOverlay>
     <div class="dialog-card">
-      <div class="dialog-header" v-if="dialogArgs.title">
-        <span class="dialog-title">
+      <div class="dialog-card-header" v-if="dialogArgs.title">
+        <span class="dialog-card-header-title">
           <DictText :keyName="dialogArgs.title" />
         </span>
       </div>
 
-      <div v-else class="dialog-message">
-        <div v-if="dialogArgs.iconButton" class="dialog-icon">
+      <div v-else class="dialog-card-message">
+        <div v-if="dialogArgs.iconButton" class="dialog-card-message-icon">
           <ImageView :src="dialogArgs.iconButton" alt="icon" />
         </div>
-        <div class="message-content">
+        <div class="dialog-card-message-content">
           <DictText :keyName="dialogArgs.message" :class="getMessageType()" />
           <div v-if="dialogArgs.comment">
             <DictText :keyName="dialogArgs.comment" :class="getMessageType()" />
@@ -20,7 +20,7 @@
       </div>
 
       <div
-        class="dialog-actions"
+        class="dialog-card-actions"
         :class="{
           'two-buttons': dialogArgs.buttons.length === 2,
           'one-button': dialogArgs.buttons.length === 1,
@@ -115,7 +115,7 @@ export default defineComponent({
   min-width: 1055px;
 }
 
-.dialog-header {
+.dialog-card-header {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,19 +124,19 @@ export default defineComponent({
   padding-bottom: 20px;
 }
 
-.dialog-title {
+.dialog-card-header-title {
   font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.4;
 }
 
-.dialog-icon {
+.dialog-card-message-icon {
   width: 68px;
   height: 68px;
 }
 
-.dialog-message {
+.dialog-card-message {
   font-size: 40px;
   font-weight: 700;
   color: var(--text-accent);
@@ -148,31 +148,31 @@ export default defineComponent({
   gap: 6px;
 }
 
-.message-content {
+.dialog-card-message-content {
   display: flex;
   flex-direction: column;
 }
 
-.dialog-actions {
+.dialog-card-actions {
   margin-top: 28px;
   display: flex;
   align-items: center;
 }
 
-.dialog-actions.one-button {
+.dialog-card-actions.one-button {
   justify-content: center;
 }
 
-.dialog-actions.two-buttons {
+.dialog-card-actions.two-buttons {
   justify-content: space-between;
   padding: 0 40px;
 }
 
-.dialog-actions.two-buttons > * {
+.dialog-card-actions.two-buttons > * {
   min-width: 180px;
 }
 
-.dialog-actions.one-button > * {
+.dialog-card-actions.one-button > * {
   min-width: 200px;
 }
 </style>

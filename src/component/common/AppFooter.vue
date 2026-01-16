@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-bar">
+  <div class="footer">
     <div class="footer-left">
       <BaseButton
         v-if="showBack"
@@ -50,25 +50,23 @@
         textColor="inverse"
         @confirm="onOpenCart"
       >
-        <span class="cart-text">
+        <span>
           <DictText keyName="CART_BUTTON" />
-          <span v-if="cartCount > 0" class="cart-badge">
+          <span v-if="cartCount > 0" class="footer-right-cart-badge">
             +{{ cartCount }}
           </span>
         </span>
       </BaseButton>
 
-      <div class="date-time">
-        <div class="date">
-          {{ year }}
-          <DictText keyName="YEAR_LABEL" />
-          {{ month }}
-          <DictText keyName="MONTH_LABEL" />
-          {{ day }}
-          <DictText keyName="DAY_LABEL" />
-        </div>
-        <div class="time">{{ time }}</div>
+      <div class="footer-right-date">
+        {{ year }}
+        <DictText keyName="YEAR_LABEL" />
+        {{ month }}
+        <DictText keyName="MONTH_LABEL" />
+        {{ day }}
+        <DictText keyName="DAY_LABEL" />
       </div>
+      <div class="footer-right-time">{{ time }}</div>
     </div>
   </div>
 </template>
@@ -217,11 +215,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.footer-bar {
-  margin-top: 50px;
+.footer {
+  padding-top: 45px;
+  padding-left: 60px;
+  padding-right: 60px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .footer-left {
@@ -231,28 +231,25 @@ export default defineComponent({
 }
 
 .footer-right {
-  display: flex;
-  gap: 24px;
-  align-items: center;
   text-align: right;
   color: var(--text-link);
   font-weight: 600;
 }
 
-.date {
+.footer-right-date {
   font-size: 20px;
 }
 
-.time {
+.footer-right-time {
   font-size: 28px;
   text-align: center;
 }
 
-.cart-badge {
+.footer-right-cart-badge {
   margin-left: 8px;
   padding: 2px 8px;
-  background: var(--color-danger);
-  color: #fff;
+  background: var(--btn-accent);
+  color: var(--text-inverse);
   border-radius: 12px;
   font-size: 14px;
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="overlay-mask" @click.self="onMaskClick">
-    <div class="overlay-content">
+    <div class="overlay-mask-content">
       <slot />
     </div>
   </div>
@@ -43,7 +43,7 @@ export default defineComponent({
   justify-content: center;
 }
 
-.overlay-content {
+.overlay-mask-content {
   display: flex;
   justify-content: center;
   align-items: center;
