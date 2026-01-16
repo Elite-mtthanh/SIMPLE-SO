@@ -2,7 +2,7 @@ import { AppConfig } from "@/model/AppConfig";
 import { SplashConfig } from "@/model/Splash";
 import { ServiceIF } from "@/services/ServiceIF";
 import { DialogArgs } from "@/model/Dialog";
-import { DialogButtonId, DialogMessageType, Language } from "@/model/enums";
+import { DialogButtonId, DialogMessageType, Language } from "@/model/Enums";
 import { GlobalEvent } from "../common/GlobalEvent";
 import bellIcon from '@/assets/Image/icon/bell-dialog-icon.png';
 

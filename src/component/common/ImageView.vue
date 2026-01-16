@@ -1,6 +1,6 @@
 <template>
   <div class="image-view">
-    <img :src="src" :alt="alt" />
+    <img :src="src" :alt="alt" v-bind="$attrs" />
   </div>
 </template>
 
@@ -9,6 +9,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ImageView',
+  inheritAttrs: false,
   props: {
     src: {
       type: String,
@@ -30,8 +31,8 @@ export default defineComponent({
 }
 
 .image-view img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 </style>

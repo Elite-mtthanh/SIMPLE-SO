@@ -1,4 +1,4 @@
-import { Language, SplashType } from "./enums";
+import { Language, SplashType } from "./Enums";
 
 export interface SplashConfig {
   deskNumber: string;

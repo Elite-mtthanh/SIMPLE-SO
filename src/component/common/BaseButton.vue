@@ -12,7 +12,11 @@
     @touchmove="onTouchMove"
     @touchcancel="onTouchCancel"
   >
-    <div v-if="icon && iconPosition === 'left'" class="btn-side">
+    <div
+      v-if="icon && iconPosition === 'left'"
+      class="btn-side"
+      :style="iconWrapperStyle"
+    >
       <ImageView :src="icon" class="btn-icon" />
     </div>
 
@@ -24,14 +28,18 @@
       <template v-else>{{ text }}</template>
     </span>
 
-    <div v-if="icon && iconPosition === 'right'" class="btn-side">
+    <div
+      v-if="icon && iconPosition === 'right'"
+      class="btn-side"
+      :style="iconWrapperStyle"
+    >
       <ImageView :src="icon" class="btn-icon" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import ImageView from './ImageView.vue';
 
 export default defineComponent({
@@ -64,6 +72,10 @@ export default defineComponent({
     iconPosition: {
       type: String as () => 'left' | 'right',
       default: 'left',
+    },
+    iconSize: {
+      type: Number,
+      default: 24,
     },
   },
   components: {
@@ -132,6 +144,11 @@ export default defineComponent({
       active.value = false;
     };
 
+    const iconWrapperStyle = computed(() => ({
+      width: `${props.iconSize}px`,
+      height: `${props.iconSize}px`,
+    }));
+
     return {
       el,
       pressed,
@@ -143,6 +160,7 @@ export default defineComponent({
       onTouchMove,
       onTouchEnd,
       onTouchCancel,
+      iconWrapperStyle,
     };
   },
 });
@@ -156,7 +174,7 @@ export default defineComponent({
 
   width: 240px;
   height: 70px;
-  padding: 0 20px;
+  padding: 0 15px;
 
   border-radius: 6px;
   box-sizing: border-box;

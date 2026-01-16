@@ -1,16 +1,18 @@
 <template>
-  <BaseOverlay closeOnMask @close="$emit('close')">
+  <BaseOverlay closeOnMask>
     <div class="allergen-card">
       <div class="allergen-header">
-        <ImageView :src="allergenIcon" alt="allergen icon" class="allergen-icon" />
-        <DictText keyName="ALLERGEN_LABEL" class="text-accent" />
+        <div class="allergen-icon">
+          <ImageView :src="allergenIcon" alt="allergen icon" />
+        </div>
+        <DictText keyName="ALLERGEN_LABEL" class="text-link" />
       </div>
       <div class="allergen-content">
-        <ImageView :src="image" alt="allergen" class="allergen-image" />
+        <ImageView :src="image" alt="allergen" />
       </div>
 
       <div class="allergen-actions">
-        <BaseButton type="neutral" @confirm="$emit('close')">
+        <BaseButton type="neutral" @confirm="onCloseAllergen">
           <DictText keyName="CLOSE_BUTTON" />
         </BaseButton>
       </div>
@@ -23,7 +25,7 @@ import { computed, defineComponent, PropType } from 'vue';
 import BaseOverlay from '@/component/common/BaseOverlay.vue';
 import BaseButton from '@/component/common/BaseButton.vue';
 import DictText from '@/component/common/DictText.vue';
-import { Language } from '@/model/enums';
+import { Language } from '@/model/Enums';
 import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpg';
 import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
 import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
@@ -45,7 +47,7 @@ export default defineComponent({
     },
   },
   emits: ['close'],
-  setup(props) {
+  setup(props, { emit }) {
     const image = computed(() => {
       switch (props.currentLang) {
         case Language.JA:
@@ -58,7 +60,11 @@ export default defineComponent({
       }
     });
 
-    return { image, allergenIcon };
+    const onCloseAllergen = () => {
+      emit('close');
+    };
+
+    return { image, allergenIcon, onCloseAllergen };
   },
 });
 </script>
@@ -83,12 +89,15 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
 }
 
 .allergen-icon {
-  width: 75px;
-  height: 75px;
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .allergen-content {
@@ -98,11 +107,13 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: auto;
+  height: calc(100% - 350px);
 }
 
 .allergen-content :deep(img) {
-  width: 1450px;
-  height: 630px;
+  width: 1400px;
+  height: 680px;
   object-fit: contain;
 }
 

@@ -1,4 +1,4 @@
-import { Language } from "./enums";
+import { Language } from "./Enums";
 
 export class Dict {
   key: string;

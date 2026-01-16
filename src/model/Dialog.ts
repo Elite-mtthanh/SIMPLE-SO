@@ -1,10 +1,10 @@
-import { DialogButtonId, DialogMessageType } from "./enums";
+import { DialogButtonId, DialogMessageType } from "./Enums";
 
 export class ButtonInfo {
   id: DialogButtonId;
   text: string;
 
-  constructor(id: number, text: string) {
+  constructor(id: DialogButtonId, text: string) {
     this.id = id;
     this.text = text;
   }

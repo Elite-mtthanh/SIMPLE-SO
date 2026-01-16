@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { Language } from './enums';
+import { Language } from './Enums';
 
 export class AppConfig {
   public static Instance: AppConfig;

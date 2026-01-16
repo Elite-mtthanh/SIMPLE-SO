@@ -47,7 +47,7 @@ import BaseButton from './BaseButton.vue';
 import BaseOverlay from './BaseOverlay.vue';
 import DictText from '@/component/common/DictText.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
-import { DialogButtonId, DialogMessageType } from '@/model/enums';
+import { DialogButtonId, DialogMessageType } from '@/model/Enums';
 import { DialogArgs } from '@/model/Dialog';
 import ImageView from './ImageView.vue';
 

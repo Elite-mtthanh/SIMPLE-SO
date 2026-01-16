@@ -39,13 +39,13 @@
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
 import { type SplashConfig } from '@/model/Splash';
-import { FooterMode } from '@/model/enums';
+import { FooterMode } from '@/model/Enums';
 import SplashGuide from '@/component/splash/SplashGuide.vue';
 import SplashAd from '@/component/splash/SplashAd.vue';
 import DictText from '@/component/common/DictText.vue';
 import AppFooter from '@/component/common/AppFooter.vue';
 import AllergenOverlay from '@/component/splash/AllergenOverlay.vue';
-import { SplashType, Language } from '@/model/enums';
+import { SplashType, Language } from '@/model/Enums';
 
 export default defineComponent({
   name: 'splash-page',

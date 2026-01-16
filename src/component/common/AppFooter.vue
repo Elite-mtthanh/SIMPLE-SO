@@ -5,7 +5,7 @@
         v-if="showBack"
         type="soft"
         :icon="backIcon"
-        @confirm="$emit('back')"
+        @confirm="onBack"
       />
 
       <DropdownButton
@@ -25,7 +25,8 @@
         type="primary"
         :icon="bellIcon"
         textColor="inverse"
-        @confirm="$emit('call-staff')"
+        @confirm="onCallStaff"
+        :iconSize="36"
       >
         <DictText keyName="CALL_STAFF_BUTTON" />
       </BaseButton>
@@ -34,7 +35,8 @@
         type="soft"
         :icon="allergenIcon"
         textColor="link"
-        @confirm="$emit('open-allergen')"
+        @confirm="onOpenAllergen"
+        :iconSize="60"
       >
         <DictText keyName="ALLERGEN_BUTTON" />
       </BaseButton>
@@ -46,7 +48,7 @@
         type="primary"
         :icon="cartIcon"
         textColor="inverse"
-        @confirm="$emit('open-cart')"
+        @confirm="onOpenCart"
       >
         <span class="cart-text">
           <DictText keyName="CART_BUTTON" />
@@ -72,8 +74,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, watch, onMounted, onUnmounted, } from 'vue';
-import { FooterMode, Language } from '@/model/enums';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch,
+  onMounted,
+  onUnmounted,
+} from 'vue';
+import { FooterMode, Language } from '@/model/Enums';
 import BaseButton from '@/component/common/BaseButton.vue';
 import DropdownButton from '@/component/common/DropdownButton.vue';
 import DictText from '@/component/common/DictText.vue';
@@ -167,6 +177,22 @@ export default defineComponent({
       emit('update:currentLang', lang);
     };
 
+    const onBack = () => {
+      emit('back');
+    };
+
+    const onCallStaff = () => {
+      emit('call-staff');
+    };
+
+    const onOpenAllergen = () => {
+      emit('open-allergen');
+    };
+
+    const onOpenCart = () => {
+      emit('open-cart');
+    };
+
     return {
       localLang,
       showBack,
@@ -181,6 +207,10 @@ export default defineComponent({
       month,
       day,
       time,
+      onBack,
+      onCallStaff,
+      onOpenAllergen,
+      onOpenCart,
     };
   },
 });
