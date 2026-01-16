@@ -1,8 +1,13 @@
 import mitt from 'mitt';
 import { PageStackType } from '@/model/PageStack';
+import { DialogArgs } from '@/model/Dialog';
+import { DialogButtonId } from '@/model/Enums';
 
 export enum EmitEvent {
   ChangeScreen = 'change-screen',
+  ShowCommonDialog = 'show-common-dialog',
+  HideCommonDialog = 'hide-common-dialog',
+  ConfirmDialog = 'confirm-dialog',
 }
 
 export class PageArgs {
@@ -52,6 +57,17 @@ export class GlobalEvent {
 
   public emitEvent(event: string, ...args: any[]) {
     this.eventBus.emit(event, ...args);
+  }
+
+  public async showCommonDialog(dialogInfo: DialogArgs): Promise<DialogButtonId> {
+    return await new Promise<number>((resolve) => {
+      dialogInfo.resolve = resolve;
+      this.eventBus.emit(EmitEvent.ShowCommonDialog, dialogInfo);
+    });
+  }
+
+  public dismissCommonDialog(): void {
+    this.eventBus.emit(EmitEvent.HideCommonDialog);
   }
 
   public showStartPage(type = PageStackType.NoHistory) {
