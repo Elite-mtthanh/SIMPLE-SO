@@ -2,6 +2,6 @@
   "deskNumber": "001",
   "isShowDeskNumber": true,
   "splashType": 1,
-  "languageList": 0,
+  "languageList": ["ja", "zh", "en"],
   "isShowAllergen": true
 }

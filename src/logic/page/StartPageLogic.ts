@@ -38,7 +38,7 @@ export class StartPageLogic {
     const result = await GlobalEvent.Instance.showCommonDialog(confirmDialog);
     if (result !== DialogButtonId.Confirm) return;
 
-    const isCallStaffSuccess = await ServiceIF.CallStaff();
+    const isCallStaffSuccess = await ServiceIF.callStaff();
 
     const resultDialog = new DialogArgs();
     resultDialog.title = '';
@@ -58,6 +58,10 @@ export class StartPageLogic {
     ];
 
     await GlobalEvent.Instance.showCommonDialog(resultDialog);
+  }
+
+  async goToCategoryPage() {
+    GlobalEvent.Instance.goToCategoryPage();
   }
 
   deactivate(): void {
