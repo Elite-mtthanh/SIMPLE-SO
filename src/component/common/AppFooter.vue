@@ -1,12 +1,9 @@
 <template>
   <div class="footer">
     <div class="footer-left">
-      <BaseButton
-        v-if="showBack"
-        type="soft"
-        :icon="backIcon"
-        @confirm="onBack"
-      />
+      <div v-if="showBack" class="footer-left-back-icon">
+        <ImageView :src="backIcon" @click="onBack" />
+      </div>
 
       <DropdownButton
         v-model="localLang"
@@ -45,28 +42,27 @@
     <div class="footer-right">
       <BaseButton
         v-if="showCart"
-        type="primary"
+        :type="cartCount === 0 ? 'neutral' : 'accent'"
         :icon="cartIcon"
         textColor="inverse"
         @confirm="onOpenCart"
+        :iconSize="50"
+        class="footer-right-cart"
+        :disabled="cartCount === 0"
       >
-        <span>
-          <DictText keyName="CART_BUTTON" />
-          <span v-if="cartCount > 0" class="footer-right-cart-badge">
-            +{{ cartCount }}
-          </span>
-        </span>
+        <span class="footer-right-cart-badge"> +{{ cartCount }} </span>
       </BaseButton>
-
-      <div class="footer-right-date">
-        {{ year }}
-        <DictText keyName="YEAR_LABEL" />
-        {{ month }}
-        <DictText keyName="MONTH_LABEL" />
-        {{ day }}
-        <DictText keyName="DAY_LABEL" />
+      <div>
+        <div class="footer-right-date">
+          {{ year }}
+          <DictText keyName="YEAR_LABEL" />
+          {{ month }}
+          <DictText keyName="MONTH_LABEL" />
+          {{ day }}
+          <DictText keyName="DAY_LABEL" />
+        </div>
+        <div class="footer-right-time">{{ time }}</div>
       </div>
-      <div class="footer-right-time">{{ time }}</div>
     </div>
   </div>
 </template>
@@ -90,6 +86,7 @@ import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
 import backIcon from '@/assets/Image/icon/back-icon.png';
 import cartIcon from '@/assets/Image/icon/cart-icon.png';
+import ImageView from './ImageView.vue';
 
 export default defineComponent({
   name: 'AppFooter',
@@ -97,6 +94,7 @@ export default defineComponent({
     BaseButton,
     DropdownButton,
     DictText,
+    ImageView,
   },
   props: {
     mode: {
@@ -163,11 +161,11 @@ export default defineComponent({
       }
     });
 
-    const showBack = computed(() => props.mode === FooterMode.Category);
+    const showBack = computed(() => props.mode === FooterMode.Menu);
 
     const showCart = computed(
       () =>
-        props.mode === FooterMode.Category || props.mode === FooterMode.Order
+        props.mode === FooterMode.Category || props.mode === FooterMode.Menu
     );
 
     const onChangeLang = (lang: Language) => {
@@ -230,10 +228,18 @@ export default defineComponent({
   align-items: center;
 }
 
+.footer-left-back-icon {
+  cursor: pointer;
+  height: 70px;
+  width: 70px;
+}
+
 .footer-right {
-  text-align: right;
   color: var(--text-link);
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .footer-right-date {
@@ -245,12 +251,19 @@ export default defineComponent({
   text-align: center;
 }
 
+.footer-right-cart {
+  position: relative;
+}
+
 .footer-right-cart-badge {
-  margin-left: 8px;
-  padding: 2px 8px;
-  background: var(--btn-accent);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+  font-size: 45px;
   color: var(--text-inverse);
-  border-radius: 12px;
-  font-size: 14px;
 }
 </style>

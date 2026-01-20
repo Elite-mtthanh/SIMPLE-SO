@@ -85,8 +85,13 @@ export class GlobalEvent {
 
   public goToCategoryPage() {
     this.emitChangeScreen(
-      new PageArgs('category-page', PageStackType.NoHistory)
+      new PageArgs('CategoryListPage', PageStackType.NoHistory)
     );
-    console.log('Go to category page');
+  }
+
+  public goToMenuPage(categoryCode: string) {
+    this.emitChangeScreen(
+      new PageArgs('MenuListPage', PageStackType.New, { categoryCode: categoryCode })
+    );
   }
 }

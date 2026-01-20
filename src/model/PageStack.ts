@@ -1,3 +1,4 @@
+import { EmitEvent, GlobalEvent, PageArgs } from '@/logic/common/GlobalEvent';
 import { ref, Ref } from 'vue';
 
 export enum PageStackType {
@@ -11,7 +12,7 @@ export class PageStack {
   public static Instance: PageStack;
 
   public readonly currentPageName: Ref<string>;
-
+  public readonly currentPageArgs: Ref<PageArgs | null> = ref(null);
   public pageStack: Ref<Array<string>>;
 
   constructor() {

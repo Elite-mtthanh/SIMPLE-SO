@@ -13,7 +13,7 @@ export enum DialogMessageType {
 export enum FooterMode {
   Splash = 'splash',
   Category = 'category',
-  Order = 'order',
+  Menu = 'menu',
 }
 
 export enum SplashType {

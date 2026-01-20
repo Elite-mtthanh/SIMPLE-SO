@@ -3,6 +3,7 @@ import { IService } from './IService';
 import { Mock } from './Mock';
 import { Dict } from '@/model/Dict';
 import { normalizeDictRow } from '@/util/DictNormalizer';
+import { Menu, MenuSelect } from '@/model/Menu';
 
 declare let SVS: IService;
 
@@ -34,5 +35,14 @@ export class ServiceIF {
     if (this.TIF instanceof Mock) {
       this.TIF.SetCallStaffResult(value);
     }
+  }
+  static getAllMenus(): Menu[] {
+    if (!this.TIF.GetMenuList) return [];
+    return this.TIF.GetMenuList();
+  }
+
+  static getAllMenuSelects(): MenuSelect[] {
+    if (!this.TIF.GetMenuSelect) return [];
+    return this.TIF.GetMenuSelect();
   }
 }

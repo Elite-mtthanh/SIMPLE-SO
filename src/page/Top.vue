@@ -1,7 +1,11 @@
 <template>
   <div class="top-main">
     <keep-alive>
-      <component :is="currentPageName" :key="currentPageName" />
+      <component
+        :is="currentPageName"
+        :key="currentPageName"
+        :page-args="currentPageArgs"
+      />
     </keep-alive>
 
     <keep-alive v-if="commonDialogSettings.isShow && commonDialogSettings.info">
@@ -15,20 +19,23 @@ import { defineComponent } from 'vue';
 import { TopLogic } from '@/logic/page/TopLogic';
 import StartPage from '@/page/StartPage.vue';
 import GlobalDialog from '@/component/common/GlobalDialog.vue';
-import CategoryList from '@/page/CategoryList.vue';
+import CategoryListPage from '@/page/CategoryListPage.vue';
+import MenuListPage from './MenuListPage.vue';
 
 export default defineComponent({
   name: 'top-page',
   components: {
     StartPage,
     GlobalDialog,
-    CategoryList,
+    CategoryListPage,
+    MenuListPage
   },
   setup() {
     let logic = new TopLogic();
     return {
       currentPageName: logic.currentPageName,
       commonDialogSettings: logic.commonDialogSettings,
+      currentPageArgs: logic.currentPageArgs,
     };
   },
 });

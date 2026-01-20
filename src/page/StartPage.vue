@@ -1,5 +1,5 @@
 <template>
-  <div class="splash-page" @click="onGoToCategory()">
+  <div class="splash-page" @click="onGoToCategory">
     <header class="splash-page-header">
       <span class="splash-page-header-desk-label">
         <DictText keyName="DESK_NUMBER_LABEL" /> : {{ splashData?.deskNumber }}

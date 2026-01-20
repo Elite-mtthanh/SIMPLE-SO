@@ -1,38 +1,23 @@
 <template>
-  <div class="image-view">
-    <img :src="src" :alt="alt" v-bind="$attrs" />
-  </div>
+  <img :src="src" class="image-view" />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'ImageView',
-  inheritAttrs: false,
+export default {
   props: {
-    src: {
-      type: String,
-      required: true,
-    },
-    alt: {
-      type: String,
-      default: '',
+    src: { type: String, required: true },
+    fit: {
+      type: String as () => 'cover' | 'contain',
+      default: 'cover',
     },
   },
-});
+};
 </script>
 
 <style scoped>
 .image-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.image-view img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: var(--fit);
 }
 </style>
