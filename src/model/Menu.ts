@@ -3,8 +3,7 @@ export interface Menu {
   menu_cd: string;
   parent_menu_cd: string | null;
   menu_type: 'category' | 'menu';
-  select_size: number;
-  is_sold_out: number;
+  select_size: string;
   price: number;
   image_path: string | null;
 
@@ -36,7 +35,25 @@ export interface MenuSelect {
 }
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   image_path: string | null;
+  menu_cd: string;
 }
+
+export interface MenuItem {
+  id: number;
+  menu_cd: string;
+  name: string;
+  description: string;
+  price: number;
+  imagePath: string | null;
+  hasSelectSize: string;
+  soldOut?: boolean;
+}
+
+export interface soldOutMenu {
+  menu_cd: string;
+}
+
+

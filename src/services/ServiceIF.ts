@@ -3,7 +3,7 @@ import { IService } from './IService';
 import { Mock } from './Mock';
 import { Dict } from '@/model/Dict';
 import { normalizeDictRow } from '@/util/DictNormalizer';
-import { Menu, MenuSelect } from '@/model/Menu';
+import { Menu, MenuSelect, soldOutMenu } from '@/model/Menu';
 
 declare let SVS: IService;
 
@@ -44,5 +44,10 @@ export class ServiceIF {
   static getAllMenuSelects(): MenuSelect[] {
     if (!this.TIF.GetMenuSelect) return [];
     return this.TIF.GetMenuSelect();
+  }
+
+  static getStockoutList(): soldOutMenu[] {
+    if (!this.TIF.GetStockoutList) return [];
+    return this.TIF.GetStockoutList();
   }
 }

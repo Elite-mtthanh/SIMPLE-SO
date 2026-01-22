@@ -214,7 +214,6 @@ export default defineComponent({
 
 <style scoped>
 .footer {
-  padding-top: 45px;
   padding-left: 60px;
   padding-right: 60px;
   display: flex;

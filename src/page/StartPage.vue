@@ -110,7 +110,12 @@ export default defineComponent({
   gap: 32px;
   color: var(--text-link);
   font-weight: 700;
-  margin-top: 40px;
+  font-style: Semi Bold;
+  font-size: 200px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .splash-page-header-desk-label {
@@ -125,13 +130,14 @@ export default defineComponent({
 .splash-page-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .splash-page-hint-text {
   text-align: center;
   font-size: 36px;
   font-weight: 700;
-  color: var(--text-accent);
+  color: var(--text-error);
   font-style: Semi Bold;
   font-size: 60px;
   line-height: 18px;
@@ -139,6 +145,6 @@ export default defineComponent({
   text-align: center;
   vertical-align: middle;
   padding-top: 150px;
-  padding-bottom: 50px;
+  padding-bottom: 65px;
 }
 </style>

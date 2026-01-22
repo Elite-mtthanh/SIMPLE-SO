@@ -1,4 +1,5 @@
 import mitt from 'mitt';
+import { ref } from 'vue';
 import { PageStackType } from '@/model/PageStack';
 import { DialogArgs } from '@/model/Dialog';
 import { DialogButtonId } from '@/model/Enums';
@@ -37,6 +38,7 @@ export class GlobalEvent {
 
   private readonly eventBus: any;
   private currentPageArgs: PageArgs | null = null;
+  public currentCategoryCd = ref<string | null>(null);
 
   constructor() {
     this.eventBus = mitt();
@@ -76,7 +78,6 @@ export class GlobalEvent {
     this.eventBus.emit(EmitEvent.ChangeScreen, args);
   }
 
-
   public showStartPage() {
     this.emitChangeScreen(
       new PageArgs('start-page', PageStackType.NoHistory)
@@ -85,13 +86,22 @@ export class GlobalEvent {
 
   public goToCategoryPage() {
     this.emitChangeScreen(
-      new PageArgs('CategoryListPage', PageStackType.NoHistory)
+      new PageArgs('CategoryListPage', PageStackType.Back)
     );
   }
 
   public goToMenuPage(categoryCode: string) {
+    this.currentCategoryCd.value = categoryCode;
+
     this.emitChangeScreen(
-      new PageArgs('MenuListPage', PageStackType.New, { categoryCode: categoryCode })
+      new PageArgs('MenuListPage', PageStackType.New)
+    );
+  }
+
+
+  public goToMenuDetailPage(menuCd: string) {
+    this.emitChangeScreen(
+      new PageArgs('MenuDetailPage', PageStackType.New, { menuCd: menuCd })
     );
   }
 }

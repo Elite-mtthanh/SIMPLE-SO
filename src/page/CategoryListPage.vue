@@ -90,11 +90,10 @@ export default defineComponent({
   flex-direction: column;
 }
 .category-header {
-  height: 70px;
+  height: 107px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 12px 0;
 }
 .category-header-label {
   font-size: 70px;
@@ -121,5 +120,6 @@ export default defineComponent({
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px 16px;
+  margin-bottom: 43px;
 }
 </style>

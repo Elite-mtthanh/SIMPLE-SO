@@ -84,7 +84,7 @@ export default defineComponent({
 .allergen-header {
   font-size: 48px;
   font-weight: 700;
-  color: var(--text-accent);
+  color: var(--text-error);
   text-align: center;
   display: flex;
   align-items: center;

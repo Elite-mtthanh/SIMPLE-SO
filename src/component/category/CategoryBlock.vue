@@ -1,7 +1,11 @@
 <template>
   <div class="category-content-block" @click="onClick">
     <div class="category-content-block-image">
-      <ImageView :src="category.image_path || ''" fit="cover" />
+      <ImageView
+        :src="category.image_path || ''"
+        fit="cover"
+        class="category-content-block-image-detail"
+      />
     </div>
     <div class="category-content-block-title">
       {{ category.name }}
@@ -46,12 +50,19 @@ export default defineComponent({
   height: 300px;
 }
 
+.category-content-block-image-detail {
+  border-radius: 6px;
+}
+
 .category-content-block-title {
+  width: 300px;
   font-size: 40px;
   font-weight: 600;
   text-align: center;
-  white-space: nowrap;
   color: var(--text-link);
   margin-top: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

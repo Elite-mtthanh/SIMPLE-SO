@@ -139,7 +139,7 @@ export default defineComponent({
 .dialog-card-message {
   font-size: 40px;
   font-weight: 700;
-  color: var(--text-accent);
+  color: var(--text-error);
   line-height: 1.4;
   margin-bottom: 140px;
   display: flex;

@@ -28,9 +28,10 @@ export class CategoryListLogic {
     const lang = this.config.currentLang.value;
     console.log(categories)
     return categories.map(menu => ({
-      id: menu.menu_cd,
+      id: menu.id,
       name: this.getMenuName(menu, lang),
-      image_path: menu.image_path
+      image_path: menu.image_path,
+      menu_cd: menu.menu_cd
     }));
   }
 
@@ -45,5 +46,7 @@ export class CategoryListLogic {
 
   goToMenuPage(categoryCode: Menu): void {
     GlobalEvent.Instance.goToMenuPage(categoryCode.menu_cd);
+    console.log(categoryCode.menu_cd)
   }
+  
 }
