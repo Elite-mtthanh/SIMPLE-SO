@@ -19,8 +19,8 @@
       :mode="FooterMode.Category"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
-      @call-staff="onCallStaff"
-      @open-allergen="onOpenAllergen"
+      @on-call-staff="onCallStaff"
+      @on-open-allergen="onOpenAllergen"
     />
   </div>
 
@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { FooterMode } from '@/model/Enums';
+import { FooterMode, Language } from '@/model/Enums';
 import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
 import CategoryItem from '@/component/CategoryItem.vue';
@@ -58,11 +58,11 @@ export default defineComponent({
       showAllergen: logic.showAllergen,
       languageOptions: logic.languageOptions,
 
-      onCallStaff: logic.callStaff,
-      onOpenAllergen: logic.openAllergen,
-      onCloseAllergen: logic.closeAllergen,
-      onSelectCategory: logic.goToMenuPage,
-      onChangeLang: logic.changeLanguage,
+      onCallStaff: () => logic.callStaff(),
+      onOpenAllergen: () => logic.openAllergen(),
+      onCloseAllergen: () => logic.closeAllergen(),
+      onSelectCategory: (category: any) => logic.goToMenuPage(category),
+      onChangeLang: (lang: Language) => logic.changeLanguage(lang),
     };
   },
 });

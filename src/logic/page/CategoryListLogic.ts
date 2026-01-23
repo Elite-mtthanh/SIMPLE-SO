@@ -1,4 +1,4 @@
-import { ref, Ref, computed } from 'vue';
+import { Ref, ref } from 'vue';
 import { DataPool } from '@/model/DataPool';
 import { AppConfig } from '@/model/AppConfig';
 import { Language } from '@/model/Enums';
@@ -10,16 +10,20 @@ export class CategoryListLogic {
   private dataPool = DataPool.Instance;
   private config = AppConfig.Instance;
   private footerLogic = new FooterLogic();
+  get showAllergen(): Ref<boolean> {
+    return this.footerLogic.showAllergen;
+  }
 
-  currentLang: Ref<Language> = ref(Language.JA);
-  showAllergen: Ref<boolean> = ref(false);
+  get currentLang(): Ref<Language> {
+    return this.config.currentLang;
+  }
 
   get languageOptions() {
     return this.footerLogic.languageOptions;
   }
 
   changeLanguage(lang: Language): void {
-    this.currentLang.value = lang;
+    this.config.currentLang.value = lang;
     this.footerLogic.changeLanguage(lang);
   }
 
@@ -28,11 +32,11 @@ export class CategoryListLogic {
   }
 
   openAllergen(): void {
-    this.showAllergen.value = true;
+    this.footerLogic.openAllergen();
   }
 
   closeAllergen(): void {
-    this.showAllergen.value = false;
+    this.footerLogic.closeAllergen();
   }
 
   get categoryList(): Category[] {

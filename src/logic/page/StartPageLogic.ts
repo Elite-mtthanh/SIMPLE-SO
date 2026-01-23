@@ -4,13 +4,21 @@ import { ServiceIF } from '@/services/ServiceIF';
 import { Language } from '@/model/Enums';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
+import { AppConfig } from '@/model/AppConfig';
 
 export class StartPageLogic {
   private footerLogic = new FooterLogic();
+  private config = AppConfig.Instance;
 
   splashData: Ref<SplashConfig | null> = ref(null);
-  currentLang: Ref<Language> = ref(Language.JA);
-  showAllergen: Ref<boolean> = ref(false);
+
+  get currentLang(): Ref<Language> {
+    return this.config.currentLang;
+  }
+
+  get showAllergen(): Ref<boolean> {
+    return this.footerLogic.showAllergen;
+  }
 
   get languageOptions() {
     return this.footerLogic.languageOptions;
@@ -21,7 +29,7 @@ export class StartPageLogic {
   }
 
   changeLanguage(lang: Language): void {
-    this.currentLang.value = lang;
+    this.config.currentLang.value = lang;
     this.footerLogic.changeLanguage(lang);
   }
 
@@ -30,18 +38,14 @@ export class StartPageLogic {
   }
 
   openAllergen(): void {
-    this.showAllergen.value = true;
+    this.footerLogic.openAllergen();
   }
 
   closeAllergen(): void {
-    this.showAllergen.value = false;
+    this.footerLogic.closeAllergen();
   }
 
   goToCategoryPage(): void {
     GlobalEvent.Instance.goToCategoryPage();
-  }
-
-  deactivate(): void {
-    //
   }
 }

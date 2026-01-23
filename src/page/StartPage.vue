@@ -25,8 +25,8 @@
       :month="12"
       :day="3"
       time="10 : 00"
-      @call-staff="onCallStaff"
-      @open-allergen="onOpenAllergen"
+      @on-call-staff="onCallStaff"
+      @on-open-allergen="onOpenAllergen"
     />
   </div>
 
@@ -40,7 +40,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
-import { FooterMode } from '@/model/Enums';
+import { FooterMode, Language } from '@/model/Enums';
 import SplashGuide from '@/component/SplashGuide.vue';
 import SplashAd from '@/component/SplashAd.vue';
 import DictTextCommon from '@/component/common/DictTextCommon.vue';
@@ -73,11 +73,11 @@ export default defineComponent({
       SplashType,
       FooterMode,
 
-      onCallStaff: logic.callStaff,
-      onGoToCategory: logic.goToCategoryPage,
-      onOpenAllergen: logic.openAllergen,
-      onCloseAllergen: logic.closeAllergen,
-      onChangeLang: logic.changeLanguage,
+      onCallStaff: () => logic.callStaff(),
+      onGoToCategory: () => logic.goToCategoryPage(),
+      onOpenAllergen: () => logic.openAllergen(),
+      onCloseAllergen: () => logic.closeAllergen(),
+      onChangeLang: (lang: Language) => logic.changeLanguage(lang),
     };
   },
 });

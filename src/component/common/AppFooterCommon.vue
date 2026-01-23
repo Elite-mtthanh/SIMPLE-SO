@@ -116,10 +116,10 @@ export default defineComponent({
   },
   emits: [
     'update:currentLang',
-    'back',
-    'call-staff',
-    'open-allergen',
-    'open-cart',
+    'on-back',
+    'on-call-staff',
+    'on-open-allergen',
+    'on-open-cart',
   ],
   setup(props, { emit }) {
     const localLang = ref(props.currentLang);
@@ -173,19 +173,19 @@ export default defineComponent({
     };
 
     const onBack = () => {
-      emit('back');
+      emit('on-back');
     };
 
     const onCallStaff = () => {
-      emit('call-staff');
+      emit('on-call-staff');
     };
 
     const onOpenAllergen = () => {
-      emit('open-allergen');
+      emit('on-open-allergen');
     };
 
     const onOpenCart = () => {
-      emit('open-cart');
+      emit('on-open-cart');
     };
 
     return {

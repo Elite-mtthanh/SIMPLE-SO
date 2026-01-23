@@ -1,3 +1,4 @@
+import { ref, Ref } from 'vue';
 import { AppConfig } from '../../model/AppConfig';
 import { Language, DialogButtonId, DialogMessageType } from '../../model/Enums';
 import { ServiceIF } from '../../services/ServiceIF';
@@ -6,6 +7,8 @@ import { GlobalEvent } from './GlobalEvent';
 import bellIcon from '../../assets/Image/icon/bell-dialog-icon.png';
 
 export class FooterLogic {
+  showAllergen: Ref<boolean> = ref(false);
+
   readonly languageOptions = [
     { label: '日本語', value: Language.JA },
     { label: '中文', value: Language.ZH },
@@ -14,6 +17,14 @@ export class FooterLogic {
 
   changeLanguage(lang: Language): void {
     AppConfig.Instance.currentLang.value = lang;
+  }
+
+  openAllergen(): void {
+    this.showAllergen.value = true;
+  }
+
+  closeAllergen(): void {
+    this.showAllergen.value = false;
   }
 
   async callStaff(): Promise<void> {
