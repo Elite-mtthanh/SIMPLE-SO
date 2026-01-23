@@ -28,6 +28,7 @@
 import { defineComponent, PropType } from 'vue';
 import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
 import { MenuItem } from '@/model/Menu';
+import { formatPrice } from '@/util/FormatPrice';
 
 export default defineComponent({
   name: 'MenuItem',
@@ -44,10 +45,6 @@ export default defineComponent({
       if (props.item.soldOut) return;
       emit('on-select', props.item.menu_cd);
     };
-
-    const formatPrice = (price: number) =>
-      new Intl.NumberFormat('en-US').format(price);
-
     return { onClick, formatPrice };
   },
 });
@@ -59,7 +56,7 @@ export default defineComponent({
   display: flex;
   height: 300px;
   width: 740px;
-  background: var(--background-items-guide);
+  background: var(--background-items);
   border-radius: 12px;
   cursor: pointer;
   overflow: hidden;
@@ -72,7 +69,7 @@ export default defineComponent({
 .menu-item-soldout-overlay {
   position: absolute;
   inset: 0;
-  z-index: var(--z-overlay);
+  z-index: var(--z-stockout);
   background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
@@ -95,6 +92,15 @@ export default defineComponent({
   border-radius: 10px 0 0 10px;
   overflow: hidden;
   flex-shrink: 0;
+  object-fit: none;
+}
+
+.menu-item-image img {
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  object-fit: none;
+  border-radius: 10px;
 }
 
 .menu-item-info {
@@ -148,7 +154,7 @@ export default defineComponent({
   height: 58px;
   background: var(--text-accent);
   color: var(--text-inverse);
-  border-radius: 20px;
+  border-radius: 50px;
   font-weight: 700;
   font-size: 50px;
   margin-bottom: 13px;

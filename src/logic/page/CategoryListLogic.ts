@@ -1,10 +1,11 @@
-import { Ref, computed } from 'vue';
+import { computed } from 'vue';
 import { DataPool } from '@/model/DataPool';
 import { AppConfig } from '@/model/AppConfig';
 import { Language } from '@/model/Enums';
-import { Category, Menu } from '@/model/Menu';
+import { Menu } from '@/model/Menu';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
+import { getMenuName } from '@/util/DictNormalizerUtil';
 
 export class CategoryListLogic {
   private dataPool = DataPool.Instance;

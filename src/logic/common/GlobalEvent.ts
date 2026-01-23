@@ -94,14 +94,7 @@ export class GlobalEvent {
     this.currentCategoryCd.value = categoryCode;
 
     this.emitChangeScreen(
-      new PageArgs('MenuListPage', PageStackType.New)
-    );
-  }
-
-
-  public goToMenuDetailPage(menuCd: string) {
-    this.emitChangeScreen(
-      new PageArgs('MenuDetailPage', PageStackType.New, { menuCd: menuCd })
+      new PageArgs('MenuListPage', PageStackType.New, { categoryCode: categoryCode })
     );
   }
 }

@@ -31,3 +31,8 @@ export enum MenuType {
   Category = 'category',
   Menu = 'menu',
 }
+
+export enum MenuSelectType {
+  Size = 'size',
+  Topping = 'topping',
+}

@@ -5,6 +5,7 @@ import { Menu, MenuItem } from '@/model/Menu';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
 import { AppConfig } from '@/model/AppConfig';
+import { getMenuDescription, getMenuName } from '@/util/DictNormalizerUtil';
 
 export class MenuListLogic {
   private dataPool = DataPool.Instance;
@@ -22,7 +23,7 @@ export class MenuListLogic {
     if (!cd) return '';
     const category = this.dataPool.getCategoryByCd(cd);
     if (!category) return '';
-    return this.getMenuName(category, this.currentLang.value);
+    return getMenuName(category, this.currentLang.value);
   });
   readonly pagedMenus = computed(() => {
     const start = this.currentPage.value * this.pageSize;
@@ -90,10 +91,6 @@ export class MenuListLogic {
     GlobalEvent.Instance.goToCategoryPage();
   }
 
-  goToMenuDetail(menuCd: string): void {
-    GlobalEvent.Instance.goToMenuDetailPage(menuCd);
-  }
-
   private reloadMenus(): void {
     const categoryCd = GlobalEvent.Instance.currentCategoryCd.value;
     if (!categoryCd) {
@@ -107,8 +104,8 @@ export class MenuListLogic {
     this.menus.value = menus.map(menu => ({
       id: menu.id,
       menu_cd: menu.menu_cd,
-      name: this.getMenuName(menu, lang),
-      description: this.getMenuDescription(menu, lang),
+      name: getMenuName(menu, lang),
+      description: getMenuDescription(menu, lang),
       price: menu.price,
       imagePath: menu.image_path,
       soldOut: this.dataPool.isSoldOut(menu.menu_cd),
@@ -116,21 +113,19 @@ export class MenuListLogic {
     }));
   }
 
-  private getMenuName(menu: Menu, lang: Language): string {
-    switch (lang) {
-      case Language.JA: return menu.menu_name1 ?? '';
-      case Language.ZH: return menu.menu_name2 ?? '';
-      case Language.EN: return menu.menu_name3 ?? '';
-      default: return menu.menu_name1 ?? '';
-    }
+  get currentCategoryName(): string {
+    const categoryCd = GlobalEvent.Instance.currentCategoryCd.value;
+
+    if (!categoryCd) return '';
+
+    const category = this.dataPool.getCategoryByCd(categoryCd);
+    if (!category) return '';
+
+    const lang = this.config.currentLang.value;
+    return getMenuName(category, lang);
   }
 
-  private getMenuDescription(menu: Menu, lang: Language): string {
-    switch (lang) {
-      case Language.JA: return menu.menu_desc1 ?? '';
-      case Language.ZH: return menu.menu_desc2 ?? '';
-      case Language.EN: return menu.menu_desc3 ?? '';
-      default: return menu.menu_desc1 ?? '';
-    }
+  onBackToCategory(): void {
+    GlobalEvent.Instance.goToCategoryPage();
   }
 }

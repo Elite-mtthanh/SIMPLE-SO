@@ -1,6 +1,6 @@
 import { ServiceIF } from "@/services/ServiceIF";
 import { Menu, MenuSelect } from "./Menu";
-import { MenuType } from "./Enums";
+import { MenuSelectType, MenuType } from "./Enums";
 
 export class DataPool {
   public static Instance: DataPool;
@@ -47,5 +47,25 @@ export class DataPool {
 
   isSoldOut(menuCd: string): boolean {
     return !!this.soldOutMenu[menuCd];
+  }
+
+  getMenuByCd(menuCd: string): Menu | null {
+    return this.allMenus.find(menu => menu.menu_cd === menuCd) ?? null;
+  }
+
+  getMenuSelects(menu_cd: string) {
+    return this.allSelects.filter(select => select.menu_cd === menu_cd);
+  }
+
+  getMenuSizes(menu_cd: string) {
+    return this.allSelects.filter(
+      size => size.menu_cd === menu_cd && size.select_type === MenuSelectType.Size
+    );
+  }
+
+  getMenuToppings(menu_cd: string) {
+    return this.allSelects.filter(
+      topping => topping.menu_cd === menu_cd && topping.select_type === MenuSelectType.Topping
+    );
   }
 }

@@ -8,8 +8,8 @@
 
     <div class="menu-pagination-wrapper">
       <div
-        class="page-btn page-btn--prev"
-        :class="{ 'page-btn--hidden': currentPage === 0 }"
+        class="page-btn page-btn-prev"
+        :class="{ 'page-btn-hidden': currentPage === 0 }"
         @click="onPrev"
       >
         <ImageViewCommon src="/Image/menu/prev.png" alt="previous" />
@@ -25,8 +25,8 @@
       </div>
 
       <div
-        class="page-btn page-btn--next"
-        :class="{ 'page-btn--hidden': currentPage === totalPages - 1 }"
+        class="page-btn page-btn-next"
+        :class="{ 'page-btn-hidden': currentPage === totalPages - 1 }"
         @click="onNext"
       >
         <ImageViewCommon src="/Image/menu/next.png" alt="next" />
@@ -56,6 +56,12 @@
     </div>
   </div>
 
+  <MenuDetailDialog
+    v-if="selectedMenuCd"
+    :menu-cd="selectedMenuCd"
+    @close="selectedMenuCd = null"
+  />
+
   <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
@@ -64,13 +70,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { FooterMode } from '@/model/Enums';
 import AllergenDialog from '@/component/AllergenDialog.vue';
 import { MenuListLogic } from '@/logic/page/MenuListLogic';
 import MenuItem from '@/component/MenuItem.vue';
 import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
 import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
 
 export default defineComponent({
   name: 'MenuList',
@@ -79,9 +86,11 @@ export default defineComponent({
     AllergenDialog,
     MenuItem,
     ImageViewCommon,
+    MenuDetailDialog,
   },
   setup() {
     const logic = new MenuListLogic();
+    const selectedMenuCd = ref<string | null>(null);
 
     return {
       FooterMode,
@@ -94,6 +103,7 @@ export default defineComponent({
       pagedMenus: logic.pagedMenus,
       totalPages: logic.totalPages,
       currentPage: logic.pageIndex,
+      selectedMenuCd,
 
       onCallStaff: () => logic.callStaff(),
       onOpenAllergen: () => logic.openAllergen(),
@@ -101,7 +111,9 @@ export default defineComponent({
       onNext: () => logic.nextPage(),
       onPrev: () => logic.prevPage(),
       onBack: () => logic.backToCategory(),
-      onMenuClick: (menuCd: string) => logic.goToMenuDetail(menuCd),
+      onMenuClick: (menuCd: string) => {
+        selectedMenuCd.value = menuCd;
+      },
     };
   },
 });
@@ -175,14 +187,14 @@ export default defineComponent({
   z-index: 2;
 }
 
-.page-btn--prev {
+.page-btn-prev {
   left: 20px;
 }
 
-.page-btn--next {
+.page-btn-next {
   right: 20px;
 }
-.page-btn--hidden {
+.page-btn-hidden {
   visibility: hidden;
   pointer-events: none;
 }
