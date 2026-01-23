@@ -2,7 +2,10 @@
   <div
     ref="el"
     class="base-button"
-    :class="[`bg-button-${type}`, { disabled, pressed, 'has-icon': !!icon }]"
+    :class="[
+      `bg-button-${type}`,
+      { disabled, pressed, 'base-button-has-icon': !!icon },
+    ]"
     @mousedown="onMouseDown"
     @mouseup="onMouseUp"
     @mouseenter="onMouseEnter"
@@ -14,14 +17,14 @@
   >
     <div
       v-if="icon && iconPosition === 'left'"
-      class="btn-side"
+      class="base-button-side"
       :style="iconWrapperStyle"
     >
-      <ImageView :src="icon" class="btn-icon" />
+      <ImageViewCommon :src="icon" class="btn-icon" />
     </div>
 
     <span
-      class="base-text"
+      class="base-button-text"
       :class="[`text-${textColor}`, { 'center-text': !icon }]"
     >
       <slot v-if="!text" />
@@ -30,20 +33,20 @@
 
     <div
       v-if="icon && iconPosition === 'right'"
-      class="btn-side"
+      class="base-button-side"
       :style="iconWrapperStyle"
     >
-      <ImageView :src="icon" class="btn-icon" />
+      <ImageViewCommon :src="icon" class="base-button-text-icon" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
-import ImageView from './ImageView.vue';
+import ImageViewCommon from './ImageViewCommon.vue';
 
 export default defineComponent({
-  name: 'BaseButton',
+  name: 'ButtonCommon',
   props: {
     type: {
       type: String,
@@ -79,7 +82,7 @@ export default defineComponent({
     },
   },
   components: {
-    ImageView,
+    ImageViewCommon,
   },
   emits: ['confirm'],
   setup(props, { emit }) {
@@ -180,11 +183,11 @@ export default defineComponent({
   box-sizing: border-box;
 }
 
-.base-button.has-icon {
+.base-button-has-icon {
   justify-content: space-between;
 }
 
-.btn-side {
+.base-button-side {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -193,18 +196,18 @@ export default defineComponent({
   flex-shrink: 0;
 }
 
-.btn-icon {
+.base-button-text {
+  font-size: 22px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.base-button-text-icon {
   max-width: 100%;
   max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
-}
-
-.base-text {
-  font-size: 22px;
-  font-weight: 700;
-  white-space: nowrap;
 }
 
 .center-text {

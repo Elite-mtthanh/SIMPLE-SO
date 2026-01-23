@@ -8,7 +8,7 @@ import { AppConfig } from '@/model/AppConfig';
 import { ServiceIF } from '@/services/ServiceIF';
 
 export default defineComponent({
-  name: 'DictText',
+  name: 'DictTextCommon',
   props: {
     keyName: {
       type: String,
@@ -17,18 +17,17 @@ export default defineComponent({
   },
 
   setup(props) {
-    const dict = ServiceIF.getDict(props.keyName);
+    const dict = computed(() => ServiceIF.getDict(props.keyName));
 
     const text = computed(() => {
-      if (!dict) return '';
+      const d = dict.value;
+      if (!d) return '';
 
       const lang = AppConfig.Instance.currentLang.value;
-      return dict.texts[lang] ?? '';
+      return d.texts[lang] ?? '';
     });
 
-    return {
-      text,
-    };
+    return { text };
   },
 });
 </script>

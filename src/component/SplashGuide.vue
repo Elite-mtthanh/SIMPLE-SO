@@ -1,14 +1,32 @@
 <template>
-  <div class="item-splash">
-    <div class="splash-step" v-for="(item, index) in splashGuideItems" :key="index">
-      <div class="step-card">
-        <ImageView :src="item.image" alt="" />
-        <DictText :keyName="item.key" class="splash-text" />
+  <div class="splash-item">
+    <div
+      class="splash-item-step"
+      v-for="(item, index) in splashGuideItems"
+      :key="index"
+    >
+      <div class="splash-item-step-card">
+        <ImageViewCommon :src="item.image" alt="" />
+        <DictTextCommon
+          :keyName="item.key"
+          class="splash-item-step-card-text"
+        />
       </div>
 
-      <div v-if="index < splashGuideItems.length - 1" class="step-arrow">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20">
-          <path fill="currentColor" d="M8.6 3.4L14.2 9H2v2h12.2l-5.6 5.6L10 18l8-8l-8-8z" />
+      <div
+        v-if="index < splashGuideItems.length - 1"
+        class="splash-item-step-arrow"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill="currentColor"
+            d="M8.6 3.4L14.2 9H2v2h12.2l-5.6 5.6L10 18l8-8l-8-8z"
+          />
         </svg>
       </div>
     </div>
@@ -17,19 +35,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import DictText from '@/component/common/DictText.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import phoneIcon from '@/assets/Image/guide/phone-guide-icon.png';
 import cartIcon from '@/assets/Image/guide/cart-guide-icon.png';
 import reviewIcon from '@/assets/Image/guide/review-guide-icon.png';
 import addIcon from '@/assets/Image/guide/add-guide-icon.png';
 import creditCardIcon from '@/assets/Image/guide/creditcard-guide-icon.png';
-import ImageView from '../common/ImageView.vue';
+import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
 
 export default defineComponent({
   name: 'SplashGuide',
   components: {
-    DictText,
-    ImageView,
+    DictTextCommon,
+    ImageViewCommon,
   },
   setup() {
     const splashGuideItems = [
@@ -47,9 +65,8 @@ export default defineComponent({
 });
 </script>
 
-
 <style scoped>
-.item-splash {
+.splash-item {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,12 +74,12 @@ export default defineComponent({
   margin-top: 60px;
 }
 
-.splash-step {
+.splash-item-step {
   display: flex;
   align-items: center;
 }
 
-.step-card {
+.splash-item-step-card {
   width: 250px;
   height: 300px;
   background-color: #d8ebe3;
@@ -75,13 +92,13 @@ export default defineComponent({
   text-align: center;
 }
 
-.step-card img {
+.splash-item-step-card img {
   width: 150px;
   height: 150px;
   object-fit: contain;
 }
 
-.splash-text {
+.splash-item-step-card-text {
   color: var(--text-link);
   font-size: 30px;
   line-height: 35px;
@@ -90,7 +107,7 @@ export default defineComponent({
   padding: 20px 16px;
 }
 
-.step-arrow {
+.splash-item-step-arrow {
   font-size: 28px;
   font-weight: 700;
   color: #333;

@@ -1,14 +1,11 @@
 <template>
-  <div class="footer-bar">
+  <div class="footer">
     <div class="footer-left">
-      <BaseButton
-        v-if="showBack"
-        type="soft"
-        :icon="backIcon"
-        @confirm="onBack"
-      />
+      <div v-if="showBack" class="footer-left-back-icon">
+        <ImageViewCommon :src="backIcon" @click="onBack" />
+      </div>
 
-      <DropdownButton
+      <DropdownButtonCommon
         v-model="localLang"
         :items="languageOptions"
         type="soft"
@@ -17,57 +14,54 @@
         @update:modelValue="onChangeLang"
       >
         <template #label>
-          <DictText keyName="LANGUAGE_BUTTON" />
+          <DictTextCommon keyName="LANGUAGE_BUTTON" />
         </template>
-      </DropdownButton>
+      </DropdownButtonCommon>
 
-      <BaseButton
+      <ButtonCommon
         type="primary"
         :icon="bellIcon"
         textColor="inverse"
         @confirm="onCallStaff"
         :iconSize="36"
       >
-        <DictText keyName="CALL_STAFF_BUTTON" />
-      </BaseButton>
+        <DictTextCommon keyName="CALL_STAFF_BUTTON" />
+      </ButtonCommon>
 
-      <BaseButton
+      <ButtonCommon
         type="soft"
         :icon="allergenIcon"
         textColor="link"
         @confirm="onOpenAllergen"
         :iconSize="60"
       >
-        <DictText keyName="ALLERGEN_BUTTON" />
-      </BaseButton>
+        <DictTextCommon keyName="ALLERGEN_BUTTON" />
+      </ButtonCommon>
     </div>
 
     <div class="footer-right">
-      <BaseButton
+      <ButtonCommon
         v-if="showCart"
-        type="primary"
+        :type="cartCount === 0 ? 'neutral' : 'accent'"
         :icon="cartIcon"
         textColor="inverse"
         @confirm="onOpenCart"
+        :iconSize="50"
+        class="footer-right-cart"
+        :disabled="cartCount === 0"
       >
-        <span class="cart-text">
-          <DictText keyName="CART_BUTTON" />
-          <span v-if="cartCount > 0" class="cart-badge">
-            +{{ cartCount }}
-          </span>
-        </span>
-      </BaseButton>
-
-      <div class="date-time">
-        <div class="date">
+        <span class="footer-right-cart-badge"> +{{ cartCount }} </span>
+      </ButtonCommon>
+      <div>
+        <div class="footer-right-date">
           {{ year }}
-          <DictText keyName="YEAR_LABEL" />
+          <DictTextCommon keyName="YEAR_LABEL" />
           {{ month }}
-          <DictText keyName="MONTH_LABEL" />
+          <DictTextCommon keyName="MONTH_LABEL" />
           {{ day }}
-          <DictText keyName="DAY_LABEL" />
+          <DictTextCommon keyName="DAY_LABEL" />
         </div>
-        <div class="time">{{ time }}</div>
+        <div class="footer-right-time">{{ time }}</div>
       </div>
     </div>
   </div>
@@ -84,21 +78,23 @@ import {
   onUnmounted,
 } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
-import BaseButton from '@/component/common/BaseButton.vue';
-import DropdownButton from '@/component/common/DropdownButton.vue';
-import DictText from '@/component/common/DictText.vue';
+import ButtonCommon from '@/component/common/ButtonCommon.vue';
+import DropdownButtonCommon from '@/component/common/DropdownButtonCommon.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import bellIcon from '@/assets/Image/icon/bell-icon.png';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
 import backIcon from '@/assets/Image/icon/back-icon.png';
 import cartIcon from '@/assets/Image/icon/cart-icon.png';
+import ImageViewCommon from './ImageViewCommon.vue';
 
 export default defineComponent({
-  name: 'AppFooter',
+  name: 'AppFooterCommon',
   components: {
-    BaseButton,
-    DropdownButton,
-    DictText,
+    ButtonCommon,
+    DropdownButtonCommon,
+    DictTextCommon,
+    ImageViewCommon,
   },
   props: {
     mode: {
@@ -120,10 +116,10 @@ export default defineComponent({
   },
   emits: [
     'update:currentLang',
-    'back',
-    'call-staff',
-    'open-allergen',
-    'open-cart',
+    'on-back',
+    'on-call-staff',
+    'on-open-allergen',
+    'on-open-cart',
   ],
   setup(props, { emit }) {
     const localLang = ref(props.currentLang);
@@ -165,11 +161,10 @@ export default defineComponent({
       }
     });
 
-    const showBack = computed(() => props.mode === FooterMode.Category);
+    const showBack = computed(() => props.mode === FooterMode.Menu);
 
     const showCart = computed(
-      () =>
-        props.mode === FooterMode.Category || props.mode === FooterMode.Order
+      () => props.mode === FooterMode.Category || props.mode === FooterMode.Menu
     );
 
     const onChangeLang = (lang: Language) => {
@@ -178,19 +173,19 @@ export default defineComponent({
     };
 
     const onBack = () => {
-      emit('back');
+      emit('on-back');
     };
 
     const onCallStaff = () => {
-      emit('call-staff');
+      emit('on-call-staff');
     };
 
     const onOpenAllergen = () => {
-      emit('open-allergen');
+      emit('on-open-allergen');
     };
 
     const onOpenCart = () => {
-      emit('open-cart');
+      emit('on-open-cart');
     };
 
     return {
@@ -217,11 +212,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.footer-bar {
-  margin-top: 50px;
+.footer {
+  padding-top: 45px;
+  padding-left: 60px;
+  padding-right: 60px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .footer-left {
@@ -230,30 +227,42 @@ export default defineComponent({
   align-items: center;
 }
 
-.footer-right {
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  text-align: right;
-  color: var(--text-link);
-  font-weight: 600;
+.footer-left-back-icon {
+  cursor: pointer;
+  height: 70px;
+  width: 70px;
 }
 
-.date {
+.footer-right {
+  color: var(--text-link);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-right-date {
   font-size: 20px;
 }
 
-.time {
+.footer-right-time {
   font-size: 28px;
   text-align: center;
 }
 
-.cart-badge {
-  margin-left: 8px;
-  padding: 2px 8px;
-  background: var(--color-danger);
-  color: #fff;
-  border-radius: 12px;
-  font-size: 14px;
+.footer-right-cart {
+  position: relative;
+}
+
+.footer-right-cart-badge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+  font-size: 45px;
+  color: var(--text-inverse);
 }
 </style>

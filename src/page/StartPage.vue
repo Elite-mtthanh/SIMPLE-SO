@@ -1,21 +1,23 @@
 <template>
-  <div class="splash-guide-page">
-    <header class="start-page-header">
-      <span class="desk-label">
-        <DictText keyName="DESK_NUMBER_LABEL" /> : {{ splashData?.deskNumber }}
+  <div class="splash-page" @click="onGoToCategory">
+    <header class="splash-page-header">
+      <span class="splash-page-header-desk-label">
+        <DictTextCommon keyName="DESK_NUMBER_LABEL" /> :
+        {{ splashData?.deskNumber }}
       </span>
     </header>
 
-    <div class="guide-wrapper">
+    <div class="splash-page-wrapper" @click.stop>
       <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
       <SplashAd v-else-if="splashData?.splashType === SplashType.SLIDESHOW" />
     </div>
 
-    <div class="hint-text">
-      <DictText keyName="START_LABEL" />
+    <div class="splash-page-hint-text">
+      <DictTextCommon keyName="START_LABEL" />
     </div>
 
-    <AppFooter
+    <AppFooterCommon
+      @click.stop
       :mode="FooterMode.Splash"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
@@ -23,12 +25,12 @@
       :month="12"
       :day="3"
       time="10 : 00"
-      @call-staff="onCallStaff"
-      @open-allergen="onOpenAllergen"
+      @on-call-staff="onCallStaff"
+      @on-open-allergen="onOpenAllergen"
     />
   </div>
 
-  <AllergenOverlay
+  <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
     @close="onCloseAllergen"
@@ -36,76 +38,58 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
-import { type SplashConfig } from '@/model/Splash';
-import { FooterMode } from '@/model/Enums';
-import SplashGuide from '@/component/splash/SplashGuide.vue';
-import SplashAd from '@/component/splash/SplashAd.vue';
-import DictText from '@/component/common/DictText.vue';
-import AppFooter from '@/component/common/AppFooter.vue';
-import AllergenOverlay from '@/component/splash/AllergenOverlay.vue';
-import { SplashType, Language } from '@/model/Enums';
+import { FooterMode, Language } from '@/model/Enums';
+import SplashGuide from '@/component/SplashGuide.vue';
+import SplashAd from '@/component/SplashAd.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
+import AllergenDialog from '@/component/AllergenDialog.vue';
+import { SplashType } from '@/model/Enums';
 
 export default defineComponent({
   name: 'splash-page',
   components: {
     SplashGuide,
     SplashAd,
-    DictText,
-    AppFooter,
-    AllergenOverlay,
+    DictTextCommon,
+    AppFooterCommon,
+    AllergenDialog,
   },
   setup() {
     const logic = new StartPageLogic();
-    const splashData = ref<SplashConfig | null>(null);
-    const currentLang = ref<Language>(Language.JA);
-    const showAllergen = ref(false);
 
     onMounted(async () => {
       await logic.activate();
-      splashData.value = logic.splashData!;
-    });
-
-    const onCallStaff = async () => {
-      await logic.callStaff();
-    };
-
-    watch(currentLang, (lang) => {
-      logic.changeLanguage(lang);
     });
 
     return {
-      splashData,
+      splashData: logic.splashData,
+      currentLang: logic.currentLang,
+      showAllergen: logic.showAllergen,
+      languageOptions: logic.languageOptions,
+
       SplashType,
       FooterMode,
-      currentLang,
-      languageOptions: logic.languageOptions,
-      onCallStaff,
-      showAllergen,
-      onOpenAllergen: () => (showAllergen.value = true),
-      onCloseAllergen: () => (showAllergen.value = false),
+
+      onCallStaff: () => logic.callStaff(),
+      onGoToCategory: () => logic.goToCategoryPage(),
+      onOpenAllergen: () => logic.openAllergen(),
+      onCloseAllergen: () => logic.closeAllergen(),
+      onChangeLang: (lang: Language) => logic.changeLanguage(lang),
     };
   },
 });
 </script>
 
 <style>
-.splash-guide-page {
+.splash-page {
   display: flex;
   flex-direction: column;
 }
 
-.desk-label {
-  font-size: 200px;
-  line-height: 18px;
-  letter-spacing: 0%;
-  text-align: center;
-  vertical-align: middle;
-  color: var(--text-link);
-}
-
-.start-page-header {
+.splash-page-header {
   height: 200px;
   display: flex;
   align-items: center;
@@ -116,13 +100,21 @@ export default defineComponent({
   margin-top: 40px;
 }
 
-.guide-wrapper {
+.splash-page-header-desk-label {
+  font-size: 200px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  color: var(--text-link);
+}
+
+.splash-page-wrapper {
   display: flex;
   justify-content: center;
 }
 
-.hint-text {
-  margin-top: 150px;
+.splash-page-hint-text {
   text-align: center;
   font-size: 36px;
   font-weight: 700;
@@ -133,34 +125,7 @@ export default defineComponent({
   letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
-}
-
-.footer-bar {
-  padding-top: 45px;
-  padding-left: 60px;
-  padding-right: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.footer-left {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.footer-right {
-  text-align: right;
-  color: var(--text-link);
-  font-weight: 600;
-}
-
-.footer-right .date {
-  font-size: 20px;
-}
-
-.footer-right .time {
-  font-size: 28px;
+  padding-top: 150px;
+  padding-bottom: 50px;
 }
 </style>

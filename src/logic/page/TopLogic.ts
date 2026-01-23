@@ -5,6 +5,7 @@ import { computed, ComputedRef, reactive } from 'vue';
 
 export class TopLogic {
   public currentPageName: ComputedRef<string>;
+  public currentPageArgs: PageArgs | null = null;
   public readonly commonDialogSettings: {
     isShow: boolean;
     info: DialogArgs | null;
@@ -14,6 +15,7 @@ export class TopLogic {
     this.currentPageName = computed(() => {
       return PageStack.Instance.currentPageName.value;
     });
+    this.currentPageArgs = PageStack.Instance.currentPageArgs.value;
     this.commonDialogSettings = reactive({
       isShow: false,
       info: null,

@@ -1,38 +1,42 @@
 import { IService } from './IService';
 import SplashData from '@/dummy-data/Config.json';
 import DictData from '@/dummy-data/Dict.json';
+import Menus from '@/dummy-data/menus.json';
+import Selects from '@/dummy-data/menu_selects.json';
+import { Menu, MenuSelect } from '@/model/Menu';
 
 export class Mock implements IService {
   private isCallStaffSuccess: number | null = null;
-  constructor() {
-  }
 
   GetConfig(): string {
-    return JSON.stringify({
-      env: 'mock',
-    });
+    return JSON.stringify({ env: 'mock' });
   }
 
   GetSplashGuide(): string {
     return JSON.stringify(SplashData);
   }
 
-  GetString(key: string): string {
-    const info = (DictData as any)[key] ?? null;
-    return JSON.stringify(info);
+  SetCallStaffResult(value: 0 | 1) {
+    this.isCallStaffSuccess = value;
   }
 
-  setCallStaffResult(value: 0 | 1) {
-    this.isCallStaffSuccess = value;
+  GetDictRaw(key: string): string {
+    const row = (DictData as any[]).find(d => d.key_name === key);
+    if (!row) return 'null';
+
+    return JSON.stringify(row);
   }
 
   async CallStaff(): Promise<number> {
     await new Promise(r => setTimeout(r, 3000));
+    return this.isCallStaffSuccess ?? (Math.random() > 0.5 ? 1 : 0);
+  }
 
-    if (this.isCallStaffSuccess !== null) {
-      return this.isCallStaffSuccess;
-    }
+  GetMenuList(): Menu[] {
+    return Menus as unknown as Menu[];
+  }
 
-    return Math.random() > 0.5 ? 1 : 0;
+  GetMenuSelect(): MenuSelect[] {
+    return Selects as unknown as MenuSelect[];
   }
 }

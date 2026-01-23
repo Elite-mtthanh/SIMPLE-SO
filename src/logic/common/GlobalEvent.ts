@@ -36,6 +36,7 @@ export class GlobalEvent {
   public static Instance: GlobalEvent;
 
   private readonly eventBus: any;
+  private currentPageArgs: PageArgs | null = null;
 
   constructor() {
     this.eventBus = mitt();
@@ -70,10 +71,27 @@ export class GlobalEvent {
     this.eventBus.emit(EmitEvent.HideCommonDialog);
   }
 
-  public showStartPage(type = PageStackType.NoHistory) {
-    this.eventBus.emit(
-      EmitEvent.ChangeScreen,
-      new PageArgs('start-page', type)
+  private emitChangeScreen(args: PageArgs) {
+    this.currentPageArgs = args;
+    this.eventBus.emit(EmitEvent.ChangeScreen, args);
+  }
+
+
+  public showStartPage() {
+    this.emitChangeScreen(
+      new PageArgs('start-page', PageStackType.NoHistory)
+    );
+  }
+
+  public goToCategoryPage() {
+    this.emitChangeScreen(
+      new PageArgs('CategoryListPage', PageStackType.NoHistory)
+    );
+  }
+
+  public goToMenuPage(categoryCode: string) {
+    this.emitChangeScreen(
+      new PageArgs('MenuListPage', PageStackType.New, { categoryCode: categoryCode })
     );
   }
 }

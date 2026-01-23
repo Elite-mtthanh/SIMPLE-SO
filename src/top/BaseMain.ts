@@ -4,6 +4,7 @@ import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { ServiceIF } from '@/services/ServiceIF';
 import { PageStack } from '@/model/PageStack';
 import { AppConfig } from '@/model/AppConfig';
+import { DataPool } from '@/model/DataPool';
 
 export class BaseMain {
   private app: any | null = null;
@@ -13,6 +14,7 @@ export class BaseMain {
       ServiceIF.enableMock();
     }
     AppConfig.init();
+    DataPool.init();
     GlobalEvent.init();
     PageStack.init();
 

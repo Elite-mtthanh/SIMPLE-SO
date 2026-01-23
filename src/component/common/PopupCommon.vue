@@ -1,6 +1,6 @@
 <template>
   <div class="overlay-mask" @click.self="onMaskClick">
-    <div class="overlay-content">
+    <div class="overlay-mask-content">
       <slot />
     </div>
   </div>
@@ -10,7 +10,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'BaseOverlay',
+  name: 'PopupCommon',
   props: {
     closeOnMask: {
       type: Boolean,
@@ -43,7 +43,7 @@ export default defineComponent({
   justify-content: center;
 }
 
-.overlay-content {
+.overlay-mask-content {
   display: flex;
   justify-content: center;
   align-items: center;
