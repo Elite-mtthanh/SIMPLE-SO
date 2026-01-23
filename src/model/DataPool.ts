@@ -47,4 +47,24 @@ export class DataPool {
   isSoldOut(menuCd: string): boolean {
     return !!this.soldOutMenu[menuCd];
   }
+
+  getMenuByCd(menuCd: string): Menu | null {
+    return this.allMenus.find(menu => menu.menu_cd === menuCd) ?? null;
+  }
+
+  getMenuSelects(select_size: string) {
+    return this.allSelects.filter(select => select.menu_cd === select_size);
+  }
+
+  getMenuSizes(select_size: string) {
+    return this.allSelects.filter(
+      size => size.menu_cd === select_size && size.select_type === 'size'
+    );
+  }
+
+  getMenuToppings(select_size: string) {
+    return this.allSelects.filter(
+      topping => topping.menu_cd === select_size && topping.select_type === 'topping'
+    );
+  }
 }

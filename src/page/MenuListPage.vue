@@ -8,8 +8,8 @@
 
     <div class="menu-pagination-wrapper">
       <div
-        class="page-btn page-btn--prev"
-        :class="{ 'page-btn--hidden': currentPage === 0 }"
+        class="page-btn page-btn-prev"
+        :class="{ 'page-btn-hidden': currentPage === 0 }"
         @click="onPrev"
       >
         <ImageView src="/Image/menu/prev.png" alt="previous" />
@@ -25,8 +25,8 @@
       </div>
 
       <div
-        class="page-btn page-btn--next"
-        :class="{ 'page-btn--hidden': currentPage === totalPages - 1 }"
+        class="page-btn page-btn-next"
+        :class="{ 'page-btn-hidden': currentPage === totalPages - 1 }"
         @click="onNext"
       >
         <ImageView src="/Image/menu/next.png" alt="next" />
@@ -56,6 +56,12 @@
     </div>
   </div>
 
+  <MenuDetailOverlay
+    v-if="selectedMenuCd"
+    :menu-cd="selectedMenuCd"
+    @close="selectedMenuCd = null"
+  />
+
   <AllergenOverlay
     v-if="showAllergen"
     :currentLang="currentLang"
@@ -72,6 +78,7 @@ import { MenuListLogic } from '@/logic/page/MenuListLogic';
 import MenuItem from '@/component/menu/MenuItem.vue';
 import ImageView from '@/component/common/ImageView.vue';
 import { MenuItem as MenuItemModel } from '@/model/Menu';
+import MenuDetailOverlay from '@/component/menu/MenuDetailOverlay.vue';
 
 export default defineComponent({
   name: 'MenuList',
@@ -80,6 +87,7 @@ export default defineComponent({
     AllergenOverlay,
     MenuItem,
     ImageView,
+    MenuDetailOverlay,
   },
   setup() {
     const logic = new MenuListLogic();
@@ -89,6 +97,7 @@ export default defineComponent({
     const currentPage = ref(0);
 
     const menus = ref<MenuItemModel[]>([]);
+    const selectedMenuCd = ref<string | null>(null);
 
     const reloadMenus = () => {
       menus.value = logic.getMenuList;
@@ -138,7 +147,9 @@ export default defineComponent({
     };
 
     const onMenuClick = (menuCd: string) => {
-      logic.goToMenuDetailPage(menuCd);
+      console.log('Menu clicked:', menuCd);
+      selectedMenuCd.value = menuCd;
+      console.log('selectedMenuCd set to:', selectedMenuCd.value);
     };
 
     return {
@@ -158,6 +169,7 @@ export default defineComponent({
       onPrev,
       currentPage,
       categoryName,
+      selectedMenuCd,
     };
   },
 });
@@ -231,14 +243,14 @@ export default defineComponent({
   z-index: 2;
 }
 
-.page-btn--prev {
+.page-btn-prev {
   left: 20px;
 }
 
-.page-btn--next {
+.page-btn-next {
   right: 20px;
 }
-.page-btn--hidden {
+.page-btn-hidden {
   visibility: hidden;
   pointer-events: none;
 }

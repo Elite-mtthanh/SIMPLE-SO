@@ -4,6 +4,7 @@ import { Menu, MenuItem } from '@/model/Menu';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
 import { AppConfig } from '@/model/AppConfig';
+import { getMenuDescription, getMenuName } from '@/util/DictNormalizer';
 
 export class MenuListLogic {
   private dataPool = DataPool.Instance;
@@ -41,8 +42,8 @@ export class MenuListLogic {
     return menus.map(menu => ({
       id: menu.id,
       menu_cd: menu.menu_cd,
-      name: this.getMenuName(menu, lang),
-      description: this.getMenuDescription(menu, lang),
+      name: getMenuName(menu, lang),
+      description: getMenuDescription(menu, lang),
       price: menu.price,
       imagePath: menu.image_path,
       soldOut: this.dataPool.isSoldOut(menu.menu_cd),
@@ -59,32 +60,10 @@ export class MenuListLogic {
     if (!category) return '';
 
     const lang = this.config.currentLang.value;
-    return this.getMenuName(category, lang);
-  }
-
-  private getMenuName(menu: Menu, lang: Language): string {
-    switch (lang) {
-      case Language.JA: return menu.menu_name1 ?? '';
-      case Language.ZH: return menu.menu_name2 ?? '';
-      case Language.EN: return menu.menu_name3 ?? '';
-      default: return menu.menu_name1 ?? '';
-    }
-  }
-
-  private getMenuDescription(menu: Menu, lang: Language): string {
-    switch (lang) {
-      case Language.JA: return menu.menu_desc1 ?? '';
-      case Language.ZH: return menu.menu_desc2 ?? '';
-      case Language.EN: return menu.menu_desc3 ?? '';
-      default: return menu.menu_desc1 ?? '';
-    }
+    return getMenuName(category, lang);
   }
 
   onBackToCategory(): void {
     GlobalEvent.Instance.goToCategoryPage();
-  }
-
-  goToMenuDetailPage(menuCd: string): void {
-    GlobalEvent.Instance.goToMenuDetailPage(menuCd);
   }
 }
