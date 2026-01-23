@@ -2,7 +2,8 @@
   <div class="splash-page" @click="onGoToCategory">
     <header class="splash-page-header">
       <span class="splash-page-header-desk-label">
-        <DictText keyName="DESK_NUMBER_LABEL" /> : {{ splashData?.deskNumber }}
+        <DictTextCommon keyName="DESK_NUMBER_LABEL" /> :
+        {{ splashData?.deskNumber }}
       </span>
     </header>
 
@@ -12,10 +13,10 @@
     </div>
 
     <div class="splash-page-hint-text">
-      <DictText keyName="START_LABEL" />
+      <DictTextCommon keyName="START_LABEL" />
     </div>
 
-    <AppFooter
+    <AppFooterCommon
       @click.stop
       :mode="FooterMode.Splash"
       v-model:currentLang="currentLang"
@@ -29,7 +30,7 @@
     />
   </div>
 
-  <AllergenOverlay
+  <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
     @close="onCloseAllergen"
@@ -37,60 +38,46 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
-import { type SplashConfig } from '@/model/Splash';
 import { FooterMode } from '@/model/Enums';
-import SplashGuide from '@/component/splash/SplashGuide.vue';
-import SplashAd from '@/component/splash/SplashAd.vue';
-import DictText from '@/component/common/DictText.vue';
-import AppFooter from '@/component/common/AppFooter.vue';
-import AllergenOverlay from '@/component/splash/AllergenOverlay.vue';
-import { SplashType, Language } from '@/model/Enums';
+import SplashGuide from '@/component/SplashGuide.vue';
+import SplashAd from '@/component/SplashAd.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
+import AllergenDialog from '@/component/AllergenDialog.vue';
+import { SplashType } from '@/model/Enums';
 
 export default defineComponent({
   name: 'splash-page',
   components: {
     SplashGuide,
     SplashAd,
-    DictText,
-    AppFooter,
-    AllergenOverlay,
+    DictTextCommon,
+    AppFooterCommon,
+    AllergenDialog,
   },
   setup() {
     const logic = new StartPageLogic();
-    const splashData = ref<SplashConfig | null>(null);
-    const currentLang = ref<Language>(Language.JA);
-    const showAllergen = ref(false);
 
     onMounted(async () => {
       await logic.activate();
-      splashData.value = logic.splashData!;
     });
-
-    const onCallStaff = async () => {
-      await logic.callStaff();
-    };
-
-    watch(currentLang, (lang) => {
-      logic.changeLanguage(lang);
-    });
-
-    const onGoToCategory = async () => {
-      await logic.goToCategoryPage();
-    };
 
     return {
-      splashData,
+      splashData: logic.splashData,
+      currentLang: logic.currentLang,
+      showAllergen: logic.showAllergen,
+      languageOptions: logic.languageOptions,
+
       SplashType,
       FooterMode,
-      currentLang,
-      languageOptions: logic.languageOptions,
-      onCallStaff,
-      showAllergen,
-      onOpenAllergen: () => (showAllergen.value = true),
-      onCloseAllergen: () => (showAllergen.value = false),
-      onGoToCategory,
+
+      onCallStaff: logic.callStaff,
+      onGoToCategory: logic.goToCategoryPage,
+      onOpenAllergen: logic.openAllergen,
+      onCloseAllergen: logic.closeAllergen,
+      onChangeLang: logic.changeLanguage,
     };
   },
 });

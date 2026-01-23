@@ -1,8 +1,10 @@
+import { MenuType } from "./Enums";
+
 export interface Menu {
   id: number;
   menu_cd: string;
   parent_menu_cd: string | null;
-  menu_type: 'category' | 'menu';
+  menu_type: MenuType;
   select_size: number;
   is_sold_out: number;
   price: number;

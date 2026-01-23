@@ -1,20 +1,26 @@
 <template>
-  <BaseOverlay>
+  <PopupCommon>
     <div class="dialog-card">
       <div class="dialog-card-header" v-if="dialogArgs.title">
         <span class="dialog-card-header-title">
-          <DictText :keyName="dialogArgs.title" />
+          <DictTextCommon :keyName="dialogArgs.title" />
         </span>
       </div>
 
       <div v-else class="dialog-card-message">
         <div v-if="dialogArgs.iconButton" class="dialog-card-message-icon">
-          <ImageView :src="dialogArgs.iconButton" alt="icon" />
+          <ImageViewCommon :src="dialogArgs.iconButton" alt="icon" />
         </div>
         <div class="dialog-card-message-content">
-          <DictText :keyName="dialogArgs.message" :class="getMessageType()" />
+          <DictTextCommon
+            :keyName="dialogArgs.message"
+            :class="getMessageType()"
+          />
           <div v-if="dialogArgs.comment">
-            <DictText :keyName="dialogArgs.comment" :class="getMessageType()" />
+            <DictTextCommon
+              :keyName="dialogArgs.comment"
+              :class="getMessageType()"
+            />
           </div>
         </div>
       </div>
@@ -26,7 +32,7 @@
           'one-button': dialogArgs.buttons.length === 1,
         }"
       >
-        <BaseButton
+        <ButtonCommon
           v-for="btn in dialogArgs.buttons"
           :key="btn.id"
           :id="btn.id"
@@ -34,30 +40,30 @@
           text-color="inverse"
           @confirm="onClick"
         >
-          <DictText :keyName="btn.text" />
-        </BaseButton>
+          <DictTextCommon :keyName="btn.text" />
+        </ButtonCommon>
       </div>
     </div>
-  </BaseOverlay>
+  </PopupCommon>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import BaseButton from './BaseButton.vue';
-import BaseOverlay from './BaseOverlay.vue';
-import DictText from '@/component/common/DictText.vue';
+import ButtonCommon from './ButtonCommon.vue';
+import PopupCommon from './PopupCommon.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { DialogButtonId, DialogMessageType } from '@/model/Enums';
 import { DialogArgs } from '@/model/Dialog';
-import ImageView from './ImageView.vue';
+import ImageViewCommon from './ImageViewCommon.vue';
 
 export default defineComponent({
-  name: 'GlobalDialog',
+  name: 'GlobalDialogCommon',
   components: {
-    BaseButton,
-    BaseOverlay,
-    DictText,
-    ImageView,
+    ButtonCommon,
+    PopupCommon,
+    DictTextCommon,
+    ImageViewCommon,
   },
   props: {
     dialogArgs: {

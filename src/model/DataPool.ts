@@ -1,15 +1,16 @@
 import { ServiceIF } from "@/services/ServiceIF";
 import { Menu, MenuSelect } from "./Menu";
+import { MenuType } from "./Enums";
 
 export class DataPool {
   public static Instance: DataPool;
 
   public allMenus: Menu[] = [];
-  public allSelects : MenuSelect[] = [];
+  public allSelects: MenuSelect[] = [];
 
   static init(): void {
     if (!this.Instance) {
-      this.Instance = new DataPool(); 
+      this.Instance = new DataPool();
       this.Instance.loadData();
     }
   }
@@ -20,10 +21,10 @@ export class DataPool {
   }
 
   getMenus(parent_menu_cd: string): Menu[] {
-    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === 'menu');
+    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === MenuType.Category);
   }
 
   getCategories(parent_menu_cd: string = '000'): Menu[] {
-    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === 'category');
+    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === MenuType.Category);
   }
 }

@@ -6,11 +6,17 @@
       :key="index"
     >
       <div class="splash-item-step-card">
-        <ImageView :src="item.image" alt="" />
-        <DictText :keyName="item.key" class="splash-item-step-card-text" />
+        <ImageViewCommon :src="item.image" alt="" />
+        <DictTextCommon
+          :keyName="item.key"
+          class="splash-item-step-card-text"
+        />
       </div>
 
-      <div v-if="index < splashGuideItems.length - 1" class="splash-item-step-arrow">
+      <div
+        v-if="index < splashGuideItems.length - 1"
+        class="splash-item-step-arrow"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -29,19 +35,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import DictText from '@/component/common/DictText.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import phoneIcon from '@/assets/Image/guide/phone-guide-icon.png';
 import cartIcon from '@/assets/Image/guide/cart-guide-icon.png';
 import reviewIcon from '@/assets/Image/guide/review-guide-icon.png';
 import addIcon from '@/assets/Image/guide/add-guide-icon.png';
 import creditCardIcon from '@/assets/Image/guide/creditcard-guide-icon.png';
-import ImageView from '../common/ImageView.vue';
+import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
 
 export default defineComponent({
   name: 'SplashGuide',
   components: {
-    DictText,
-    ImageView,
+    DictTextCommon,
+    ImageViewCommon,
   },
   setup() {
     const splashGuideItems = [

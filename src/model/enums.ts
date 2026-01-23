@@ -26,3 +26,8 @@ export enum Language {
   ZH = 'zh',
   EN = 'en',
 }
+
+export enum MenuType {
+  Category = 'category',
+  Menu = 'menu',
+}

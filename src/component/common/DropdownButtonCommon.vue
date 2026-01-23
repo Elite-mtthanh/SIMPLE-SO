@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown-wrapper">
-    <BaseButton
+    <ButtonCommon
       :type="type"
       :textColor="textColor"
       :icon="icon"
@@ -8,7 +8,7 @@
       @confirm="toggle"
     >
       <slot name="label" />
-    </BaseButton>
+    </ButtonCommon>
 
     <div v-if="open" class="dropdown-wrapper-panel">
       <div
@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import BaseButton from './BaseButton.vue';
+import ButtonCommon from './ButtonCommon.vue';
 
 export interface DropdownItem {
   label: string;
@@ -34,8 +34,8 @@ export interface DropdownItem {
 }
 
 export default defineComponent({
-  name: 'DropdownButton',
-  components: { BaseButton },
+  name: 'DropdownButtonCommon',
+  components: { ButtonCommon },
   props: {
     modelValue: {
       type: [String, Number],

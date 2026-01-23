@@ -1,24 +1,27 @@
-import { SplashConfig } from "@/model/Splash";
-import { ServiceIF } from "@/services/ServiceIF";
-import { Language } from "@/model/Enums";
-import { GlobalEvent } from "../common/GlobalEvent";
-import { FooterLogic } from "../common/FooterLogic";
+import { ref, Ref } from 'vue';
+import { SplashConfig } from '@/model/Splash';
+import { ServiceIF } from '@/services/ServiceIF';
+import { Language } from '@/model/Enums';
+import { GlobalEvent } from '../common/GlobalEvent';
+import { FooterLogic } from '../common/FooterLogic';
 
 export class StartPageLogic {
   private footerLogic = new FooterLogic();
-  
-  splashData?: SplashConfig;
+
+  splashData: Ref<SplashConfig | null> = ref(null);
+  currentLang: Ref<Language> = ref(Language.JA);
+  showAllergen: Ref<boolean> = ref(false);
 
   get languageOptions() {
     return this.footerLogic.languageOptions;
   }
 
   async activate(): Promise<void> {
-    this.splashData = ServiceIF.getSplashGuide();
-    console.log(this.splashData)
+    this.splashData.value = ServiceIF.getSplashGuide();
   }
 
   changeLanguage(lang: Language): void {
+    this.currentLang.value = lang;
     this.footerLogic.changeLanguage(lang);
   }
 
@@ -26,7 +29,15 @@ export class StartPageLogic {
     await this.footerLogic.callStaff();
   }
 
-  async goToCategoryPage(): Promise<void> {
+  openAllergen(): void {
+    this.showAllergen.value = true;
+  }
+
+  closeAllergen(): void {
+    this.showAllergen.value = false;
+  }
+
+  goToCategoryPage(): void {
     GlobalEvent.Instance.goToCategoryPage();
   }
 

@@ -1,3 +1,4 @@
+import { ref, Ref, computed } from 'vue';
 import { DataPool } from '@/model/DataPool';
 import { AppConfig } from '@/model/AppConfig';
 import { Language } from '@/model/Enums';
@@ -10,11 +11,15 @@ export class CategoryListLogic {
   private config = AppConfig.Instance;
   private footerLogic = new FooterLogic();
 
+  currentLang: Ref<Language> = ref(Language.JA);
+  showAllergen: Ref<boolean> = ref(false);
+
   get languageOptions() {
     return this.footerLogic.languageOptions;
   }
 
   changeLanguage(lang: Language): void {
+    this.currentLang.value = lang;
     this.footerLogic.changeLanguage(lang);
   }
 
@@ -22,19 +27,28 @@ export class CategoryListLogic {
     await this.footerLogic.callStaff();
   }
 
-  get getCategoryList(): Category[] {
+  openAllergen(): void {
+    this.showAllergen.value = true;
+  }
+
+  closeAllergen(): void {
+    this.showAllergen.value = false;
+  }
+
+  get categoryList(): Category[] {
     const parentMenuCd = '000';
-    const categories = this.dataPool.getCategories(parentMenuCd);
     const lang = this.config.currentLang.value;
-    console.log(categories)
+
+    const categories = this.dataPool.getCategories(parentMenuCd);
+
     return categories.map(menu => ({
       id: menu.menu_cd,
       name: this.getMenuName(menu, lang),
-      image_path: menu.image_path
+      image_path: menu.image_path,
     }));
   }
 
-  private getMenuName(menu: any, lang: Language): string {
+  private getMenuName(menu: Menu, lang: Language): string {
     switch (lang) {
       case Language.JA: return menu.menu_name1;
       case Language.ZH: return menu.menu_name2;
@@ -43,7 +57,7 @@ export class CategoryListLogic {
     }
   }
 
-  goToMenuPage(categoryCode: Menu): void {
-    GlobalEvent.Instance.goToMenuPage(categoryCode.menu_cd);
+  goToMenuPage(category: Category): void {
+    GlobalEvent.Instance.goToMenuPage(category.id);
   }
 }

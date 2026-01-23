@@ -2,10 +2,10 @@
   <div class="footer">
     <div class="footer-left">
       <div v-if="showBack" class="footer-left-back-icon">
-        <ImageView :src="backIcon" @click="onBack" />
+        <ImageViewCommon :src="backIcon" @click="onBack" />
       </div>
 
-      <DropdownButton
+      <DropdownButtonCommon
         v-model="localLang"
         :items="languageOptions"
         type="soft"
@@ -14,33 +14,33 @@
         @update:modelValue="onChangeLang"
       >
         <template #label>
-          <DictText keyName="LANGUAGE_BUTTON" />
+          <DictTextCommon keyName="LANGUAGE_BUTTON" />
         </template>
-      </DropdownButton>
+      </DropdownButtonCommon>
 
-      <BaseButton
+      <ButtonCommon
         type="primary"
         :icon="bellIcon"
         textColor="inverse"
         @confirm="onCallStaff"
         :iconSize="36"
       >
-        <DictText keyName="CALL_STAFF_BUTTON" />
-      </BaseButton>
+        <DictTextCommon keyName="CALL_STAFF_BUTTON" />
+      </ButtonCommon>
 
-      <BaseButton
+      <ButtonCommon
         type="soft"
         :icon="allergenIcon"
         textColor="link"
         @confirm="onOpenAllergen"
         :iconSize="60"
       >
-        <DictText keyName="ALLERGEN_BUTTON" />
-      </BaseButton>
+        <DictTextCommon keyName="ALLERGEN_BUTTON" />
+      </ButtonCommon>
     </div>
 
     <div class="footer-right">
-      <BaseButton
+      <ButtonCommon
         v-if="showCart"
         :type="cartCount === 0 ? 'neutral' : 'accent'"
         :icon="cartIcon"
@@ -51,15 +51,15 @@
         :disabled="cartCount === 0"
       >
         <span class="footer-right-cart-badge"> +{{ cartCount }} </span>
-      </BaseButton>
+      </ButtonCommon>
       <div>
         <div class="footer-right-date">
           {{ year }}
-          <DictText keyName="YEAR_LABEL" />
+          <DictTextCommon keyName="YEAR_LABEL" />
           {{ month }}
-          <DictText keyName="MONTH_LABEL" />
+          <DictTextCommon keyName="MONTH_LABEL" />
           {{ day }}
-          <DictText keyName="DAY_LABEL" />
+          <DictTextCommon keyName="DAY_LABEL" />
         </div>
         <div class="footer-right-time">{{ time }}</div>
       </div>
@@ -78,23 +78,23 @@ import {
   onUnmounted,
 } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
-import BaseButton from '@/component/common/BaseButton.vue';
-import DropdownButton from '@/component/common/DropdownButton.vue';
-import DictText from '@/component/common/DictText.vue';
+import ButtonCommon from '@/component/common/ButtonCommon.vue';
+import DropdownButtonCommon from '@/component/common/DropdownButtonCommon.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import bellIcon from '@/assets/Image/icon/bell-icon.png';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
 import backIcon from '@/assets/Image/icon/back-icon.png';
 import cartIcon from '@/assets/Image/icon/cart-icon.png';
-import ImageView from './ImageView.vue';
+import ImageViewCommon from './ImageViewCommon.vue';
 
 export default defineComponent({
-  name: 'AppFooter',
+  name: 'AppFooterCommon',
   components: {
-    BaseButton,
-    DropdownButton,
-    DictText,
-    ImageView,
+    ButtonCommon,
+    DropdownButtonCommon,
+    DictTextCommon,
+    ImageViewCommon,
   },
   props: {
     mode: {
@@ -164,8 +164,7 @@ export default defineComponent({
     const showBack = computed(() => props.mode === FooterMode.Menu);
 
     const showCart = computed(
-      () =>
-        props.mode === FooterMode.Category || props.mode === FooterMode.Menu
+      () => props.mode === FooterMode.Category || props.mode === FooterMode.Menu
     );
 
     const onChangeLang = (lang: Language) => {

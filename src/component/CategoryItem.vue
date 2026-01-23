@@ -1,7 +1,7 @@
 <template>
   <div class="category-content-block" @click="onClick">
     <div class="category-content-block-image">
-      <ImageView :src="category.image_path || ''" fit="cover" />
+      <ImageViewCommon :src="category.image_path || ''" fit="cover" />
     </div>
     <div class="category-content-block-title">
       {{ category.name }}
@@ -11,12 +11,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import ImageView from '@/component/common/ImageView.vue';
+import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
 import { Category } from '@/model/Menu';
 
 export default defineComponent({
   name: 'CategoryBlock',
-  components: { ImageView },
+  components: { ImageViewCommon },
   props: {
     category: {
       type: Object as PropType<Category>,

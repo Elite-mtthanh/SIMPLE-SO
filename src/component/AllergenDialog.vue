@@ -1,44 +1,44 @@
 <template>
-  <BaseOverlay closeOnMask>
+  <PopupCommon closeOnMask>
     <div class="allergen">
       <div class="allergen-header">
         <div class="allergen-header-icon">
-          <ImageView :src="allergenIcon" alt="allergen icon" />
+          <ImageViewCommon :src="allergenIcon" alt="allergen icon" />
         </div>
-        <DictText keyName="ALLERGEN_LABEL" class="text-link" />
+        <DictTextCommon keyName="ALLERGEN_LABEL" class="text-link" />
       </div>
       <div class="allergen-content">
-        <ImageView :src="image" alt="allergen" />
+        <ImageViewCommon :src="image" alt="allergen" />
       </div>
 
       <div class="allergen-actions">
-        <BaseButton type="neutral" @confirm="onCloseAllergen">
-          <DictText keyName="CLOSE_BUTTON" />
-        </BaseButton>
+        <ButtonCommon type="neutral" @confirm="onCloseAllergen">
+          <DictTextCommon keyName="CLOSE_BUTTON" />
+        </ButtonCommon>
       </div>
     </div>
-  </BaseOverlay>
+  </PopupCommon>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import BaseOverlay from '@/component/common/BaseOverlay.vue';
-import BaseButton from '@/component/common/BaseButton.vue';
-import DictText from '@/component/common/DictText.vue';
+import PopupCommon from '@/component/common/PopupCommon.vue';
+import ButtonCommon from '@/component/common/ButtonCommon.vue';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import { Language } from '@/model/Enums';
 import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpg';
 import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
 import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
-import ImageView from '../common/ImageView.vue';
+import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 
 export default defineComponent({
-  name: 'AllergenOverlay',
+  name: 'AllergenDialog',
   components: {
-    BaseOverlay,
-    BaseButton,
-    DictText,
-    ImageView,
+    PopupCommon,
+    ButtonCommon,
+    DictTextCommon,
+    ImageViewCommon,
   },
   props: {
     currentLang: {

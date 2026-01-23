@@ -2,12 +2,12 @@
   <div class="category">
     <header class="category-header">
       <span class="category-header-label">
-        <DictText keyName="CATEGORY_LABEL" />
+        <DictTextCommon keyName="CATEGORY_LABEL" />
       </span>
     </header>
 
     <div class="category-content">
-      <CategoryBlock
+      <CategoryItem
         v-for="category in categories"
         :key="category.id"
         :category="category"
@@ -15,7 +15,7 @@
       />
     </div>
 
-    <AppFooter
+    <AppFooterCommon
       :mode="FooterMode.Category"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
@@ -24,7 +24,7 @@
     />
   </div>
 
-  <AllergenOverlay
+  <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
     @close="onCloseAllergen"
@@ -32,53 +32,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
-import { FooterMode, Language } from '@/model/Enums';
-import DictText from '@/component/common/DictText.vue';
-import AppFooter from '@/component/common/AppFooter.vue';
-import AllergenOverlay from '@/component/splash/AllergenOverlay.vue';
-import CategoryBlock from '@/component/category/CategoryBlock.vue';
+import { defineComponent } from 'vue';
+import { FooterMode } from '@/model/Enums';
+import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
+import CategoryItem from '@/component/CategoryItem.vue';
 import { CategoryListLogic } from '@/logic/page/CategoryListLogic';
-import { Menu } from '@/model/Menu';
+import AllergenDialog from '@/component/AllergenDialog.vue';
 
 export default defineComponent({
   name: 'CategoryList',
   components: {
-    DictText,
-    AppFooter,
-    AllergenOverlay,
-    CategoryBlock,
+    DictTextCommon,
+    AppFooterCommon,
+    AllergenDialog,
+    CategoryItem,
   },
   setup() {
     const logic = new CategoryListLogic();
-    const currentLang = ref<Language>(Language.JA);
-    const showAllergen = ref(false);
-
-    const categories = ref(logic.getCategoryList);
-
-    watch(currentLang, (lang) => {
-      logic.changeLanguage(lang);
-      categories.value = logic.getCategoryList;
-    });
-
-    const onCallStaff = async () => {
-      await logic.callStaff();
-    };
-
-    const onSelectCategory = async (category: Menu) => {
-      await logic.goToMenuPage(category);
-    };
 
     return {
       FooterMode,
-      categories,
-      currentLang,
+      categories: logic.categoryList,
+      currentLang: logic.currentLang,
+      showAllergen: logic.showAllergen,
       languageOptions: logic.languageOptions,
-      showAllergen,
-      onCallStaff,
-      onOpenAllergen: () => (showAllergen.value = true),
-      onCloseAllergen: () => (showAllergen.value = false),
-      onSelectCategory
+
+      onCallStaff: logic.callStaff,
+      onOpenAllergen: logic.openAllergen,
+      onCloseAllergen: logic.closeAllergen,
+      onSelectCategory: logic.goToMenuPage,
+      onChangeLang: logic.changeLanguage,
     };
   },
 });

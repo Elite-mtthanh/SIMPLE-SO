@@ -2,7 +2,7 @@ import { SplashConfig } from '@/model/Splash';
 import { IService } from './IService';
 import { Mock } from './Mock';
 import { Dict } from '@/model/Dict';
-import { normalizeDictRow } from '@/util/DictNormalizer';
+import { normalizeDictRow } from '@/util/DictNormalizerUtil';
 import { Menu, MenuSelect } from '@/model/Menu';
 
 declare let SVS: IService;
