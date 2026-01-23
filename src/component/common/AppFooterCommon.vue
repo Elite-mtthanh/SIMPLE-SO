@@ -23,7 +23,7 @@
         :icon="bellIcon"
         textColor="inverse"
         @confirm="onCallStaff"
-        :iconSize="36"
+        :iconSize="48"
       >
         <DictTextCommon keyName="CALL_STAFF_BUTTON" />
       </ButtonCommon>
@@ -33,7 +33,7 @@
         :icon="allergenIcon"
         textColor="link"
         @confirm="onOpenAllergen"
-        :iconSize="60"
+        :iconSize="79"
       >
         <DictTextCommon keyName="ALLERGEN_BUTTON" />
       </ButtonCommon>
@@ -213,9 +213,8 @@ export default defineComponent({
 
 <style scoped>
 .footer {
-  padding-top: 45px;
-  padding-left: 60px;
-  padding-right: 60px;
+  padding-left: 50px;
+  padding-right: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -234,24 +233,38 @@ export default defineComponent({
 }
 
 .footer-right {
-  color: var(--text-link);
-  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  color: var(--text-link);
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 18px;
 }
 
 .footer-right-date {
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 43px;
+  width: 286px;
 }
 
 .footer-right-time {
-  font-size: 28px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  width: 286px;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 18px;
 }
 
 .footer-right-cart {
   position: relative;
+  width: 240px;
+  height: 89px;
 }
 
 .footer-right-cart-badge {
@@ -260,7 +273,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-
+  width: 286px;
   pointer-events: none;
   font-size: 45px;
   color: var(--text-inverse);

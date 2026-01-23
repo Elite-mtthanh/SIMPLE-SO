@@ -1,6 +1,5 @@
 import { ref } from 'vue';
 import { Language } from './Enums';
-
 export class AppConfig {
   public static Instance: AppConfig;
   currentLang = ref<Language>(Language.JA);

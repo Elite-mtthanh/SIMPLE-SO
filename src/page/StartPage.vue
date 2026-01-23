@@ -7,7 +7,7 @@
       </span>
     </header>
 
-    <div class="splash-page-wrapper" @click.stop>
+    <div class="splash-page-guide" @click.stop>
       <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
       <SplashAd v-else-if="splashData?.splashType === SplashType.SLIDESHOW" />
     </div>
@@ -90,42 +90,41 @@ export default defineComponent({
 }
 
 .splash-page-header {
-  height: 200px;
+  height: 1615px;
+  height: 272px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
-  color: var(--text-link);
-  font-weight: 700;
-  margin-top: 40px;
+  margin: 30px 20px 0;
 }
 
 .splash-page-header-desk-label {
+  color: var(--text-link);
+  font-weight: 600;
   font-size: 200px;
   line-height: 18px;
   letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
-  color: var(--text-link);
 }
 
-.splash-page-wrapper {
+.splash-page-guide {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .splash-page-hint-text {
-  text-align: center;
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--text-accent);
-  font-style: Semi Bold;
+  height: 132px;
+  width: 1585px;
   font-size: 60px;
   line-height: 18px;
-  letter-spacing: 0%;
   text-align: center;
+  font-weight: 600;
   vertical-align: middle;
-  padding-top: 150px;
-  padding-bottom: 50px;
+  color: var(--text-error);
+  font-style: Semi Bold;
+  margin-top: 133px;
+  margin-bottom: 44px;
 }
 </style>

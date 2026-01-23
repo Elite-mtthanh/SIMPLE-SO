@@ -175,8 +175,8 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 
-  width: 240px;
-  height: 70px;
+  width: 300px;
+  height: 90px;
   padding: 0 15px;
 
   border-radius: 6px;

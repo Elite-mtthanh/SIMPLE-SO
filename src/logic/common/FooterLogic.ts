@@ -29,9 +29,9 @@ export class FooterLogic {
 
   async callStaff(): Promise<void> {
     const confirmDialog = new DialogArgs();
-    confirmDialog.title = '';
+    confirmDialog.title = 'CALL_STAFF_CONFIRM_MESSAGE';
     confirmDialog.iconButton = bellIcon;
-    confirmDialog.message = 'CALL_STAFF_CONFIRM_MESSAGE';
+    confirmDialog.message = '';
     confirmDialog.messageType = DialogMessageType.Error;
     confirmDialog.buttons = [
       { id: DialogButtonId.Cancel, text: 'CANCEL_BUTTON' },

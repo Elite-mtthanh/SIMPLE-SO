@@ -18,7 +18,7 @@
         :class="{ active: item.value === modelValue }"
         @click="select(item.value)"
       >
-        {{ item.label }}
+        <span class="dropdown-wrapper-panel-item-label">{{ item.label }}</span>
       </div>
     </div>
   </div>
@@ -96,17 +96,28 @@ export default defineComponent({
 }
 
 .dropdown-wrapper-panel-item {
+  display: flex;
+  justify-content: start;
+  align-items: center;
   padding: 16px;
   font-size: 20px;
   cursor: pointer;
-  text-align: center;
   background: var(--btn-soft);
   transition: background 0.15s ease;
   color: var(--text-link);
+  height: 90px;
 }
 
 .dropdown-wrapper-panel-item.active {
   background: var(--btn-active);
   font-weight: 700;
+}
+
+.dropdown-wrapper-panel-item-label {
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  text-align: center;
 }
 </style>

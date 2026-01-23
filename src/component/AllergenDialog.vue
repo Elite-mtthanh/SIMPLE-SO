@@ -12,7 +12,11 @@
       </div>
 
       <div class="allergen-actions">
-        <ButtonCommon type="neutral" @confirm="onCloseAllergen">
+        <ButtonCommon
+          type="neutral"
+          text-color="inverse"
+          @confirm="onCloseAllergen"
+        >
           <DictTextCommon keyName="CLOSE_BUTTON" />
         </ButtonCommon>
       </div>
@@ -75,24 +79,26 @@ export default defineComponent({
   border-radius: 10px;
   padding: 24px 32px 20px;
   box-sizing: border-box;
-  width: 90vw;
-  height: 90vh;
+  width: 1520px;
+  height: 965px;
   display: flex;
   flex-direction: column;
 }
 
 .allergen-header {
   font-size: 48px;
-  font-weight: 700;
-  color: var(--text-accent);
+  color: var(--text-error);
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 18px;
 }
 
 .allergen-header-icon {
-  width: 70px;
+  width: 79px;
   height: 70px;
   display: flex;
   align-items: center;
@@ -107,12 +113,11 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   overflow: auto;
-  height: calc(100% - 350px);
 }
 
 .allergen-content :deep(img) {
-  width: 1400px;
-  height: 680px;
+  width: 1450px;
+  height: 630px;
   object-fit: contain;
 }
 

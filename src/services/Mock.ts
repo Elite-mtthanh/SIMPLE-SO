@@ -1,9 +1,10 @@
 import { IService } from './IService';
 import SplashData from '@/dummy-data/Config.json';
+import StockOutMenuConfig from '@/dummy-data/Stockout.json';
 import DictData from '@/dummy-data/Dict.json';
-import Menus from '@/dummy-data/menus.json';
-import Selects from '@/dummy-data/menu_selects.json';
-import { Menu, MenuSelect } from '@/model/Menu';
+import Menus from '@/dummy-data/Menus.json';
+import Selects from '@/dummy-data/Menu_selects.json';
+import { Menu, MenuSelect, soldOutMenu } from '@/model/Menu';
 
 export class Mock implements IService {
   private isCallStaffSuccess: number | null = null;
@@ -38,5 +39,9 @@ export class Mock implements IService {
 
   GetMenuSelect(): MenuSelect[] {
     return Selects as unknown as MenuSelect[];
+  }
+
+  GetStockoutList(): soldOutMenu[] {
+    return JSON.parse(JSON.stringify(StockOutMenuConfig));
   }
 }

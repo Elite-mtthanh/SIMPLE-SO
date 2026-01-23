@@ -2,15 +2,15 @@
   <PopupCommon>
     <div class="dialog-card">
       <div class="dialog-card-header" v-if="dialogArgs.title">
+        <div v-if="dialogArgs.iconButton" class="dialog-card-message-icon">
+          <ImageViewCommon :src="dialogArgs.iconButton" alt="icon" />
+        </div>
         <span class="dialog-card-header-title">
           <DictTextCommon :keyName="dialogArgs.title" />
         </span>
       </div>
 
       <div v-else class="dialog-card-message">
-        <div v-if="dialogArgs.iconButton" class="dialog-card-message-icon">
-          <ImageViewCommon :src="dialogArgs.iconButton" alt="icon" />
-        </div>
         <div class="dialog-card-message-content">
           <DictTextCommon
             :keyName="dialogArgs.message"
@@ -111,56 +111,62 @@ export default defineComponent({
 
 <style scoped>
 .dialog-card {
-  width: auto;
-  height: auto;
+  width: 1055px;
+  min-height: 439px;
   background: var(--background-dialog);
   border-radius: 10px;
-  padding: 30px 10px;
+  padding: 40px 60px;
   box-sizing: border-box;
   text-align: center;
-  min-width: 1055px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .dialog-card-header {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
+  align-items: center;
+  margin-bottom: 40px;
 }
 
 .dialog-card-header-title {
-  font-size: 20px;
+  min-height: 121px;
+  width: 600px;
+  font-size: 50px;
   font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.4;
+  line-height: 1.3;
+  color: var(--text-accent-dialog);
+  display: flex;
+  align-items: center;
+  justify-content: start;
 }
 
 .dialog-card-message-icon {
-  width: 68px;
-  height: 68px;
+  width: 100px;
+  height: 100px;
+  margin-right: 16px;
 }
 
 .dialog-card-message {
   font-size: 40px;
   font-weight: 700;
-  color: var(--text-accent);
   line-height: 1.4;
-  margin-bottom: 140px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
+  color: var(--text-accent-dialog);
+  margin-bottom: 60px;
 }
 
 .dialog-card-message-content {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
+  min-height: 121px;
+  width: 600px;
+  font-size: 50px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
 }
 
 .dialog-card-actions {
-  margin-top: 28px;
   display: flex;
   align-items: center;
 }

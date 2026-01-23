@@ -27,6 +27,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   gap: 12px;
-  margin-top: 60px;
+  width: 1379px;
+  height: 337px;
 }
 </style>
