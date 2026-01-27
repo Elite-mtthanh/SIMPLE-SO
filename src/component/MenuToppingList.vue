@@ -17,7 +17,7 @@
 
       <div class="menu-topping-price">{{ formatPrice(topping.price) }}￥</div>
 
-      <input type="checkbox" :checked="isChecked(topping)" readonly />
+      <input type="checkbox" class="menu-topping-checkbox" :checked="isChecked(topping)" readonly />
     </div>
   </div>
 </template>
@@ -66,10 +66,11 @@ export default defineComponent({
 
 <style scoped>
 .menu-topping {
-  margin-top: 12px;
+  width: 1346px;
+  height: 315px;
+  margin-right: 20px;
   border: 2px solid #aaa;
   background: #fff;
-  max-height: 315px;
   overflow-y: auto;
 }
 
@@ -77,7 +78,7 @@ export default defineComponent({
   display: grid;
   grid-template-columns: 80px 1fr 120px 60px;
   align-items: center;
-  padding: 12px 16px;
+  padding: 19px 56px 10px 28px;
   cursor: pointer;
 }
 
@@ -91,14 +92,39 @@ export default defineComponent({
 }
 
 .menu-topping-name {
+  width: 855px;
+  height: 98px;
+  display: flex;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 400;
+  font-size: 45px;
+  leading-trim: NONE;
+  line-height: 64px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  margin-left: 14px;
 }
 
 .menu-topping-price {
-  color: red;
-  font-weight: 700;
+  font-weight: 400;
+  font-size: 45px;
+  leading-trim: NONE;
+  line-height: 64px;
+  letter-spacing: 0%;
   text-align: right;
+  vertical-align: middle;
+  color: var(--text-price);
+}
+
+.menu-topping-checkbox {
+  width: 80px;
+  height: 80px;
+  border: 8px;
+  margin-right: 42px;
+  border-color: var(--text-primary);
+  border-radius: 8px;
 }
 </style>

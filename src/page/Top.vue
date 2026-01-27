@@ -11,6 +11,13 @@
     <keep-alive v-if="commonDialogSettings.isShow && commonDialogSettings.info">
       <GlobalDialogCommon :dialog-args="commonDialogSettings.info" />
     </keep-alive>
+
+    <keep-alive>
+      <OrderListDialog
+        v-if="orderListDialogSettings.isShow"
+        @close="onCloseOrderList"
+      />
+    </keep-alive>
   </div>
 </template>
 
@@ -22,6 +29,7 @@ import StartPage from '@/page/StartPage.vue';
 import GlobalDialogCommon from '@/component/common/GlobalDialogCommon.vue';
 import CategoryListPage from '@/page/CategoryListPage.vue';
 import MenuListPage from '@/page/MenuListPage.vue';
+import OrderListDialog from '@/component/OrderListDialog.vue';
 
 export default defineComponent({
   name: 'top-page',
@@ -30,6 +38,7 @@ export default defineComponent({
     GlobalDialogCommon,
     CategoryListPage,
     MenuListPage,
+    OrderListDialog,
   },
   setup() {
     let logic = new TopLogic();
@@ -43,11 +52,17 @@ export default defineComponent({
       return pageName;
     });
 
+    const onCloseOrderList = () => {
+      GlobalEvent.Instance.emitEvent('hide-order-list-dialog');
+    };
+
     return {
       currentPageName: logic.currentPageName,
       commonDialogSettings: logic.commonDialogSettings,
+      orderListDialogSettings: logic.orderListDialogSettings,
       currentPageArgs: logic.currentPageArgs,
       pageKey,
+      onCloseOrderList,
     };
   },
 });

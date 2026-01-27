@@ -15,7 +15,7 @@ export class MenuDetailLogic {
   selectedSize: MenuSelect | null = null;
   selectedToppings: MenuSelect[] = [];
 
-  load(menuCd: string): void {
+  getMenuDetail(menuCd: string): void {
     const rawMenu = this.dataPool.getMenuByCd(menuCd);
     if (!rawMenu) {
       return;
@@ -87,10 +87,27 @@ export class MenuDetailLogic {
 
   getConfirmData() {
     return {
-      menu: this.menu,
+      menuCd: this.menu.menu_cd,
+      name: this.menu.name,
+      imagePath: this.menu.imagePath,
+      basePrice: this.menu.price,
+
       quantity: this.quantity,
-      size: this.selectedSize,
-      toppings: [...this.selectedToppings],
+
+      size: this.selectedSize
+        ? {
+          selectCd: this.selectedSize.select_cd,
+          name: this.selectedSize.select_name1,
+          price: this.selectedSize.price,
+        }
+        : null,
+
+      toppings: this.selectedToppings.map(t => ({
+        selectCd: t.select_cd,
+        name: t.select_name1,
+        price: t.price,
+      })),
+
       total: this.getTotalPrice(),
     };
   }

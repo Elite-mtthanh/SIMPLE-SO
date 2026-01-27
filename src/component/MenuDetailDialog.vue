@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-detail-mask" @click.self="onClose">
+  <PopupCommon @close="onClose">
     <div class="menu-detail-card">
       <div class="menu-detail-header">
         <div class="menu-detail-image">
@@ -37,37 +37,49 @@
         />
       </div>
 
-      <MenuToppingList
-        :toppings="logic.toppings"
-        :selectedToppings="logic.selectedToppings"
-        @on-toggle="onToggleTopping"
-      />
+      <div class="menu-detail-toppings">
+        <MenuToppingList
+          :toppings="logic.toppings"
+          :selectedToppings="logic.selectedToppings"
+          @on-toggle="onToggleTopping"
+        />
+      </div>
 
       <div class="menu-detail-footer">
-        <ButtonCommon class="menu-detail-btn-cancel" @click="onClose">
+        <ButtonCommon
+          class="menu-detail-btn-cancel"
+          textColor="inverse"
+          @click="onClose"
+        >
           <DictTextCommon keyName="CANCEL_BUTTON" />
         </ButtonCommon>
 
-        <div class="menu-detail-quantity">
-          <button @click="logic.decrease()" :disabled="logic.quantity <= 1">
-            −
-          </button>
-          <span>{{ logic.quantity }}</span>
-          <button @click="logic.increase()" :disabled="logic.quantity >= 10">
-            +
-          </button>
+        <div class="menu-detail-footer-price">
+          <div class="menu-detail-quantity">
+            <button class="menu-detail-quantity-minus" @click="logic.decrease()" :disabled="logic.quantity <= 1">
+              <ImageViewCommon src="/Image/menu/minus.png" />
+            </button>
+            <span>{{ logic.quantity }}</span>
+            <button class="menu-detail-quantity-plus" @click="logic.increase()" :disabled="logic.quantity >= 10">
+              <ImageViewCommon src="/Image/menu/plus.png" />
+            </button>
+          </div>
+
+          <div class="menu-detail-total">
+            {{ formatPrice(logic.getTotalPrice()) }}￥
+          </div>
         </div>
 
-        <div class="menu-detail-total">
-          {{ formatPrice(logic.getTotalPrice()) }}￥
-        </div>
-
-        <ButtonCommon class="menu-detail-btn-confirm" @click="onConfirm">
+        <ButtonCommon
+          class="menu-detail-btn-confirm"
+          textColor="inverse"
+          @click="onConfirm"
+        >
           <DictTextCommon keyName="CONFIRM_BUTTON" />
         </ButtonCommon>
       </div>
     </div>
-  </div>
+  </PopupCommon>
 </template>
 
 <script lang="ts">
@@ -76,10 +88,12 @@ import { MenuDetailLogic } from '@/logic/page/MenuDetailLogic';
 import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
 import DictTextCommon from '@/component/common/DictTextCommon.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
+import PopupCommon from '@/component/common/PopupCommon.vue';
 import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { MenuSelect } from '@/model/Menu';
+import { CartStorage } from '@/storage/CartStorage';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
@@ -87,6 +101,7 @@ export default defineComponent({
     ImageViewCommon,
     DictTextCommon,
     ButtonCommon,
+    PopupCommon,
     MenuSizeSelector,
     MenuToppingList,
   },
@@ -99,7 +114,7 @@ export default defineComponent({
   emits: ['close', 'confirm'],
   setup(props, { emit }) {
     const logicInstance = new MenuDetailLogic();
-    logicInstance.load(props.menuCd);
+    logicInstance.getMenuDetail(props.menuCd);
     const logic = reactive(logicInstance);
 
     const onClose = () => {
@@ -107,7 +122,15 @@ export default defineComponent({
     };
 
     const onConfirm = () => {
-      emit('confirm', logic.getConfirmData());
+      const item = logic.getConfirmData();
+
+      CartStorage.addItem({
+        ...item,
+        imagePath: item.imagePath || '',
+      });
+
+      emit('confirm', item);
+      emit('close');
     };
 
     return {
@@ -123,16 +146,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.menu-detail-mask {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: var(--z-dialog);
-}
-
 .menu-detail-card {
   width: 1500px;
   height: 965px;
@@ -157,19 +170,18 @@ export default defineComponent({
   width: 312px;
   height: 300px;
   object-fit: cover;
-  border-radius: 10px;  
+  border-radius: 10px;
 }
 
 .menu-detail-info {
-  margin-left: 24px;
-  flex: 1;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
 }
 
 .menu-detail-info-name {
   width: 1101px;
-  height: 111px;
+  height: 110px;
   font-size: 40px;
   font-weight: 600;
   line-height: 1.5;
@@ -180,6 +192,8 @@ export default defineComponent({
 }
 
 .menu-detail-info-desc {
+  width: 1101px;
+  height: 89px;
   font-size: 20px;
   line-height: 1.5;
   margin-top: 8px;
@@ -190,14 +204,15 @@ export default defineComponent({
 }
 
 .menu-detail-info-bottom {
-  margin-top: auto;
+  margin-top: 44px;
+  margin-right: 23px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .menu-detail-price {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 700;
   background: var(--text-accent);
   color: #fff;
@@ -206,17 +221,34 @@ export default defineComponent({
 }
 
 .menu-detail-label {
-  margin-top: 16px;
-  font-size: 50px;
   font-weight: 700;
+  font-style: Bold;
+  font-size: 50px;
+  leading-trim: NONE;
+  line-height: 64px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  width: 471px;
+  height: 63px;
+}
+
+.menu-detail-toppings {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .menu-detail-footer {
-  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 24px;
-  justify-content: center;
+  justify-content: space-between;
+  margin: 78px 26px 19px 14px;
+}
+
+.menu-detail-footer-price {
+  display: flex;
+  align-items: center;
+  gap: 36px;
 }
 
 .menu-detail-btn-cancel,
@@ -226,6 +258,15 @@ export default defineComponent({
   font-size: 30px;
   font-weight: 800;
   border-radius: 6px;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 45px;
+  leading-trim: NONE;
+  line-height: 64px;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .menu-detail-btn-cancel {
@@ -236,6 +277,12 @@ export default defineComponent({
 .menu-detail-btn-confirm {
   background: #dc2c2c;
   color: #fff;
+}
+
+.menu-detail-quantity-plus{
+  width: 100px;
+  height: 100px;
+  font-size: 48px;
 }
 
 .menu-detail-quantity {

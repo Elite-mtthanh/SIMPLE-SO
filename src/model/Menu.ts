@@ -60,4 +60,26 @@ export interface soldOutMenu {
   menu_cd: string;
 }
 
+export interface CartItem {
+  menuCd: string;
+  name: string;
+  imagePath: string;
+  basePrice: number;
+
+  quantity: number;
+
+  size?: {
+    selectCd: string;
+    name: string;
+    price: number;
+  } | null;
+
+  toppings: {
+    selectCd: string;
+    name: string;
+    price: number;
+  }[];
+
+  total: number;
+}
 

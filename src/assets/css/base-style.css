@@ -37,6 +37,7 @@
   --text-success: #26bd67;
   --text-accent: #ee5c5c;
   --text-accent-dialog: #b02a37;
+  --text-price: #FE0101;
 
   /* Background Colors */
   --background-dialog: #fffcf5;
@@ -73,6 +74,9 @@ body {
 .text-accent-dialog {
   color: var(--text-accent-dialog);
 } /* màu chữ dialog (đỏ đậm) */
+.text-price {
+  color: var(--text-price);
+} /* màu chữ giá (đỏ) */
 
 .bg-button-primary {
   background: var(--btn-primary);

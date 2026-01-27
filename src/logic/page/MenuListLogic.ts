@@ -6,6 +6,7 @@ import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
 import { AppConfig } from '@/model/AppConfig';
 import { getMenuDescription, getMenuName } from '@/util/DictNormalizerUtil';
+import { CartStorage } from '@/storage/CartStorage';
 
 export class MenuListLogic {
   private dataPool = DataPool.Instance;
@@ -127,5 +128,13 @@ export class MenuListLogic {
 
   onBackToCategory(): void {
     GlobalEvent.Instance.goToCategoryPage();
+  }
+
+  openOrderList(): void {
+    GlobalEvent.Instance.emitEvent('show-order-list-dialog');
+  }
+
+  get cartCount(): number {
+    return CartStorage.getCart().length;
   }
 }

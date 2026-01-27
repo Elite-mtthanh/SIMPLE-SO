@@ -9,6 +9,8 @@ export enum EmitEvent {
   ShowCommonDialog = 'show-common-dialog',
   HideCommonDialog = 'hide-common-dialog',
   ConfirmDialog = 'confirm-dialog',
+  ShowOrderListDialog = 'show-order-list-dialog',
+  HideOrderListDialog = 'hide-order-list-dialog',
 }
 
 export class PageArgs {

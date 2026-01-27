@@ -49,6 +49,8 @@
         :mode="FooterMode.Menu"
         v-model:currentLang="currentLang"
         :language-options="languageOptions"
+        :cartCount="footerLogic.cartCount"
+        @on-open-cart="openOrderList"
         @on-call-staff="onCallStaff"
         @on-open-allergen="onOpenAllergen"
         @on-back="onBack"
@@ -98,6 +100,7 @@ export default defineComponent({
       currentLang: logic.currentLang,
       languageOptions: logic.languageOptions,
       showAllergen: logic.showAllergen,
+      footerLogic: logic,
 
       categoryName: logic.categoryName,
       pagedMenus: logic.pagedMenus,
@@ -111,6 +114,7 @@ export default defineComponent({
       onNext: () => logic.nextPage(),
       onPrev: () => logic.prevPage(),
       onBack: () => logic.backToCategory(),
+      openOrderList: () => logic.openOrderList(),
       onMenuClick: (menuCd: string) => {
         selectedMenuCd.value = menuCd;
       },
