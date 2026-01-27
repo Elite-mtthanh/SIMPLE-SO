@@ -35,7 +35,7 @@
           :id="btn.id"
           :type="getButtonCommonType(btn.id)"
           text-color="inverse"
-          @confirm="onClick"
+          @mousedown="onMousedownClick"
         >
           <DictText :keyName="btn.text" />
         </ButtonCommon>
@@ -69,7 +69,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const onClick = (id: DialogButtonId) => {
+    const onMousedownClick = (id: DialogButtonId) => {
       props.dialogArgs.resolve?.(id);
       GlobalEvent.Instance.dismissCommonDialog();
     };
@@ -97,7 +97,7 @@ export default defineComponent({
     };
 
     return {
-      onClick,
+      onMousedownClick,
       DialogButtonId,
       getButtonCommonType,
       getMessageType,

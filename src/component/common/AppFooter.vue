@@ -22,7 +22,7 @@
         type="primary"
         :icon="bellIcon"
         textColor="inverse"
-        @confirm="onCallStaff"
+        @mousedown="onMousedownCallStaff"
         :iconSize="48"
       >
         <DictText keyName="CALL_STAFF_BUTTON" />
@@ -32,7 +32,7 @@
         type="soft"
         :icon="allergenIcon"
         textColor="link"
-        @confirm="onOpenAllergen"
+        @mousedown="onMousedownOpenAllergen"
         :iconSize="79"
       >
         <DictText keyName="ALLERGEN_BUTTON" />
@@ -45,7 +45,7 @@
         :type="cartCount === 0 ? 'neutral' : 'accent'"
         :icon="cartIcon"
         textColor="inverse"
-        @confirm="onOpenCart"
+        @mousedown="onMousedownOpenCart"
         :iconSize="50"
         class="footer-right-cart"
         :disabled="cartCount === 0"
@@ -176,15 +176,15 @@ export default defineComponent({
       emit('on-back');
     };
 
-    const onCallStaff = () => {
+    const onMousedownCallStaff = () => {
       emit('on-call-staff');
     };
 
-    const onOpenAllergen = () => {
+    const onMousedownOpenAllergen = () => {
       emit('on-open-allergen');
     };
 
-    const onOpenCart = () => {
+    const onMousedownOpenCart = () => {
       emit('on-open-cart');
     };
 
@@ -203,9 +203,9 @@ export default defineComponent({
       day,
       time,
       onBack,
-      onCallStaff,
-      onOpenAllergen,
-      onOpenCart,
+      onMousedownCallStaff,
+      onMousedownOpenAllergen,
+      onMousedownOpenCart,
     };
   },
 });

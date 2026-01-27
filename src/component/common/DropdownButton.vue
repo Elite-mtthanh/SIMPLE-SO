@@ -5,7 +5,7 @@
       :textColor="textColor"
       :icon="icon"
       iconPosition="right"
-      @confirm="toggle"
+      @mousedown="onMousedownToggle"
     >
       <slot name="label" />
     </ButtonCommon>
@@ -62,7 +62,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const open = ref(false);
 
-    const toggle = () => {
+    const onMousedownToggle = () => {
       open.value = !open.value;
     };
 
@@ -73,7 +73,7 @@ export default defineComponent({
 
     return {
       open,
-      toggle,
+      onMousedownToggle,
       select,
     };
   },

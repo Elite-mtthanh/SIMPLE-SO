@@ -15,7 +15,7 @@
         <ButtonCommon
           type="neutral"
           text-color="inverse"
-          @confirm="onCloseAllergen"
+          @mousedown="onMousedownCloseAllergen"
         >
           <DictText keyName="CLOSE_BUTTON" />
         </ButtonCommon>
@@ -64,11 +64,11 @@ export default defineComponent({
       }
     });
 
-    const onCloseAllergen = () => {
+    const onMousedownCloseAllergen = () => {
       emit('close');
     };
 
-    return { image, allergenIcon, onCloseAllergen };
+    return { image, allergenIcon, onMousedownCloseAllergen };
   },
 });
 </script>
