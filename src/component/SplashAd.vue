@@ -1,18 +1,18 @@
 <template>
   <div class="item-splash">
-    <ImageViewCommon :src="image" alt="" />
+    <ImageView :src="image" alt="" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import splashAd from '@/assets/Image/guide/splash-ad.png';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
 
 export default defineComponent({
   name: 'splashAd',
   components: {
-    ImageViewCommon,
+    ImageView,
   },
   setup() {
     const image = splashAd;

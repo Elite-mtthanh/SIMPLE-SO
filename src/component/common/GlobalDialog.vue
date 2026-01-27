@@ -2,25 +2,22 @@
   <PopupCommon>
     <div class="dialog-card">
       <div class="dialog-card-header" v-if="dialogArgs.title">
-        <div v-if="dialogArgs.iconButton" class="dialog-card-message-icon">
-          <ImageViewCommon :src="dialogArgs.iconButton" alt="icon" />
+        <div
+          v-if="dialogArgs.iconButton"
+          class="dialog-card-message-icon"
+        >
+          <ImageView :src="dialogArgs.iconButton" alt="icon" />
         </div>
         <span class="dialog-card-header-title">
-          <DictTextCommon :keyName="dialogArgs.title" />
+          <DictText :keyName="dialogArgs.title" />
         </span>
       </div>
 
       <div v-else class="dialog-card-message">
         <div class="dialog-card-message-content">
-          <DictTextCommon
-            :keyName="dialogArgs.message"
-            :class="getMessageType()"
-          />
+          <DictText :keyName="dialogArgs.message" :class="getMessageType()" />
           <div v-if="dialogArgs.comment">
-            <DictTextCommon
-              :keyName="dialogArgs.comment"
-              :class="getMessageType()"
-            />
+            <DictText :keyName="dialogArgs.comment" :class="getMessageType()" />
           </div>
         </div>
       </div>
@@ -28,7 +25,7 @@
       <div
         class="dialog-card-actions"
         :class="{
-          'two-buttons': dialogArgs.buttons.length === 2,
+          'two-button': dialogArgs.buttons.length === 2,
           'one-button': dialogArgs.buttons.length === 1,
         }"
       >
@@ -36,11 +33,11 @@
           v-for="btn in dialogArgs.buttons"
           :key="btn.id"
           :id="btn.id"
-          :type="getButtonType(btn.id)"
+          :type="getButtonCommonType(btn.id)"
           text-color="inverse"
           @confirm="onClick"
         >
-          <DictTextCommon :keyName="btn.text" />
+          <DictText :keyName="btn.text" />
         </ButtonCommon>
       </div>
     </div>
@@ -51,19 +48,19 @@
 import { defineComponent, PropType } from 'vue';
 import ButtonCommon from './ButtonCommon.vue';
 import PopupCommon from './PopupCommon.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import DictText from '@/component/common/DictText.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { DialogButtonId, DialogMessageType } from '@/model/Enums';
 import { DialogArgs } from '@/model/Dialog';
-import ImageViewCommon from './ImageViewCommon.vue';
+import ImageView from './ImageView.vue';
 
 export default defineComponent({
-  name: 'GlobalDialogCommon',
+  name: 'GlobalDialog',
   components: {
     ButtonCommon,
     PopupCommon,
-    DictTextCommon,
-    ImageViewCommon,
+    DictText,
+    ImageView,
   },
   props: {
     dialogArgs: {
@@ -77,7 +74,7 @@ export default defineComponent({
       GlobalEvent.Instance.dismissCommonDialog();
     };
 
-    const getButtonType = (id: DialogButtonId) => {
+    const getButtonCommonType = (id: DialogButtonId) => {
       switch (id) {
         case DialogButtonId.Confirm:
           return 'primary';
@@ -102,7 +99,7 @@ export default defineComponent({
     return {
       onClick,
       DialogButtonId,
-      getButtonType,
+      getButtonCommonType,
       getMessageType,
     };
   },
@@ -175,12 +172,12 @@ export default defineComponent({
   justify-content: center;
 }
 
-.dialog-card-actions.two-buttons {
+.dialog-card-actions.two-button {
   justify-content: space-between;
   padding: 0 40px;
 }
 
-.dialog-card-actions.two-buttons > * {
+.dialog-card-actions.two-button > * {
   min-width: 180px;
 }
 

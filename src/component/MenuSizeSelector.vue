@@ -1,22 +1,23 @@
 <template>
   <div class="menu-size-group" v-if="sizes.length">
-    <button
+    <ButtonCommon
       v-for="size in sizes"
       :key="size.select_cd"
       class="menu-size-item"
       :class="{
         'menu-size-item-active': selectedSize?.select_cd === size.select_cd,
       }"
-      @click="onSelectSize(size)"
+      @mousedown.prevent="onSelectSize(size)"
     >
-      {{ size.select_name1 }}
-    </button>
+      {{ size.name }}
+    </ButtonCommon>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { MenuSelect } from '@/model/Menu';
+import ButtonCommon from './common/ButtonCommon.vue';
 
 export default defineComponent({
   name: 'MenuSizeSelector',
@@ -30,6 +31,7 @@ export default defineComponent({
       default: null,
     },
   },
+  components: {ButtonCommon},
   emits: ['on-select'],
   setup(props, { emit }) {
     const onSelectSize = (size: MenuSelect) => {

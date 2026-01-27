@@ -2,12 +2,12 @@
   <div
     class="menu-item"
     :class="{ 'menu-item-soldout': item.soldOut }"
-    @click="onClick"
+    @mousedown.prevent="onClick"
   >
     <div v-if="item.soldOut" class="menu-item-soldout-overlay">SOLD OUT</div>
 
     <div class="menu-item-image">
-      <ImageViewCommon :src="item.imagePath || ''" fit="contain" />
+      <ImageView :src="item.imagePath || ''" fit="contain" />
     </div>
 
     <div class="menu-item-info">
@@ -26,13 +26,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
 import { MenuItem } from '@/model/Menu';
 import { formatPrice } from '@/util/FormatPrice';
 
 export default defineComponent({
   name: 'MenuItem',
-  components: { ImageViewCommon },
+  components: { ImageView },
   emits: ['on-select'],
   props: {
     item: {

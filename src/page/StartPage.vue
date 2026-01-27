@@ -1,23 +1,23 @@
 <template>
-  <div class="splash-page" @click="onGoToCategory">
+  <div class="splash-page" @mousedown.prevent="onGoToCategory">
     <header class="splash-page-header">
       <span class="splash-page-header-desk-label">
-        <DictTextCommon keyName="DESK_NUMBER_LABEL" /> :
+        <DictText keyName="DESK_NUMBER_LABEL" /> :
         {{ splashData?.deskNumber }}
       </span>
     </header>
 
-    <div class="splash-page-guide" @click.stop>
+    <div class="splash-page-guide" @mousedown.stop.prevent>
       <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
       <SplashAd v-else-if="splashData?.splashType === SplashType.SLIDESHOW" />
     </div>
 
     <div class="splash-page-hint-text">
-      <DictTextCommon keyName="START_LABEL" />
+      <DictText keyName="START_LABEL" />
     </div>
 
-    <AppFooterCommon
-      @click.stop
+    <AppFooter
+      @mousedown.stop.prevent
       :mode="FooterMode.Splash"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
@@ -43,8 +43,8 @@ import { StartPageLogic } from '@/logic/page/StartPageLogic';
 import { FooterMode, Language } from '@/model/Enums';
 import SplashGuide from '@/component/SplashGuide.vue';
 import SplashAd from '@/component/SplashAd.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
-import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
+import DictText from '@/component/common/DictText.vue';
+import AppFooter from '@/component/common/AppFooter.vue';
 import AllergenDialog from '@/component/AllergenDialog.vue';
 import { SplashType } from '@/model/Enums';
 
@@ -53,8 +53,8 @@ export default defineComponent({
   components: {
     SplashGuide,
     SplashAd,
-    DictTextCommon,
-    AppFooterCommon,
+    DictText,
+    AppFooter,
     AllergenDialog,
   },
   setup() {

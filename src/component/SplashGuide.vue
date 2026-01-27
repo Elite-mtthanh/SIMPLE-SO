@@ -6,11 +6,8 @@
       :key="index"
     >
       <div class="splash-item-step-card">
-        <ImageViewCommon :src="item.image" alt="" />
-        <DictTextCommon
-          :keyName="item.key"
-          class="splash-item-step-card-text"
-        />
+        <ImageView :src="item.image" alt="" />
+        <DictText :keyName="item.key" class="splash-item-step-card-text" />
       </div>
 
       <div
@@ -35,19 +32,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import DictText from '@/component/common/DictText.vue';
 import phoneIcon from '@/assets/Image/guide/phone-guide-icon.png';
 import cartIcon from '@/assets/Image/guide/cart-guide-icon.png';
 import reviewIcon from '@/assets/Image/guide/review-guide-icon.png';
 import addIcon from '@/assets/Image/guide/add-guide-icon.png';
 import creditCardIcon from '@/assets/Image/guide/creditcard-guide-icon.png';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
 
 export default defineComponent({
   name: 'SplashGuide',
   components: {
-    DictTextCommon,
-    ImageViewCommon,
+    DictText,
+    ImageView,
   },
   setup() {
     const splashGuideItems = [

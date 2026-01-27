@@ -1,9 +1,9 @@
 <template>
-  <div class="menu-detail-mask" @click.self="onClose">
+  <div class="menu-detail-mask" @mousedown.self.prevent="onClose">
     <div class="menu-detail-card">
       <div class="menu-detail-header">
         <div class="menu-detail-image">
-          <ImageViewCommon :src="logic.menu.imagePath || ''" fit="cover" />
+          <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
         </div>
 
         <div class="menu-detail-info">
@@ -30,7 +30,7 @@
       </div>
 
       <div class="menu-detail-label">
-        <DictTextCommon
+        <DictText
           :keyName="
             logic.toppings.length ? 'HAS_TOPPING_LABEL' : 'SINGLE_MENU_LABEL'
           "
@@ -44,26 +44,38 @@
       />
 
       <div class="menu-detail-footer">
-        <ButtonCommon class="menu-detail-btn-cancel" @click="onClose">
-          <DictTextCommon keyName="CANCEL_BUTTON" />
+        <ButtonCommon
+          class="menu-detail-btn-cancel"
+          @mousedown.prevent="onClose"
+        >
+          <DictText keyName="CANCEL_BUTTON" />
         </ButtonCommon>
 
         <div class="menu-detail-quantity">
-          <button @click="logic.decrease()" :disabled="logic.quantity <= 1">
+          <ButtonCommon
+            @mousedown.prevent="logic.decrease()"
+            :disabled="logic.quantity <= 1"
+          >
             −
-          </button>
+          </ButtonCommon>
           <span>{{ logic.quantity }}</span>
-          <button @click="logic.increase()" :disabled="logic.quantity >= 10">
+          <ButtonCommon
+            @mousedown.prevent="logic.increase()"
+            :disabled="logic.quantity >= 10"
+          >
             +
-          </button>
+          </ButtonCommon>
         </div>
 
         <div class="menu-detail-total">
           {{ formatPrice(logic.getTotalPrice()) }}￥
         </div>
 
-        <ButtonCommon class="menu-detail-btn-confirm" @click="onConfirm">
-          <DictTextCommon keyName="CONFIRM_BUTTON" />
+        <ButtonCommon
+          class="menu-detail-btn-confirm"
+          @mousedown.prevent="onConfirm"
+        >
+          <DictText keyName="CONFIRM_BUTTON" />
         </ButtonCommon>
       </div>
     </div>
@@ -73,8 +85,8 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { MenuDetailLogic } from '@/logic/page/MenuDetailLogic';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
+import DictText from '@/component/common/DictText.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
@@ -84,8 +96,8 @@ import { MenuSelect } from '@/model/Menu';
 export default defineComponent({
   name: 'MenuDetailDialog',
   components: {
-    ImageViewCommon,
-    DictTextCommon,
+    ImageView,
+    DictText,
     ButtonCommon,
     MenuSizeSelector,
     MenuToppingList,
@@ -157,7 +169,7 @@ export default defineComponent({
   width: 312px;
   height: 300px;
   object-fit: cover;
-  border-radius: 10px;  
+  border-radius: 10px;
 }
 
 .menu-detail-info {
@@ -244,7 +256,7 @@ export default defineComponent({
   gap: 12px;
 }
 
-.menu-detail-quantity button {
+.menu-detail-quantity ButtonCommon {
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -252,7 +264,7 @@ export default defineComponent({
   font-weight: 700;
 }
 
-.menu-detail-quantity button:disabled {
+.menu-detail-quantity ButtonCommon:disabled {
   background: #bdbdbd;
 }
 

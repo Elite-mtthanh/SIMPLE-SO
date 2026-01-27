@@ -20,7 +20,7 @@
       class="base-button-side"
       :style="iconWrapperStyle"
     >
-      <ImageViewCommon :src="icon" class="btn-icon" />
+      <ImageView :src="icon" class="btn-icon" />
     </div>
 
     <span
@@ -36,14 +36,14 @@
       class="base-button-side"
       :style="iconWrapperStyle"
     >
-      <ImageViewCommon :src="icon" class="base-button-text-icon" />
+      <ImageView :src="icon" class="base-button-text-icon" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
-import ImageViewCommon from './ImageViewCommon.vue';
+import ImageView from './ImageView.vue';
 
 export default defineComponent({
   name: 'ButtonCommon',
@@ -82,7 +82,7 @@ export default defineComponent({
     },
   },
   components: {
-    ImageViewCommon,
+    ImageView,
   },
   emits: ['confirm'],
   setup(props, { emit }) {

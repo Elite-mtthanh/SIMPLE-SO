@@ -3,12 +3,12 @@
     <div class="allergen">
       <div class="allergen-header">
         <div class="allergen-header-icon">
-          <ImageViewCommon :src="allergenIcon" alt="allergen icon" />
+          <ImageView :src="allergenIcon" alt="allergen icon" />
         </div>
-        <DictTextCommon keyName="ALLERGEN_LABEL" class="text-link" />
+        <DictText keyName="ALLERGEN_LABEL" class="text-link" />
       </div>
       <div class="allergen-content">
-        <ImageViewCommon :src="image" alt="allergen" />
+        <ImageView :src="image" alt="allergen" />
       </div>
 
       <div class="allergen-actions">
@@ -17,7 +17,7 @@
           text-color="inverse"
           @confirm="onCloseAllergen"
         >
-          <DictTextCommon keyName="CLOSE_BUTTON" />
+          <DictText keyName="CLOSE_BUTTON" />
         </ButtonCommon>
       </div>
     </div>
@@ -28,12 +28,12 @@
 import { computed, defineComponent, PropType } from 'vue';
 import PopupCommon from '@/component/common/PopupCommon.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import DictText from '@/component/common/DictText.vue';
 import { Language } from '@/model/Enums';
 import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpg';
 import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
 import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 
 export default defineComponent({
@@ -41,8 +41,8 @@ export default defineComponent({
   components: {
     PopupCommon,
     ButtonCommon,
-    DictTextCommon,
-    ImageViewCommon,
+    DictText,
+    ImageView,
   },
   props: {
     currentLang: {

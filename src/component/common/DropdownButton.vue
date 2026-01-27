@@ -16,7 +16,7 @@
         :key="item.value"
         class="dropdown-wrapper-panel-item"
         :class="{ active: item.value === modelValue }"
-        @click="select(item.value)"
+        @mousedown.prevent="select(item.value)"
       >
         <span class="dropdown-wrapper-panel-item-label">{{ item.label }}</span>
       </div>
@@ -34,7 +34,7 @@ export interface DropdownItem {
 }
 
 export default defineComponent({
-  name: 'DropdownButtonCommon',
+  name: 'DropdownButton',
   components: { ButtonCommon },
   props: {
     modelValue: {

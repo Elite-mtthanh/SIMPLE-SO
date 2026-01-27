@@ -2,7 +2,7 @@
   <div class="category">
     <header class="category-header">
       <span class="category-header-label">
-        <DictTextCommon keyName="CATEGORY_LABEL" />
+        <DictText keyName="CATEGORY_LABEL" />
       </span>
     </header>
 
@@ -15,7 +15,7 @@
       />
     </div>
 
-    <AppFooterCommon
+    <AppFooter
       :mode="FooterMode.Category"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
@@ -34,22 +34,22 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
-import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
+import DictText from '@/component/common/DictText.vue';
+import AppFooter from '@/component/common/AppFooter.vue';
 import CategoryItem from '@/component/CategoryItem.vue';
-import { CategoryListLogic } from '@/logic/page/CategoryListLogic';
+import { CategoryListPageLogic } from '@/logic/page/CategoryListPageLogic';
 import AllergenDialog from '@/component/AllergenDialog.vue';
 
 export default defineComponent({
   name: 'CategoryList',
   components: {
-    DictTextCommon,
-    AppFooterCommon,
+    DictText,
+    AppFooter,
     AllergenDialog,
     CategoryItem,
   },
   setup() {
-    const logic = new CategoryListLogic();
+    const logic = new CategoryListPageLogic();
 
     return {
       FooterMode,

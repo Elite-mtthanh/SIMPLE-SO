@@ -1,7 +1,7 @@
 <template>
-  <div class="category-content-block" @click="onClick">
+  <div class="category-content-block" @mousedown.prevent="onClick">
     <div class="category-content-block-image">
-      <ImageViewCommon
+      <ImageView
         :src="category.image_path || ''"
         fit="cover"
         class="category-content-block-image-detail"
@@ -15,12 +15,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
 import { Category } from '@/model/Menu';
 
 export default defineComponent({
   name: 'CategoryBlock',
-  components: { ImageViewCommon },
+  components: { ImageView },
   props: {
     category: {
       type: Object as PropType<Category>,

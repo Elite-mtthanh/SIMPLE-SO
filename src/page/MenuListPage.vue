@@ -10,9 +10,9 @@
       <div
         class="page-btn page-btn-prev"
         :class="{ 'page-btn-hidden': currentPage === 0 }"
-        @click="onPrev"
+        @mousedown.prevent="onPrev"
       >
-        <ImageViewCommon src="/Image/menu/prev.png" alt="previous" />
+        <ImageView src="/Image/menu/prev.png" alt="previous" />
       </div>
 
       <div class="menu-content">
@@ -27,9 +27,9 @@
       <div
         class="page-btn page-btn-next"
         :class="{ 'page-btn-hidden': currentPage === totalPages - 1 }"
-        @click="onNext"
+        @mousedown.prevent="onNext"
       >
-        <ImageViewCommon src="/Image/menu/next.png" alt="next" />
+        <ImageView src="/Image/menu/next.png" alt="next" />
       </div>
     </div>
 
@@ -45,7 +45,7 @@
     </div>
 
     <div class="menu-footer">
-      <AppFooterCommon
+      <AppFooter
         :mode="FooterMode.Menu"
         v-model:currentLang="currentLang"
         :language-options="languageOptions"
@@ -73,23 +73,23 @@
 import { defineComponent, ref } from 'vue';
 import { FooterMode } from '@/model/Enums';
 import AllergenDialog from '@/component/AllergenDialog.vue';
-import { MenuListLogic } from '@/logic/page/MenuListLogic';
+import { MenuListPageLogic } from '@/logic/page/MenuListPageLogic';
 import MenuItem from '@/component/MenuItem.vue';
-import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import AppFooter from '@/component/common/AppFooter.vue';
+import ImageView from '@/component/common/ImageView.vue';
 import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
 
 export default defineComponent({
   name: 'MenuList',
   components: {
-    AppFooterCommon,
+    AppFooter,
     AllergenDialog,
     MenuItem,
-    ImageViewCommon,
+    ImageView,
     MenuDetailDialog,
   },
   setup() {
-    const logic = new MenuListLogic();
+    const logic = new MenuListPageLogic();
     const selectedMenuCd = ref<string | null>(null);
 
     return {

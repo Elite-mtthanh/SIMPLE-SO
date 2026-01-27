@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="footer-left">
       <div v-if="showBack" class="footer-left-back-icon">
-        <ImageViewCommon :src="backIcon" @click="onBack" />
+        <ImageView :src="backIcon" @mousedown.prevent="onBack" />
       </div>
 
       <DropdownButtonCommon
@@ -14,7 +14,7 @@
         @update:modelValue="onChangeLang"
       >
         <template #label>
-          <DictTextCommon keyName="LANGUAGE_BUTTON" />
+          <DictText keyName="LANGUAGE_BUTTON" />
         </template>
       </DropdownButtonCommon>
 
@@ -25,7 +25,7 @@
         @confirm="onCallStaff"
         :iconSize="48"
       >
-        <DictTextCommon keyName="CALL_STAFF_BUTTON" />
+        <DictText keyName="CALL_STAFF_BUTTON" />
       </ButtonCommon>
 
       <ButtonCommon
@@ -35,7 +35,7 @@
         @confirm="onOpenAllergen"
         :iconSize="79"
       >
-        <DictTextCommon keyName="ALLERGEN_BUTTON" />
+        <DictText keyName="ALLERGEN_BUTTON" />
       </ButtonCommon>
     </div>
 
@@ -55,11 +55,11 @@
       <div>
         <div class="footer-right-date">
           {{ year }}
-          <DictTextCommon keyName="YEAR_LABEL" />
+          <DictText keyName="YEAR_LABEL" />
           {{ month }}
-          <DictTextCommon keyName="MONTH_LABEL" />
+          <DictText keyName="MONTH_LABEL" />
           {{ day }}
-          <DictTextCommon keyName="DAY_LABEL" />
+          <DictText keyName="DAY_LABEL" />
         </div>
         <div class="footer-right-time">{{ time }}</div>
       </div>
@@ -79,22 +79,22 @@ import {
 } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
-import DropdownButtonCommon from '@/component/common/DropdownButtonCommon.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import DropdownButtonCommon from '@/component/common/DropdownButton.vue';
+import DictText from '@/component/common/DictText.vue';
 import bellIcon from '@/assets/Image/icon/bell-icon.png';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
 import backIcon from '@/assets/Image/icon/back-icon.png';
 import cartIcon from '@/assets/Image/icon/cart-icon.png';
-import ImageViewCommon from './ImageViewCommon.vue';
+import ImageView from './ImageView.vue';
 
 export default defineComponent({
-  name: 'AppFooterCommon',
+  name: 'AppFooter',
   components: {
     ButtonCommon,
     DropdownButtonCommon,
-    DictTextCommon,
-    ImageViewCommon,
+    DictText,
+    ImageView,
   },
   props: {
     mode: {

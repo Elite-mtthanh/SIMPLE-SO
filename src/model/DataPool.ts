@@ -7,7 +7,7 @@ export class DataPool {
 
   public allMenus: Menu[] = [];
   public allSelects: MenuSelect[] = [];
-  public soldOutMenu: Record<string, boolean> = {};
+  public stockoutMenu: Record<string, boolean> = {};
 
   static init(): void {
     if (!this.Instance) {
@@ -38,15 +38,15 @@ export class DataPool {
 
   private loadStockout(): void {
     const list = ServiceIF.getStockoutList();
-    this.soldOutMenu = {};
+    this.stockoutMenu = {};
 
     list.forEach(menu => {
-      this.soldOutMenu[menu.menu_cd] = true;
+      this.stockoutMenu[menu.menu_cd] = true;
     });
   }
 
-  isSoldOut(menuCd: string): boolean {
-    return !!this.soldOutMenu[menuCd];
+  isStockout(menuCd: string): boolean {
+    return !!this.stockoutMenu[menuCd];
   }
 
   getMenuByCd(menuCd: string): Menu | null {
