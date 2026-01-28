@@ -3,17 +3,21 @@
     <div class="allergen">
       <div class="allergen-header">
         <div class="allergen-header-icon">
-          <ImageViewCommon :src="allergenIcon" alt="allergen icon" />
+          <ImageView :src="allergenIcon" alt="allergen icon" />
         </div>
-        <DictTextCommon keyName="ALLERGEN_LABEL" class="text-link" />
+        <DictText keyName="ALLERGEN_LABEL" class="text-link" />
       </div>
       <div class="allergen-content">
-        <ImageViewCommon :src="image" alt="allergen" />
+        <ImageView :src="image" alt="allergen" />
       </div>
 
       <div class="allergen-actions">
-        <ButtonCommon type="neutral" @confirm="onCloseAllergen">
-          <DictTextCommon keyName="CLOSE_BUTTON" />
+        <ButtonCommon
+          type="neutral"
+          text-color="inverse"
+          @touchend="onMousedownCloseAllergen"
+        >
+          <DictText keyName="CLOSE_BUTTON" />
         </ButtonCommon>
       </div>
     </div>
@@ -24,12 +28,12 @@
 import { computed, defineComponent, PropType } from 'vue';
 import PopupCommon from '@/component/common/PopupCommon.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import DictText from '@/component/common/DictText.vue';
 import { Language } from '@/model/Enums';
 import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpg';
 import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
 import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 
 export default defineComponent({
@@ -37,8 +41,8 @@ export default defineComponent({
   components: {
     PopupCommon,
     ButtonCommon,
-    DictTextCommon,
-    ImageViewCommon,
+    DictText,
+    ImageView,
   },
   props: {
     currentLang: {
@@ -46,7 +50,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['close'],
+  emits: ['on-close'],
   setup(props, { emit }) {
     const image = computed(() => {
       switch (props.currentLang) {
@@ -60,11 +64,11 @@ export default defineComponent({
       }
     });
 
-    const onCloseAllergen = () => {
-      emit('close');
+    const onMousedownCloseAllergen = () => {
+      emit('on-close');
     };
 
-    return { image, allergenIcon, onCloseAllergen };
+    return { image, allergenIcon, onMousedownCloseAllergen };
   },
 });
 </script>
@@ -75,25 +79,27 @@ export default defineComponent({
   border-radius: 10px;
   padding: 24px 32px 20px;
   box-sizing: border-box;
-  width: 90vw;
-  height: 90vh;
+  width: 1520px;
+  height: 965px;
   display: flex;
   flex-direction: column;
 }
 
 .allergen-header {
   font-size: 48px;
-  font-weight: 700;
-  color: var(--text-accent);
+  color: var(--text-error);
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 18px;
 }
 
 .allergen-header-icon {
-  width: 70px;
-  height: 70px;
+  width: 79px;
+  height: 75px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,17 +108,15 @@ export default defineComponent({
 .allergen-content {
   flex: 1;
   border-radius: 6px;
-  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: auto;
-  height: calc(100% - 350px);
 }
 
 .allergen-content :deep(img) {
-  width: 1400px;
-  height: 680px;
+  width: 1450px;
+  height: 630px;
   object-fit: contain;
 }
 

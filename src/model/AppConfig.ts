@@ -3,13 +3,14 @@ import { Language } from './Enums';
 
 export class AppConfig {
   public static Instance: AppConfig;
-  currentLang = ref<Language>(Language.JA);
 
   languages: Language[] = [
     Language.JA,
-    Language.ZH,
     Language.EN,
+    Language.ZH,
   ];
+
+  currentLang = ref<Language>(this.languages[0]);
 
   static init(): void {
     this.Instance = new AppConfig();

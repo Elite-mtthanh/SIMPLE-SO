@@ -16,26 +16,30 @@
 
   --z-overlay: 1000;
   --z-dialog: 1100;
+  --z-stockout: 10;
 
-  /* Colors for Buttons */
+  /* Colors for Button */
   --btn-primary: #b02a37;
   --btn-accent: #ee5c5c;
   --btn-neutral: #757575;
   --btn-muted: #cbbaba;
   --btn-soft: #ffe5d0;
   --btn-active: #ef9e9e;
+  --btn-link: #475191;
+  --btn-gray: #d9d9d9;
 
   /* Color for Text */
   --text-primary: #000000;
   --text-inverse: #ffffff;
-  --text-accent: #e3242a;
+  --text-error: #e3242a;
   --text-link: #475191;
   --text-success: #26bd67;
+  --text-accent: #ee5c5c;
   --text-accent-dialog: #b02a37;
 
   /* Background Colors */
   --background-dialog: #fffcf5;
-  --background-items-guide: #d1e7dd;
+  --background-items: #d1e7dd;
   --background-app: #fffcf5;
 }
 
@@ -56,8 +60,8 @@ body {
 .text-inverse {
   color: var(--text-inverse);
 } /* màu chữ (trắng) */
-.text-accent {
-  color: var(--text-accent);
+.text-error {
+  color: var(--text-error);
 } /* màu chữ (đỏ) */
 .text-link {
   color: var(--text-link);

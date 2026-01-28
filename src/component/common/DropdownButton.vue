@@ -5,7 +5,7 @@
       :textColor="textColor"
       :icon="icon"
       iconPosition="right"
-      @confirm="toggle"
+      @touchend="onMousedownToggle"
     >
       <slot name="label" />
     </ButtonCommon>
@@ -16,9 +16,9 @@
         :key="item.value"
         class="dropdown-wrapper-panel-item"
         :class="{ active: item.value === modelValue }"
-        @click="select(item.value)"
+        @mousedown.prevent="select(item.value)"
       >
-        {{ item.label }}
+        <span class="dropdown-wrapper-panel-item-label">{{ item.label }}</span>
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@ export interface DropdownItem {
 }
 
 export default defineComponent({
-  name: 'DropdownButtonCommon',
+  name: 'DropdownButton',
   components: { ButtonCommon },
   props: {
     modelValue: {
@@ -62,7 +62,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const open = ref(false);
 
-    const toggle = () => {
+    const onMousedownToggle = () => {
       open.value = !open.value;
     };
 
@@ -73,7 +73,7 @@ export default defineComponent({
 
     return {
       open,
-      toggle,
+      onMousedownToggle,
       select,
     };
   },
@@ -82,6 +82,8 @@ export default defineComponent({
 <style scoped>
 .dropdown-wrapper {
   position: relative;
+  border: 1px solid #475191;
+  border-radius: 6px;
 }
 
 .dropdown-wrapper-panel {
@@ -89,24 +91,37 @@ export default defineComponent({
   bottom: 100%;
   left: 0;
   width: 100%;
-  margin-bottom: 8px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  border-radius: 6px;
 }
 
 .dropdown-wrapper-panel-item {
+  display: flex;
+  justify-content: start;
+  align-items: center;
   padding: 16px;
   font-size: 20px;
   cursor: pointer;
-  text-align: center;
   background: var(--btn-soft);
   transition: background 0.15s ease;
   color: var(--text-link);
+  height: 90px;
+  border: 1px solid #475197;
+  width: 300px;
+  gap: 8px;
 }
 
 .dropdown-wrapper-panel-item.active {
   background: var(--btn-active);
   font-weight: 700;
+}
+
+.dropdown-wrapper-panel-item-label {
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  text-align: center;
+  margin-left: 8px;
 }
 </style>

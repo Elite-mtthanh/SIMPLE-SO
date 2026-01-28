@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay-mask" @click.self="onMaskClick">
+  <div class="overlay-mask" @mousedown.self.prevent="onMaskClick">
     <div class="overlay-mask-content">
       <slot />
     </div>

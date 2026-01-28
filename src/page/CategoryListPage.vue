@@ -2,20 +2,22 @@
   <div class="category">
     <header class="category-header">
       <span class="category-header-label">
-        <DictTextCommon keyName="CATEGORY_LABEL" />
+        <DictText keyName="CATEGORY_LABEL" />
       </span>
     </header>
 
-    <div class="category-content">
-      <CategoryItem
-        v-for="category in categories"
-        :key="category.id"
-        :category="category"
-        @select="onSelectCategory"
-      />
+    <div class="category-content-wrapper">
+      <div class="category-content">
+        <CategoryItem
+          v-for="category in categories"
+          :key="category.id"
+          :category="category"
+          @select="onSelectCategory"
+        />
+      </div>
     </div>
 
-    <AppFooterCommon
+    <AppFooter
       :mode="FooterMode.Category"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
@@ -27,29 +29,29 @@
   <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
-    @close="onCloseAllergen"
+    @on-close="onCloseAllergen"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
-import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
+import DictText from '@/component/common/DictText.vue';
+import AppFooter from '@/component/common/AppFooter.vue';
 import CategoryItem from '@/component/CategoryItem.vue';
-import { CategoryListLogic } from '@/logic/page/CategoryListLogic';
+import { CategoryListPageLogic } from '@/logic/page/CategoryListPageLogic';
 import AllergenDialog from '@/component/AllergenDialog.vue';
 
 export default defineComponent({
   name: 'CategoryList',
   components: {
-    DictTextCommon,
-    AppFooterCommon,
+    DictText,
+    AppFooter,
     AllergenDialog,
     CategoryItem,
   },
   setup() {
-    const logic = new CategoryListLogic();
+    const logic = new CategoryListPageLogic();
 
     return {
       FooterMode,
@@ -74,11 +76,11 @@ export default defineComponent({
   flex-direction: column;
 }
 .category-header {
-  height: 70px;
+  width: 1677px;
+  height: 107px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 12px 0;
 }
 .category-header-label {
   font-size: 70px;
@@ -100,10 +102,18 @@ export default defineComponent({
   text-overflow: ellipsis;
 }
 
-.category-content {
+.category-content-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 43px;
+}
+
+.category-content {
+  display: flex;
   flex-wrap: wrap;
-  gap: 16px 16px;
+  justify-content: flex-start;
+  gap: 17px 20px;
+  width: 1580px; 
 }
 </style>
