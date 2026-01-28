@@ -36,7 +36,7 @@
     <div class="menu-pagination" v-if="totalPages > 1">
       <div class="page-dots">
         <span
-          v-for="i in totalPages"
+          v-for="i in visiblePages"
           :key="i"
           class="dot"
           :class="{ active: i - 1 === currentPage }"
@@ -106,6 +106,7 @@ export default defineComponent({
       categoryName: logic.categoryName,
       pagedMenus: logic.pagedMenus,
       totalPages: logic.totalPages,
+      visiblePages: logic.visiblePages,
       currentPage: logic.pageIndex,
       selectedMenuCd,
 

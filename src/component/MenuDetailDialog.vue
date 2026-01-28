@@ -46,51 +46,14 @@
           />
         </div>
 
-        <div class="menu-detail-footer">
-          <ButtonCommon
-            class="menu-detail-btn-cancel"
-            @touchend="onClose"
-            text-color="inverse"
-            type="neutral"
-          >
-            <DictText keyName="CANCEL_BUTTON" />
-          </ButtonCommon>
-
-          <div class="menu-detail-footer-price">
-            <div class="menu-detail-quantity">
-              <PressLayer
-                class="menu-detail-quantity-btn"
-                @touchend="logic.quantity > 1 && logic.decrease()"
-                :class="{ disabled: logic.quantity <= 1 }"
-              >
-                <ImageView src="/Image/menu/minus.png" />
-              </PressLayer>
-
-              <span>{{ logic.quantity }}</span>
-
-              <PressLayer
-                class="menu-detail-quantity-btn"
-                @touchend="logic.quantity < 10 && logic.increase()"
-                :class="{ disabled: logic.quantity >= 10 }"
-              >
-                <ImageView src="/Image/menu/plus.png" />
-              </PressLayer>
-            </div>
-
-            <div class="menu-detail-total">
-              {{ formatPrice(logic.getTotalPrice()) }}￥
-            </div>
-          </div>
-
-          <ButtonCommon
-            class="menu-detail-btn-confirm"
-            @touchend="onConfirm"
-            text-color="inverse"
-            type="accent"
-          >
-            <DictText keyName="CONFIRM_BUTTON" />
-          </ButtonCommon>
-        </div>
+        <MenuDetailFooter
+          :quantity="logic.quantity"
+          :totalPrice="logic.getTotalPrice()"
+          @on-cancel="onClose"
+          @on-confirm="onConfirm"
+          @on-increase="logic.increase()"
+          @on-decrease="logic.decrease()"
+        />
       </div>
     </div>
   </PopupCommon>
@@ -101,25 +64,23 @@ import { defineComponent, reactive } from 'vue';
 import { MenuDetailLogic } from '@/logic/page/MenuDetailLogic';
 import ImageView from '@/component/common/ImageView.vue';
 import DictText from '@/component/common/DictText.vue';
-import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import PopupCommon from '@/component/common/PopupCommon.vue';
 import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
+import MenuDetailFooter from '@/component/MenuDetailFooter.vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { MenuSelect } from '@/model/Menu';
 import { CartStorage } from '@/storage/CartStorage';
-import PressLayer from './common/PressLayer.vue';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
   components: {
     ImageView,
     DictText,
-    ButtonCommon,
     PopupCommon,
     MenuSizeSelector,
     MenuToppingList,
-    PressLayer,
+    MenuDetailFooter,
   },
   props: {
     menuCd: {
@@ -271,80 +232,5 @@ export default defineComponent({
   display: flex;
   justify-content: flex-end;
   margin-bottom: 78px;
-}
-
-.menu-detail-footer {
-  display: grid;
-  grid-template-columns: 300px 1fr 300px;
-  align-items: center;
-  padding: 0 32px 28px;
-}
-
-.menu-detail-footer-price {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 36px;
-}
-
-.menu-detail-quantity {
-  display: flex;
-  align-items: center;
-  gap: 17px;
-}
-
-.menu-detail-quantity-btn {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: var(--btn-link);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.menu-detail-quantity-btn.disabled {
-  opacity: 0.35;
-  pointer-events: none;
-}
-
-.menu-detail-quantity span {
-  min-width: 146px;
-  height: 100px;
-  border: 1px solid #000000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 80px;
-  line-height: 64px;
-  color: var(--text-link);
-}
-
-.menu-detail-total {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 388px;
-  height: 100px;
-  font-weight: 600;
-  font-size: 80px;
-  line-height: 64px;
-  letter-spacing: 0%;
-  vertical-align: middle;
-  color: var(--text-price);
-}
-
-.menu-detail-btn-cancel,
-.menu-detail-btn-confirm {
-  font-weight: 600;
-  font-size: 45px;
-  leading-trim: NONE;
-  line-height: 64px;
-  letter-spacing: 0%;
-  text-align: center;
-  vertical-align: middle;
-  border-radius: 6px;
-  margin-right: 52px;
 }
 </style>

@@ -53,6 +53,14 @@ export class MenuListPageLogic {
     return Math.ceil(this.menus.value.length / this.pageSize);
   });
 
+  /** get visible pages for pagination dots (max 4) 
+   * According to spec: max 16 items = 4 pages = 4 dots
+   */
+  readonly visiblePages = computed(() => {
+    const total = this.totalPages.value;
+    return Math.min(total, 4);
+  });
+
   /**
    * constructor - initialize and setup watchers
    */
@@ -169,6 +177,7 @@ export class MenuListPageLogic {
 
   /**
    * reload menu items based on current category and language
+   * Note: Max 16 items (4 pages x 4 items/page) according to spec
    */
   private reloadMenus(): void {
     const categoryCd = GlobalEvent.Instance.currentCategoryCd.value;
@@ -180,7 +189,10 @@ export class MenuListPageLogic {
     const lang = this.currentLang.value;
     const menus = this.dataPool.getMenus(categoryCd);
 
-    this.menus.value = menus.map(menu => ({
+    // Limit to maximum 16 items (4 pages x 4 items per page)
+    const limitedMenus = menus.slice(0, 16);
+
+    this.menus.value = limitedMenus.map(menu => ({
       id: menu.id,
       menu_cd: menu.menu_cd,
       name: getMenuName(menu, lang),
