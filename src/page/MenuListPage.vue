@@ -6,7 +6,11 @@
       </span>
     </header>
 
-    <div class="menu-pagination-wrapper">
+    <div 
+      class="menu-pagination-wrapper"
+      @touchstart="onSwipeStart"
+      @touchend="onSwipeEnd"
+    >
       <PressLayer v-if="currentPage > 0" @touchend="onPrev">
         <div class="page-btn page-btn-prev">
           <ImageView src="/Image/menu/prev.png" alt="previous" />
@@ -94,7 +98,6 @@ export default defineComponent({
 
     return {
       FooterMode,
-
       currentLang: logic.currentLang,
       languageOptions: logic.languageOptions,
       showAllergen: logic.showAllergen,
@@ -116,6 +119,8 @@ export default defineComponent({
       onMenuClick: (menuCd: string) => {
         selectedMenuCd.value = menuCd;
       },
+      onSwipeStart: (event: TouchEvent) => logic.onTouchStart(event),
+      onSwipeEnd: (event: TouchEvent) => logic.onTouchEnd(event),
     };
   },
 });

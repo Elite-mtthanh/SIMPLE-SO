@@ -1,32 +1,40 @@
+<!--
+  Author: Truong
+  Menu Topping List Component
+  - Ẩn component khi không có topping
+  - Hiển thị danh sách topping với checkbox để chọn
+-->
 <template>
   <div class="menu-topping" v-if="toppings.length">
-    <PressLayer
-      v-for="topping in toppings"
-      :key="topping.select_cd"
-      @touchend="onToggleTopping(topping)"
-    >
-      <div
-        class="menu-topping-item"
-        :class="{ 'menu-topping-item-checked': isChecked(topping) }"
+    <div class="menu-topping-scroll">
+      <PressLayer
+        v-for="topping in toppings"
+        :key="topping.select_cd"
+        @touchend="onToggleTopping(topping)"
       >
-        <div class="menu-topping-image">
-          <ImageView :src="topping.image_path || ''" fit="cover" />
+        <div
+          class="menu-topping-item"
+          :class="{ 'menu-topping-item-checked': isChecked(topping) }"
+        >
+          <div class="menu-topping-image">
+            <ImageView :src="topping.image_path || ''" fit="cover" />
+          </div>
+
+          <div class="menu-topping-name">
+            {{ topping.name }}
+          </div>
+
+          <div class="menu-topping-price">
+            {{ formatPrice(topping.price) }}￥
+          </div>
+
+          <div
+            class="menu-topping-checkbox"
+            :class="{ checked: isChecked(topping) }"
+          ></div>
         </div>
-
-        <div class="menu-topping-name">
-          {{ topping.name }}
-        </div>
-
-        <div class="menu-topping-price">{{ formatPrice(topping.price) }}￥</div>
-
-        <input
-          type="checkbox"
-          class="menu-topping-checkbox"
-          :checked="isChecked(topping)"
-          readonly
-        />
-      </div>
-    </PressLayer>
+      </PressLayer>
+    </div>
   </div>
 </template>
 
@@ -79,29 +87,72 @@ export default defineComponent({
   width: 1346px;
   height: 315px;
   margin-right: 20px;
-  border: 2px solid #aaa;
-  background: #fff;
+  background: var(--text-inverse);
+  border: 1px solid #000;
+  padding-top: 19px;
+  box-sizing: border-box;
+}
+
+.menu-topping-scroll {
+  height: 289px;
+  width: 1320px;
   overflow-y: auto;
+  padding-right: 6px;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #9e9e9e #D3D3D3;
+}
+
+.menu-topping-scroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.menu-topping-scroll::-webkit-scrollbar-track {
+  background: #D3D3D3;
+  border-radius: 10px;
+}
+
+.menu-topping-scroll::-webkit-scrollbar-thumb {
+  background-color: #9e9e9e;
+  border-radius: 10px;
+  border: 3px solid #D3D3D3;
+}
+
+.menu-topping-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #7d7d7d;
 }
 
 .menu-topping-item {
-  display: grid;
-  grid-template-columns: 80px 1fr 120px 60px;
+  width: 1262px;
+  height: 100px;
+  display: flex;
   align-items: center;
-  padding: 19px 56px 10px 28px;
+  justify-content: center;
+  margin: 0 26px 10px 28px;
   cursor: pointer;
 }
 
 .menu-topping-item-checked {
-  border: 2px solid #e53935;
+  background-color: var(--background-select-toppoing);
+  border-radius: 6px;
 }
 
 .menu-topping-image {
   width: 80px;
   height: 80px;
+  margin: 10px 0 10px 8px;
+}
+.menu-topping-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
 .menu-topping-name {
+  display: flex;
+  align-items: center;
+  justify-self: start;
   width: 855px;
   height: 98px;
   display: flex;
@@ -119,6 +170,11 @@ export default defineComponent({
 }
 
 .menu-topping-price {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 172px;
+  height: 100px;
   font-weight: 400;
   font-size: 45px;
   leading-trim: NONE;
@@ -127,14 +183,35 @@ export default defineComponent({
   text-align: right;
   vertical-align: middle;
   color: var(--text-price);
+  margin-right: 42px;
 }
 
 .menu-topping-checkbox {
   width: 80px;
   height: 80px;
-  border: 8px;
-  margin-right: 42px;
-  border-color: var(--text-primary);
-  border-radius: 8px;
+  border: 8px solid #000;
+  border-radius: 6px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.menu-topping-checkbox.checked {
+  width: 72.75px;
+  height: 75px;
+  background: #ff3b30;
+  border-color: #ff3b30;
+}
+
+.menu-topping-checkbox.checked::after {
+  content: '';
+  width: 32px;
+  height: 16px;
+  border-left: 6px solid #fff;
+  border-bottom: 6px solid #fff;
+  transform: rotate(-45deg);
+  margin-top: -10px;
 }
 </style>

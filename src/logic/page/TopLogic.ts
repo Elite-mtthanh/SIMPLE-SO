@@ -10,10 +10,6 @@ export class TopLogic {
     isShow: boolean;
     info: DialogArgs | null;
   };
-  public readonly orderListDialogSettings: {
-    isShow: boolean;
-  };
-
   constructor() {
     this.currentPageName = computed(() => {
       return PageStack.Instance.currentPageName.value;
@@ -22,9 +18,6 @@ export class TopLogic {
     this.commonDialogSettings = reactive({
       isShow: false,
       info: null,
-    });
-    this.orderListDialogSettings = reactive({
-      isShow: false,
     });
     this.registerEvents();
   }
@@ -42,14 +35,6 @@ export class TopLogic {
     GlobalEvent.Instance.on(EmitEvent.HideCommonDialog, () => {
       this.commonDialogSettings.isShow = false;
       this.commonDialogSettings.info = null;
-    });
-
-    GlobalEvent.Instance.on(EmitEvent.ShowOrderListDialog, () => {
-      this.orderListDialogSettings.isShow = true;
-    });
-
-    GlobalEvent.Instance.on(EmitEvent.HideOrderListDialog, () => {
-      this.orderListDialogSettings.isShow = false;
     });
   }
 

@@ -1,39 +1,34 @@
 <template>
-  <PopupCommon @close="$emit('close')">
-    <div class="cart-wrapper">
-      <div class="cart-header">注文リスト（{{ totalQuantity }}個）</div>
-
-      <div class="cart-list">
-        <CartItem
-          v-for="(item, index) in items"
-          :key="index"
-          :item="item"
-        />
-      </div>
-
-      <div class="cart-footer">
-
-        <button class="btn-back" @click="$emit('close')">戻る</button>
-
-        <div class="cart-total">合計：{{ formatPrice(totalPrice) }}￥</div>
-
-        <button class="btn-order" @click="$emit('order')">注文する</button>
-      </div>
+  <div class="cart-wrapper">
+    <div class="cart-header">
+      <DictText keyName="LIST_ORDER_LABEL" />（{{ totalQuantity }}個）
     </div>
-  </PopupCommon>
+
+    <div class="cart-list">
+      <OrderItem v-for="(item, index) in items" :key="index" :item="item" />
+    </div>
+
+    <div class="cart-footer">
+      <button class="btn-back" @touchend="$emit('on-close')"><DictText keyName="BACK_BUTTON" /></button>
+      
+      <div class="cart-total"><DictText keyName="TOTAL_LABEL" />：{{ formatPrice(totalPrice) }}￥</div>
+
+      <button class="btn-order" @touchend="$emit('on-order')"><DictText keyName="ORDER_BUTTON" /></button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import CartItem from './OrderItem.vue';
-import PopupCommon from './common/PopupCommon.vue';
+import OrderItem from '@/component/OrderItem.vue';
+import DictText from '@/component/common/DictText.vue';
 import { formatPrice } from '@/util/FormatPrice';
-import { CartLogic } from '@/logic/page/OrderListLogic';
+import { CartLogic } from '@/logic/page/OrderListPageLogic';
 
 export default defineComponent({
-  name: 'CartList',
-  components: { CartItem, PopupCommon },
-  emits: ['close', 'order'],
+  name: 'OrderListPage',
+  components: { OrderItem, DictText },
+  emits: ['on-close', 'on-order'],
   setup() {
     const logic = new CartLogic();
 

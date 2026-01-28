@@ -22,6 +22,11 @@ export class MenuListPageLogic {
   /** list of menu items */
   private menus = ref<MenuItem[]>([]);
 
+  /** swipe detection properties */
+  private touchStartX = 0;
+  private touchStartY = 0;
+  private minSwipeDistance = 50; // minimum distance for a swipe
+
   /** allergen dialog visibility status */
   readonly showAllergen = this.footerLogic.showAllergen;
   
@@ -127,6 +132,35 @@ export class MenuListPageLogic {
   }
 
   /**
+   * handle touch start event for swipe detection
+   */
+  onTouchStart(event: TouchEvent): void {
+    const touch = event.touches[0];
+    this.touchStartX = touch.clientX;
+    this.touchStartY = touch.clientY;
+  }
+
+  /**
+   * handle touch end event for swipe detection
+   */
+  onTouchEnd(event: TouchEvent): void {
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - this.touchStartX;
+    const deltaY = touch.clientY - this.touchStartY;
+
+    // Check if horizontal swipe is more dominant than vertical
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > this.minSwipeDistance) {
+      if (deltaX > 0) {
+        // Swipe right (previous page)
+        this.prevPage();
+      } else {
+        // Swipe left (next page)
+        this.nextPage();
+      }
+    }
+  }
+
+  /**
    * navigate back to category page
    */
   backToCategory(): void {
@@ -179,7 +213,7 @@ export class MenuListPageLogic {
   }
 
   openOrderList(): void {
-    GlobalEvent.Instance.emitEvent('show-order-list-dialog');
+    GlobalEvent.Instance.goToOrderListPage();
   }
 
   get cartCount(): number {

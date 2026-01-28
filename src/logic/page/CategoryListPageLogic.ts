@@ -84,7 +84,7 @@ export class CategoryListPageLogic {
   }
 
   openOrderList(): void {
-    GlobalEvent.Instance.emitEvent('show-order-list-dialog');
+    GlobalEvent.Instance.goToOrderListPage();
   }
 
   get cartCount(): number {

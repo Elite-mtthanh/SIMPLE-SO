@@ -36,12 +36,13 @@
   --text-success: #26bd67;
   --text-accent: #ee5c5c;
   --text-accent-dialog: #b02a37;
-  --text-price: #FE0101;
+  --text-price: #fe0101;
 
   /* Background Colors */
   --background-dialog: #fffcf5;
   --background-items: #d1e7dd;
   --background-app: #fffcf5;
+  --background-select-toppoing: #FFF3E6;
 }
 
 body {
@@ -92,3 +93,9 @@ body {
 .bg-button-soft {
   background: var(--btn-soft);
 } /* nút nền nhẹ (cam nhạt) */
+.bg-button-link {
+  background: var(--btn-link);
+} /* nút liên kết (xanh) */
+.bg-button-gray {
+  background: var(--btn-gray);
+} /* nút xám nhạt */
