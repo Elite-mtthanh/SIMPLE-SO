@@ -29,7 +29,7 @@ export class MenuDetailLogic {
    * load menu details by menu code
    * @param menuCd menu code to load
    */
-  load(menuCd: string): void {
+  getMenuDetail(menuCd: string): void {
     const rawMenu = this.dataPool.getMenuByCd(menuCd);
     if (!rawMenu) {
       return;

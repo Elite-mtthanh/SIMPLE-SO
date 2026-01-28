@@ -19,8 +19,14 @@
 
         <div class="menu-topping-price">{{ formatPrice(topping.price) }}￥</div>
 
-      <input type="checkbox" class="menu-topping-checkbox" :checked="isChecked(topping)" readonly />
-    </div>
+        <input
+          type="checkbox"
+          class="menu-topping-checkbox"
+          :checked="isChecked(topping)"
+          readonly
+        />
+      </div>
+    </PressLayer>
   </div>
 </template>
 

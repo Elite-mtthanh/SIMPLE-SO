@@ -69,7 +69,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { FooterMode, Language } from '@/model/Enums';
+import { FooterMode } from '@/model/Enums';
 import { MenuListPageLogic } from '@/logic/page/MenuListPageLogic';
 import AppFooter from '@/component/common/AppFooter.vue';
 import PressLayer from '@/component/common/PressLayer.vue';

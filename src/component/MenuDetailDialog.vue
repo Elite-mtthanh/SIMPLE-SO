@@ -1,90 +1,90 @@
 <template>
-<PressLayer @touchend="onClose">
-  <div class="menu-detail-mask">
-    <div class="menu-detail-card">
-      <div class="menu-detail-header">
-        <div class="menu-detail-image">
-          <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
-        </div>
+  <PopupCommon @close="onClose">
+    <PressLayer @touchend="onClose">
+      <div class="menu-detail-mask">
+        <div class="menu-detail-card">
+          <div class="menu-detail-header">
+            <div class="menu-detail-image">
+              <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
+            </div>
 
-        <div class="menu-detail-info">
-          <div class="menu-detail-info-name">
-            {{ logic.menu.name }}
-          </div>
+            <div class="menu-detail-info">
+              <div class="menu-detail-info-name">
+                {{ logic.menu.name }}
+              </div>
 
-          <div class="menu-detail-info-desc">
-            {{ logic.menu.description }}
-          </div>
+              <div class="menu-detail-info-desc">
+                {{ logic.menu.description }}
+              </div>
 
-          <div class="menu-detail-info-bottom">
-            <MenuSizeSelector
-              :sizes="logic.sizes"
-              :selectedSize="logic.selectedSize"
-              @on-select="onSelectSize"
-            />
+              <div class="menu-detail-info-bottom">
+                <MenuSizeSelector
+                  :sizes="logic.sizes"
+                  :selectedSize="logic.selectedSize"
+                  @on-select="onSelectSize"
+                />
 
-            <div class="menu-detail-price">
-              {{ formatPrice(logic.menu.price) }}￥
+                <div class="menu-detail-price">
+                  {{ formatPrice(logic.menu.price) }}￥
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="menu-detail-label">
-        <DictText
-          :keyName="
-            logic.toppings.length ? 'HAS_TOPPING_LABEL' : 'SINGLE_MENU_LABEL'
-          "
-        />
-      </div>
-
-      <div class="menu-detail-toppings">
-        <MenuToppingList
-          :toppings="logic.toppings"
-          :selectedToppings="logic.selectedToppings"
-          @on-toggle="onToggleTopping"
-        />
-      </div>
-
-      <div class="menu-detail-footer">
-        <ButtonCommon
-          class="menu-detail-btn-cancel"
-          @touchend="onClose"
-        >
-          <DictText keyName="CANCEL_BUTTON" />
-        </ButtonCommon>
-
-        <div class="menu-detail-quantity">
-          <ButtonCommon
-            @touchend.prevent="logic.decrease()"
-            :disabled="logic.quantity <= 1"
-          >
-            −
-          </ButtonCommon>
-          <span>{{ logic.quantity }}</span>
-          <ButtonCommon
-            @touchend.prevent="logic.increase()"
-            :disabled="logic.quantity >= 10"
-          >
-            +
-          </ButtonCommon>
-        </div>
-
-          <div class="menu-detail-total">
-            {{ formatPrice(logic.getTotalPrice()) }}￥
+          <div class="menu-detail-label">
+            <DictText
+              :keyName="
+                logic.toppings.length
+                  ? 'HAS_TOPPING_LABEL'
+                  : 'SINGLE_MENU_LABEL'
+              "
+            />
           </div>
-        </div>
 
-        <ButtonCommon
-          class="menu-detail-btn-confirm"
-          @touchend.prevent="onConfirm"
-        >
-          <DictText keyName="CONFIRM_BUTTON" />
-        </ButtonCommon>
+          <div class="menu-detail-toppings">
+            <MenuToppingList
+              :toppings="logic.toppings"
+              :selectedToppings="logic.selectedToppings"
+              @on-toggle="onToggleTopping"
+            />
+          </div>
+
+          <div class="menu-detail-footer">
+            <ButtonCommon class="menu-detail-btn-cancel" @touchend="onClose">
+              <DictText keyName="CANCEL_BUTTON" />
+            </ButtonCommon>
+
+            <div class="menu-detail-quantity">
+              <ButtonCommon
+                @touchend.prevent="logic.decrease()"
+                :disabled="logic.quantity <= 1"
+              >
+                −
+              </ButtonCommon>
+              <span>{{ logic.quantity }}</span>
+              <ButtonCommon
+                @touchend.prevent="logic.increase()"
+                :disabled="logic.quantity >= 10"
+              >
+                +
+              </ButtonCommon>
+            </div>
+
+            <div class="menu-detail-total">
+              {{ formatPrice(logic.getTotalPrice()) }}￥
+            </div>
+          </div>
+
+          <ButtonCommon
+            class="menu-detail-btn-confirm"
+            @touchend.prevent="onConfirm"
+          >
+            <DictText keyName="CONFIRM_BUTTON" />
+          </ButtonCommon>
+        </div>
       </div>
-    </div>
-  </div>
-</PressLayer>
+    </PressLayer>
+  </PopupCommon>
 </template>
 
 <script lang="ts">
@@ -99,6 +99,7 @@ import MenuToppingList from '@/component/MenuToppingList.vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { MenuSelect } from '@/model/Menu';
 import PressLayer from '@/component/common/PressLayer.vue';
+import { CartStorage } from '@/storage/CartStorage';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
@@ -136,8 +137,8 @@ export default defineComponent({
         imagePath: item.imagePath || '',
       });
 
-      emit('confirm', item);
-      emit('close');
+      emit('on-confirm', item);
+      emit('on-close');
     };
 
     return {
@@ -286,7 +287,7 @@ export default defineComponent({
   color: #fff;
 }
 
-.menu-detail-quantity-plus{
+.menu-detail-quantity-plus {
   width: 100px;
   height: 100px;
   font-size: 48px;
