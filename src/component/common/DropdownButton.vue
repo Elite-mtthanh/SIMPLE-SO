@@ -5,7 +5,7 @@
       :textColor="textColor"
       :icon="icon"
       iconPosition="right"
-      @confirm="toggle"
+      @touchend="onMousedownToggle"
     >
       <slot name="label" />
     </ButtonCommon>
@@ -16,7 +16,7 @@
         :key="item.value"
         class="dropdown-wrapper-panel-item"
         :class="{ active: item.value === modelValue }"
-        @click="select(item.value)"
+        @mousedown.prevent="select(item.value)"
       >
         <span class="dropdown-wrapper-panel-item-label">{{ item.label }}</span>
       </div>
@@ -34,7 +34,7 @@ export interface DropdownItem {
 }
 
 export default defineComponent({
-  name: 'DropdownButtonCommon',
+  name: 'DropdownButton',
   components: { ButtonCommon },
   props: {
     modelValue: {
@@ -62,7 +62,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const open = ref(false);
 
-    const toggle = () => {
+    const onMousedownToggle = () => {
       open.value = !open.value;
     };
 
@@ -73,7 +73,7 @@ export default defineComponent({
 
     return {
       open,
-      toggle,
+      onMousedownToggle,
       select,
     };
   },
@@ -82,6 +82,8 @@ export default defineComponent({
 <style scoped>
 .dropdown-wrapper {
   position: relative;
+  border: 1px solid #475191;
+  border-radius: 6px;
 }
 
 .dropdown-wrapper-panel {
@@ -89,10 +91,8 @@ export default defineComponent({
   bottom: 100%;
   left: 0;
   width: 100%;
-  margin-bottom: 8px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  border-radius: 6px;
 }
 
 .dropdown-wrapper-panel-item {
@@ -106,6 +106,9 @@ export default defineComponent({
   transition: background 0.15s ease;
   color: var(--text-link);
   height: 90px;
+  border: 1px solid #475197;
+  width: 300px;
+  gap: 8px;
 }
 
 .dropdown-wrapper-panel-item.active {
@@ -119,5 +122,6 @@ export default defineComponent({
   line-height: 18px;
   letter-spacing: 0%;
   text-align: center;
+  margin-left: 8px;
 }
 </style>

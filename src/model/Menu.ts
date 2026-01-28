@@ -29,6 +29,7 @@ export interface MenuSelect {
   image_path: string | null;
   price: number;
   select_type: 'size' | 'topping';
+  name: string;
 
   select_name1: string;
   select_name2: string;
@@ -56,7 +57,7 @@ export interface MenuItem {
   select_size?: string;
 }
 
-export interface soldOutMenu {
+export interface StockoutMenu {
   menu_cd: string;
 }
 

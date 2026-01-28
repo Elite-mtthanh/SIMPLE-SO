@@ -7,13 +7,11 @@
     </header>
 
     <div class="menu-pagination-wrapper">
-      <div
-        class="page-btn page-btn-prev"
-        :class="{ 'page-btn-hidden': currentPage === 0 }"
-        @click="onPrev"
-      >
-        <ImageViewCommon src="/Image/menu/prev.png" alt="previous" />
-      </div>
+      <PressLayer v-if="currentPage > 0" @touchend="onPrev">
+        <div class="page-btn page-btn-prev">
+          <ImageView src="/Image/menu/prev.png" alt="previous" />
+        </div>
+      </PressLayer>
 
       <div class="menu-content">
         <MenuItem
@@ -24,13 +22,11 @@
         />
       </div>
 
-      <div
-        class="page-btn page-btn-next"
-        :class="{ 'page-btn-hidden': currentPage === totalPages - 1 }"
-        @click="onNext"
-      >
-        <ImageViewCommon src="/Image/menu/next.png" alt="next" />
-      </div>
+      <PressLayer v-if="currentPage < totalPages - 1" @touchend="onNext">
+        <div class="page-btn page-btn-next">
+          <ImageView src="/Image/menu/next.png" alt="next" />
+        </div>
+      </PressLayer>
     </div>
 
     <div class="menu-pagination" v-if="totalPages > 1">
@@ -45,9 +41,9 @@
     </div>
 
     <div class="menu-footer">
-      <AppFooterCommon
+      <AppFooter
         :mode="FooterMode.Menu"
-        v-model:currentLang="currentLang"
+        :currentLang="currentLang"
         :language-options="languageOptions"
         :cartCount="footerLogic.cartCount"
         @on-open-cart="openOrderList"
@@ -61,37 +57,39 @@
   <MenuDetailDialog
     v-if="selectedMenuCd"
     :menu-cd="selectedMenuCd"
-    @close="selectedMenuCd = null"
+    @on-close="selectedMenuCd = null"
   />
 
   <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
-    @close="onCloseAllergen"
+    @on-close="onCloseAllergen"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { FooterMode } from '@/model/Enums';
-import AllergenDialog from '@/component/AllergenDialog.vue';
-import { MenuListLogic } from '@/logic/page/MenuListLogic';
+import { FooterMode, Language } from '@/model/Enums';
+import { MenuListPageLogic } from '@/logic/page/MenuListPageLogic';
+import AppFooter from '@/component/common/AppFooter.vue';
+import PressLayer from '@/component/common/PressLayer.vue';
+import ImageView from '@/component/common/ImageView.vue';
 import MenuItem from '@/component/MenuItem.vue';
-import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
 import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
+import AllergenDialog from '@/component/AllergenDialog.vue';
 
 export default defineComponent({
   name: 'MenuList',
   components: {
-    AppFooterCommon,
-    AllergenDialog,
+    AppFooter,
+    PressLayer,
+    ImageView,
     MenuItem,
-    ImageViewCommon,
     MenuDetailDialog,
+    AllergenDialog,
   },
   setup() {
-    const logic = new MenuListLogic();
+    const logic = new MenuListPageLogic();
     const selectedMenuCd = ref<string | null>(null);
 
     return {
@@ -128,33 +126,20 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 }
+
 .menu-header {
   height: 111px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .menu-header-label {
   font-size: 70px;
   font-weight: 700;
   color: var(--text-link);
   text-align: center;
-
   max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.menu-content-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-}
-
-.menu-content-menu-grid-item-name {
-  text-align: center;
-  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -165,17 +150,17 @@ export default defineComponent({
   grid-template-columns: repeat(2, 740px);
   grid-template-rows: repeat(2, 300px);
   gap: 27px;
-
   justify-content: center;
   align-content: center;
 }
 
-.menu-pagination {
+.menu-pagination-wrapper {
+  position: relative;
+  width: 100%;
+  height: 627px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 24px;
-  margin-top: 29px;
+  align-items: center;
 }
 
 .page-btn {
@@ -198,9 +183,11 @@ export default defineComponent({
 .page-btn-next {
   right: 20px;
 }
-.page-btn-hidden {
-  visibility: hidden;
-  pointer-events: none;
+
+.menu-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 29px;
 }
 
 .page-dots {
@@ -217,15 +204,6 @@ export default defineComponent({
 
 .dot.active {
   background: var(--text-link);
-}
-
-.menu-pagination-wrapper {
-  position: relative;
-  width: 100%;
-  height: 627px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .menu-footer {

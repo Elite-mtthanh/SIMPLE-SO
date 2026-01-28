@@ -7,7 +7,7 @@ export class DataPool {
 
   public allMenus: Menu[] = [];
   public allSelects: MenuSelect[] = [];
-  public soldOutMenu: Record<string, boolean> = {};
+  public stockoutMenu: Record<string, boolean> = {};
 
   static init(): void {
     if (!this.Instance) {
@@ -23,11 +23,27 @@ export class DataPool {
   }
 
   getMenus(parent_menu_cd: string): Menu[] {
-    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === MenuType.Menu);
+    return this.allMenus.filter(menu =>
+      menu.parent_menu_cd === parent_menu_cd
+      && menu.menu_type === MenuType.Menu
+    );
   }
 
-  getCategories(parent_menu_cd: string = '000'): Menu[] {
-    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === MenuType.Category);
+  hasMenuInCategory(categoryCd: string): boolean {
+    return this.allMenus.some(menu =>
+      menu.menu_type === MenuType.Menu &&
+      typeof menu.parent_menu_cd === 'string' &&
+      menu.parent_menu_cd.trim() === categoryCd
+    );
+  }
+
+
+  getCategories(parent_menu_cd: string): Menu[] {
+    return this.allMenus.filter(menu =>
+      menu.menu_type === MenuType.Category &&
+      !!menu.parent_menu_cd &&
+      menu.parent_menu_cd === parent_menu_cd
+    );
   }
 
   getCategoryByCd(categoryCd: string): Menu | null {
@@ -38,15 +54,15 @@ export class DataPool {
 
   private loadStockout(): void {
     const list = ServiceIF.getStockoutList();
-    this.soldOutMenu = {};
+    this.stockoutMenu = {};
 
     list.forEach(menu => {
-      this.soldOutMenu[menu.menu_cd] = true;
+      this.stockoutMenu[menu.menu_cd] = true;
     });
   }
 
-  isSoldOut(menuCd: string): boolean {
-    return !!this.soldOutMenu[menuCd];
+  isStockout(menuCd: string): boolean {
+    return !!this.stockoutMenu[menuCd];
   }
 
   getMenuByCd(menuCd: string): Menu | null {

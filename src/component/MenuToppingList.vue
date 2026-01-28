@@ -1,21 +1,23 @@
 <template>
   <div class="menu-topping" v-if="toppings.length">
-    <div
+    <PressLayer
       v-for="topping in toppings"
       :key="topping.select_cd"
-      class="menu-topping-item"
-      :class="{ 'menu-topping-item-checked': isChecked(topping) }"
-      @click="onToggleTopping(topping)"
+      @touchend="onToggleTopping(topping)"
     >
-      <div class="menu-topping-image">
-        <ImageViewCommon :src="topping.image_path || ''" fit="cover" />
-      </div>
+      <div
+        class="menu-topping-item"
+        :class="{ 'menu-topping-item-checked': isChecked(topping) }"
+      >
+        <div class="menu-topping-image">
+          <ImageView :src="topping.image_path || ''" fit="cover" />
+        </div>
 
-      <div class="menu-topping-name">
-        {{ topping.select_name1 }}
-      </div>
+        <div class="menu-topping-name">
+          {{ topping.name }}
+        </div>
 
-      <div class="menu-topping-price">{{ formatPrice(topping.price) }}￥</div>
+        <div class="menu-topping-price">{{ formatPrice(topping.price) }}￥</div>
 
       <input type="checkbox" class="menu-topping-checkbox" :checked="isChecked(topping)" readonly />
     </div>
@@ -25,13 +27,15 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { MenuSelect } from '@/model/Menu';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
+import PressLayer from '@/component/common/PressLayer.vue';
 import { formatPrice } from '@/util/FormatPrice';
 
 export default defineComponent({
   name: 'MenuToppingList',
   components: {
-    ImageViewCommon,
+    ImageView,
+    PressLayer,
   },
   props: {
     toppings: {

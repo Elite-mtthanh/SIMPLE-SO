@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="footer-left">
       <div v-if="showBack" class="footer-left-back-icon">
-        <ImageViewCommon :src="backIcon" @click="onBack" />
+        <ImageView :src="backIcon" @mousedown.prevent="onBack" />
       </div>
 
       <DropdownButtonCommon
@@ -14,7 +14,7 @@
         @update:modelValue="onChangeLang"
       >
         <template #label>
-          <DictTextCommon keyName="LANGUAGE_BUTTON" />
+          <DictText keyName="LANGUAGE_BUTTON" />
         </template>
       </DropdownButtonCommon>
 
@@ -22,20 +22,20 @@
         type="primary"
         :icon="bellIcon"
         textColor="inverse"
-        @confirm="onCallStaff"
+        @touchend="onMousedownCallStaff"
         :iconSize="48"
       >
-        <DictTextCommon keyName="CALL_STAFF_BUTTON" />
+        <DictText keyName="CALL_STAFF_BUTTON" />
       </ButtonCommon>
 
       <ButtonCommon
         type="soft"
         :icon="allergenIcon"
         textColor="link"
-        @confirm="onOpenAllergen"
+        @touchend="onMousedownOpenAllergen"
         :iconSize="79"
       >
-        <DictTextCommon keyName="ALLERGEN_BUTTON" />
+        <DictText keyName="ALLERGEN_BUTTON" />
       </ButtonCommon>
     </div>
 
@@ -45,7 +45,7 @@
         :type="cartCount === 0 ? 'neutral' : 'accent'"
         :icon="cartIcon"
         textColor="inverse"
-        @confirm="onOpenCart"
+        @touchend="onMousedownOpenCart"
         :iconSize="50"
         class="footer-right-cart"
         :disabled="cartCount === 0"
@@ -58,11 +58,11 @@
       <div>
         <div class="footer-right-date">
           {{ year }}
-          <DictTextCommon keyName="YEAR_LABEL" />
+          <DictText keyName="YEAR_LABEL" />
           {{ month }}
-          <DictTextCommon keyName="MONTH_LABEL" />
+          <DictText keyName="MONTH_LABEL" />
           {{ day }}
-          <DictTextCommon keyName="DAY_LABEL" />
+          <DictText keyName="DAY_LABEL" />
         </div>
         <div class="footer-right-time">{{ time }}</div>
       </div>
@@ -82,22 +82,22 @@ import {
 } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
-import DropdownButtonCommon from '@/component/common/DropdownButtonCommon.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import DropdownButtonCommon from '@/component/common/DropdownButton.vue';
+import DictText from '@/component/common/DictText.vue';
 import bellIcon from '@/assets/Image/icon/bell-icon.png';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
 import backIcon from '@/assets/Image/icon/back-icon.png';
 import cartIcon from '@/assets/Image/icon/cart-icon.png';
-import ImageViewCommon from './ImageViewCommon.vue';
+import ImageView from './ImageView.vue';
 
 export default defineComponent({
-  name: 'AppFooterCommon',
+  name: 'AppFooter',
   components: {
     ButtonCommon,
     DropdownButtonCommon,
-    DictTextCommon,
-    ImageViewCommon,
+    DictText,
+    ImageView,
   },
   props: {
     mode: {
@@ -133,10 +133,9 @@ export default defineComponent({
         localLang.value = val;
       }
     );
-
-    const year = ref(0);
-    const month = ref(0);
-    const day = ref(0);
+    const year = ref<number | string>(0);
+    const month = ref('');
+    const day = ref('');
     const time = ref('');
 
     let timer: number | undefined;
@@ -145,8 +144,8 @@ export default defineComponent({
       const now = new Date();
 
       year.value = now.getFullYear();
-      month.value = now.getMonth() + 1;
-      day.value = now.getDate();
+      month.value = String(now.getMonth() + 1).padStart(2, '0');
+      day.value = String(now.getDate()).padStart(2, '0');
 
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
@@ -184,15 +183,15 @@ export default defineComponent({
       emit('on-back');
     };
 
-    const onCallStaff = () => {
+    const onMousedownCallStaff = () => {
       emit('on-call-staff');
     };
 
-    const onOpenAllergen = () => {
+    const onMousedownOpenAllergen = () => {
       emit('on-open-allergen');
     };
 
-    const onOpenCart = () => {
+    const onMousedownOpenCart = () => {
       emit('on-open-cart');
     };
 
@@ -215,6 +214,9 @@ export default defineComponent({
       onOpenAllergen,
       onOpenCart,
       displayCartCount,
+      onMousedownCallStaff,
+      onMousedownOpenAllergen,
+      onMousedownOpenCart,
     };
   },
 });
@@ -222,8 +224,8 @@ export default defineComponent({
 
 <style scoped>
 .footer {
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 53px;
+  padding-right: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -231,7 +233,7 @@ export default defineComponent({
 
 .footer-left {
   display: flex;
-  gap: 20px;
+  gap: 27px;
   align-items: center;
 }
 

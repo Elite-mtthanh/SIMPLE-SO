@@ -4,7 +4,7 @@ import StockOutMenuConfig from '@/dummy-data/Stockout.json';
 import DictData from '@/dummy-data/Dict.json';
 import Menus from '@/dummy-data/Menus.json';
 import Selects from '@/dummy-data/Menu_selects.json';
-import { Menu, MenuSelect, soldOutMenu } from '@/model/Menu';
+import { Menu, MenuSelect, StockoutMenu } from '@/model/Menu';
 
 export class Mock implements IService {
   private isCallStaffSuccess: number | null = null;
@@ -41,7 +41,7 @@ export class Mock implements IService {
     return Selects as unknown as MenuSelect[];
   }
 
-  GetStockoutList(): soldOutMenu[] {
+  GetStockoutList(): StockoutMenu[] {
     return JSON.parse(JSON.stringify(StockOutMenuConfig));
   }
 }

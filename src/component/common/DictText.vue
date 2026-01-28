@@ -8,7 +8,7 @@ import { AppConfig } from '@/model/AppConfig';
 import { ServiceIF } from '@/services/ServiceIF';
 
 export default defineComponent({
-  name: 'DictTextCommon',
+  name: 'DictText',
   props: {
     keyName: {
       type: String,

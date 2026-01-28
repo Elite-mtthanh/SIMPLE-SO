@@ -1,9 +1,10 @@
 <template>
-  <PopupCommon @close="onClose">
+<PressLayer @touchend="onClose">
+  <div class="menu-detail-mask">
     <div class="menu-detail-card">
       <div class="menu-detail-header">
         <div class="menu-detail-image">
-          <ImageViewCommon :src="logic.menu.imagePath || ''" fit="cover" />
+          <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
         </div>
 
         <div class="menu-detail-info">
@@ -30,7 +31,7 @@
       </div>
 
       <div class="menu-detail-label">
-        <DictTextCommon
+        <DictText
           :keyName="
             logic.toppings.length ? 'HAS_TOPPING_LABEL' : 'SINGLE_MENU_LABEL'
           "
@@ -48,22 +49,26 @@
       <div class="menu-detail-footer">
         <ButtonCommon
           class="menu-detail-btn-cancel"
-          textColor="inverse"
-          @click="onClose"
+          @touchend="onClose"
         >
-          <DictTextCommon keyName="CANCEL_BUTTON" />
+          <DictText keyName="CANCEL_BUTTON" />
         </ButtonCommon>
 
-        <div class="menu-detail-footer-price">
-          <div class="menu-detail-quantity">
-            <button class="menu-detail-quantity-minus" @click="logic.decrease()" :disabled="logic.quantity <= 1">
-              <ImageViewCommon src="/Image/menu/minus.png" />
-            </button>
-            <span>{{ logic.quantity }}</span>
-            <button class="menu-detail-quantity-plus" @click="logic.increase()" :disabled="logic.quantity >= 10">
-              <ImageViewCommon src="/Image/menu/plus.png" />
-            </button>
-          </div>
+        <div class="menu-detail-quantity">
+          <ButtonCommon
+            @touchend.prevent="logic.decrease()"
+            :disabled="logic.quantity <= 1"
+          >
+            −
+          </ButtonCommon>
+          <span>{{ logic.quantity }}</span>
+          <ButtonCommon
+            @touchend.prevent="logic.increase()"
+            :disabled="logic.quantity >= 10"
+          >
+            +
+          </ButtonCommon>
+        </div>
 
           <div class="menu-detail-total">
             {{ formatPrice(logic.getTotalPrice()) }}￥
@@ -72,38 +77,39 @@
 
         <ButtonCommon
           class="menu-detail-btn-confirm"
-          textColor="inverse"
-          @click="onConfirm"
+          @touchend.prevent="onConfirm"
         >
-          <DictTextCommon keyName="CONFIRM_BUTTON" />
+          <DictText keyName="CONFIRM_BUTTON" />
         </ButtonCommon>
       </div>
     </div>
-  </PopupCommon>
+  </div>
+</PressLayer>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { MenuDetailLogic } from '@/logic/page/MenuDetailLogic';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
+import DictText from '@/component/common/DictText.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import PopupCommon from '@/component/common/PopupCommon.vue';
 import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { MenuSelect } from '@/model/Menu';
-import { CartStorage } from '@/storage/CartStorage';
+import PressLayer from '@/component/common/PressLayer.vue';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
   components: {
-    ImageViewCommon,
-    DictTextCommon,
+    ImageView,
+    DictText,
     ButtonCommon,
     PopupCommon,
     MenuSizeSelector,
     MenuToppingList,
+    PressLayer,
   },
   props: {
     menuCd: {
@@ -111,17 +117,18 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['close', 'confirm'],
+  emits: ['on-close', 'on-confirm'],
   setup(props, { emit }) {
     const logicInstance = new MenuDetailLogic();
     logicInstance.getMenuDetail(props.menuCd);
     const logic = reactive(logicInstance);
 
     const onClose = () => {
-      emit('close');
+      emit('on-close');
     };
 
     const onConfirm = () => {
+      emit('on-confirm', logic.getConfirmData());
       const item = logic.getConfirmData();
 
       CartStorage.addItem({
@@ -291,7 +298,7 @@ export default defineComponent({
   gap: 12px;
 }
 
-.menu-detail-quantity button {
+.menu-detail-quantity ButtonCommon {
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -299,7 +306,7 @@ export default defineComponent({
   font-weight: 700;
 }
 
-.menu-detail-quantity button:disabled {
+.menu-detail-quantity ButtonCommon:disabled {
   background: #bdbdbd;
 }
 

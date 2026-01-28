@@ -1,38 +1,40 @@
 <template>
-  <div
-    class="menu-item"
-    :class="{ 'menu-item-soldout': item.soldOut }"
-    @click="onClick"
-  >
-    <div v-if="item.soldOut" class="menu-item-soldout-overlay">SOLD OUT</div>
+  <PressLayer @touchend="onSelect">
+    <div class="menu-item" :class="{ 'menu-item-soldout': item.soldOut }">
+      <div v-if="item.soldOut" class="menu-item-soldout-overlay">SOLD OUT</div>
 
-    <div class="menu-item-image">
-      <ImageViewCommon :src="item.imagePath || ''" fit="contain" />
-    </div>
+      <div class="menu-item-image">
+        <ImageView :src="item.imagePath || ''" fit="contain" />
+      </div>
 
-    <div class="menu-item-info">
-      <div class="menu-item-info-name">{{ item.name }}</div>
-      <div class="menu-item-info-desc">{{ item.description }}</div>
+      <div class="menu-item-info">
+        <div class="menu-item-info-name">{{ item.name }}</div>
+        <div class="menu-item-info-desc">{{ item.description }}</div>
 
-      <div class="menu-item-info-price">
-        <div class="menu-item-info-price-detail">
-          {{ formatPrice(item.price) }}￥
-          <span v-if="item.hasSelectSize">～</span>
+        <div class="menu-item-info-price">
+          <div class="menu-item-info-price-detail">
+            {{ formatPrice(item.price) }}￥
+            <span v-if="item.hasSelectSize">～</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </PressLayer>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
+import PressLayer from '@/component/common/PressLayer.vue';
 import { MenuItem } from '@/model/Menu';
 import { formatPrice } from '@/util/FormatPrice';
 
 export default defineComponent({
   name: 'MenuItem',
-  components: { ImageViewCommon },
+  components: {
+    ImageView,
+    PressLayer,
+  },
   emits: ['on-select'],
   props: {
     item: {
@@ -41,11 +43,15 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const onClick = () => {
+    const onSelect = () => {
       if (props.item.soldOut) return;
       emit('on-select', props.item.menu_cd);
     };
-    return { onClick, formatPrice };
+
+    return {
+      onSelect,
+      formatPrice,
+    };
   },
 });
 </script>

@@ -1,18 +1,20 @@
 <template>
   <div class="item-splash">
-    <ImageViewCommon :src="image" alt="" />
+    <div class="item-splash-image">
+      <ImageView :src="image" alt="" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import splashAd from '@/assets/Image/guide/splash-ad.png';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
 
 export default defineComponent({
   name: 'splashAd',
   components: {
-    ImageViewCommon,
+    ImageView,
   },
   setup() {
     const image = splashAd;
@@ -29,5 +31,10 @@ export default defineComponent({
   gap: 12px;
   width: 1379px;
   height: 337px;
+}
+
+.item-splash-image {
+  width: 1040px;
+  height: 280px;
 }
 </style>

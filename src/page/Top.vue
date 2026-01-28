@@ -9,7 +9,7 @@
     </keep-alive>
 
     <keep-alive v-if="commonDialogSettings.isShow && commonDialogSettings.info">
-      <GlobalDialogCommon :dialog-args="commonDialogSettings.info" />
+      <GlobalDialog :dialog-args="commonDialogSettings.info" />
     </keep-alive>
 
     <keep-alive>
@@ -26,7 +26,7 @@ import { defineComponent, computed } from 'vue';
 import { TopLogic } from '@/logic/page/TopLogic';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import StartPage from '@/page/StartPage.vue';
-import GlobalDialogCommon from '@/component/common/GlobalDialogCommon.vue';
+import GlobalDialog from '@/component/common/GlobalDialog.vue';
 import CategoryListPage from '@/page/CategoryListPage.vue';
 import MenuListPage from '@/page/MenuListPage.vue';
 import OrderListDialog from '@/component/OrderListDialog.vue';
@@ -35,7 +35,7 @@ export default defineComponent({
   name: 'top-page',
   components: {
     StartPage,
-    GlobalDialogCommon,
+    GlobalDialog,
     CategoryListPage,
     MenuListPage,
     OrderListDialog,

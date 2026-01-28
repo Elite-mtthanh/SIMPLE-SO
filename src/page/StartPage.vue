@@ -1,61 +1,65 @@
 <template>
-  <div class="splash-page" @click="onGoToCategory">
-    <header class="splash-page-header">
-      <span class="splash-page-header-desk-label">
-        <DictTextCommon keyName="DESK_NUMBER_LABEL" /> :
-        {{ splashData?.deskNumber }}
-      </span>
-    </header>
+  <div class="splash-page">
+    <div class="splash-page-content">
+      <PressLayer @touchend="onGoToCategory">
+        <header class="splash-page-header">
+          <span class="splash-page-header-desk-label">
+            <DictText keyName="DESK_NUMBER_LABEL" /> :
+            {{ splashData?.deskNumber }}
+          </span>
+        </header>
+      </PressLayer>
+      <div class="splash-page-guide">
+        <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
+        <SplashAd v-else-if="splashData?.splashType === SplashType.SLIDESHOW" />
+      </div>
 
-    <div class="splash-page-guide" @click.stop>
-      <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
-      <SplashAd v-else-if="splashData?.splashType === SplashType.SLIDESHOW" />
+      <PressLayer @touchend="onGoToCategory">
+        <div class="splash-page-hint-text">
+          <DictText keyName="START_LABEL" />
+        </div>
+      </PressLayer>
     </div>
-
-    <div class="splash-page-hint-text">
-      <DictTextCommon keyName="START_LABEL" />
-    </div>
-
-    <AppFooterCommon
-      @click.stop
-      :mode="FooterMode.Splash"
-      v-model:currentLang="currentLang"
-      :language-options="languageOptions"
-      :year="2024"
-      :month="12"
-      :day="3"
-      time="10 : 00"
-      @on-call-staff="onCallStaff"
-      @on-open-allergen="onOpenAllergen"
-    />
   </div>
+
+  <AppFooter
+    :mode="FooterMode.Splash"
+    :currentLang="currentLang"
+    :language-options="languageOptions"
+    @update:currentLang="onChangeLang"
+    @on-call-staff="onCallStaff"
+    @on-open-allergen="onOpenAllergen"
+  />
 
   <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
-    @close="onCloseAllergen"
+    @on-close="onCloseAllergen"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
-import { FooterMode, Language } from '@/model/Enums';
+
 import SplashGuide from '@/component/SplashGuide.vue';
 import SplashAd from '@/component/SplashAd.vue';
-import DictTextCommon from '@/component/common/DictTextCommon.vue';
-import AppFooterCommon from '@/component/common/AppFooterCommon.vue';
+import DictText from '@/component/common/DictText.vue';
+import AppFooter from '@/component/common/AppFooter.vue';
 import AllergenDialog from '@/component/AllergenDialog.vue';
-import { SplashType } from '@/model/Enums';
+import PressLayer from '@/component/common/PressLayer.vue';
+
+import { FooterMode, Language, SplashType } from '@/model/Enums';
 
 export default defineComponent({
-  name: 'splash-page',
+  name: 'SplashPage',
   components: {
     SplashGuide,
     SplashAd,
-    DictTextCommon,
-    AppFooterCommon,
+    DictText,
+    AppFooter,
     AllergenDialog,
+    PressLayer,
   },
   setup() {
     const logic = new StartPageLogic();
@@ -89,6 +93,13 @@ export default defineComponent({
   flex-direction: column;
 }
 
+.splash-page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .splash-page-header {
   height: 1615px;
   height: 272px;
@@ -115,16 +126,17 @@ export default defineComponent({
 }
 
 .splash-page-hint-text {
-  height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 123px;
   width: 1585px;
   font-size: 60px;
   line-height: 18px;
-  text-align: center;
   font-weight: 600;
-  vertical-align: middle;
   color: var(--text-error);
   font-style: Semi Bold;
-  margin-top: 133px;
+  margin-top: 111px;
   margin-bottom: 44px;
 }
 </style>

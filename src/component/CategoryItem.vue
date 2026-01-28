@@ -1,26 +1,32 @@
 <template>
-  <div class="category-content-block" @click="onClick">
-    <div class="category-content-block-image">
-      <ImageViewCommon
-        :src="category.image_path || ''"
-        fit="cover"
-        class="category-content-block-image-detail"
-      />
+  <PressLayer @touchend="onSelect">
+    <div class="category-content-block">
+      <div class="category-content-block-image">
+        <ImageView
+          :src="category.image_path || ''"
+          fit="cover"
+          class="category-content-block-image-detail"
+        />
+      </div>
+      <div class="category-content-block-title">
+        {{ category.name }}
+      </div>
     </div>
-    <div class="category-content-block-title">
-      {{ category.name }}
-    </div>
-  </div>
+  </PressLayer>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import ImageViewCommon from '@/component/common/ImageViewCommon.vue';
+import ImageView from '@/component/common/ImageView.vue';
+import PressLayer from '@/component/common/PressLayer.vue';
 import { Category } from '@/model/Menu';
 
 export default defineComponent({
   name: 'CategoryBlock',
-  components: { ImageViewCommon },
+  components: {
+    ImageView,
+    PressLayer,
+  },
   props: {
     category: {
       type: Object as PropType<Category>,
@@ -29,11 +35,11 @@ export default defineComponent({
   },
   emits: ['select'],
   setup(props, { emit }) {
-    const onClick = () => {
+    const onSelect = () => {
       emit('select', props.category);
     };
 
-    return { onClick };
+    return { onSelect };
   },
 });
 </script>
@@ -56,6 +62,7 @@ export default defineComponent({
 
 .category-content-block-title {
   width: 300px;
+  height: 70px;
   font-size: 40px;
   font-weight: 600;
   text-align: center;
