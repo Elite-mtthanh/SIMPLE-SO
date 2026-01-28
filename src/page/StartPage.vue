@@ -1,36 +1,35 @@
 <template>
-  <PressLayer @touchend="onGoToCategory">
-    <div class="splash-page">
-      <div class="splash-page-content">
+  <div class="splash-page">
+    <div class="splash-page-content">
+      <PressLayer @touchend="onGoToCategory">
         <header class="splash-page-header">
           <span class="splash-page-header-desk-label">
             <DictText keyName="DESK_NUMBER_LABEL" /> :
             {{ splashData?.deskNumber }}
           </span>
         </header>
+      </PressLayer>
+      <div class="splash-page-guide">
+        <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
+        <SplashAd v-else-if="splashData?.splashType === SplashType.SLIDESHOW" />
+      </div>
 
-        <div class="splash-page-guide">
-          <SplashGuide v-if="splashData?.splashType === SplashType.GUIDE" />
-          <SplashAd
-            v-else-if="splashData?.splashType === SplashType.SLIDESHOW"
-          />
-        </div>
-
+      <PressLayer @touchend="onGoToCategory">
         <div class="splash-page-hint-text">
           <DictText keyName="START_LABEL" />
         </div>
-      </div>
-
-      <AppFooter
-        :mode="FooterMode.Splash"
-        :currentLang="currentLang"
-        :language-options="languageOptions"
-        @update:currentLang="onChangeLang"
-        @on-call-staff="onCallStaff"
-        @on-open-allergen="onOpenAllergen"
-      />
+      </PressLayer>
     </div>
-  </PressLayer>
+  </div>
+
+  <AppFooter
+    :mode="FooterMode.Splash"
+    :currentLang="currentLang"
+    :language-options="languageOptions"
+    @update:currentLang="onChangeLang"
+    @on-call-staff="onCallStaff"
+    @on-open-allergen="onOpenAllergen"
+  />
 
   <AllergenDialog
     v-if="showAllergen"
