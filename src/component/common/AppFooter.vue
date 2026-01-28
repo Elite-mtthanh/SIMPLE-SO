@@ -22,7 +22,7 @@
         type="primary"
         :icon="bellIcon"
         textColor="inverse"
-        @mousedown="onMousedownCallStaff"
+        @touchend="onMousedownCallStaff"
         :iconSize="48"
       >
         <DictText keyName="CALL_STAFF_BUTTON" />
@@ -32,7 +32,7 @@
         type="soft"
         :icon="allergenIcon"
         textColor="link"
-        @mousedown="onMousedownOpenAllergen"
+        @touchend="onMousedownOpenAllergen"
         :iconSize="79"
       >
         <DictText keyName="ALLERGEN_BUTTON" />
@@ -45,7 +45,7 @@
         :type="cartCount === 0 ? 'neutral' : 'accent'"
         :icon="cartIcon"
         textColor="inverse"
-        @mousedown="onMousedownOpenCart"
+        @touchend="onMousedownOpenCart"
         :iconSize="50"
         class="footer-right-cart"
         :disabled="cartCount === 0"

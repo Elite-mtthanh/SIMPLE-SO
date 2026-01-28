@@ -15,7 +15,7 @@
         <ButtonCommon
           type="neutral"
           text-color="inverse"
-          @mousedown="onMousedownCloseAllergen"
+          @touchend="onMousedownCloseAllergen"
         >
           <DictText keyName="CLOSE_BUTTON" />
         </ButtonCommon>

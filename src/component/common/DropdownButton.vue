@@ -5,7 +5,7 @@
       :textColor="textColor"
       :icon="icon"
       iconPosition="right"
-      @mousedown="onMousedownToggle"
+      @touchend="onMousedownToggle"
     >
       <slot name="label" />
     </ButtonCommon>

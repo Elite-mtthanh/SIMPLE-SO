@@ -59,7 +59,7 @@ export default defineComponent({
     iconSize: { type: Number, default: 24 },
   },
   components: { ImageView },
-  emits: ['mousedown'],
+  emits: ['touchend'],
   setup(props, { emit }) {
     const el = ref<HTMLElement | null>(null);
     const pressed = ref(false);
@@ -120,7 +120,7 @@ export default defineComponent({
       pressed.value = false;
 
       if (valid) {
-        emit('mousedown', props.id);
+        emit('touchend', props.id);
       }
     };
 

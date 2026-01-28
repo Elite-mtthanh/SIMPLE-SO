@@ -47,21 +47,21 @@
       <div class="menu-detail-footer">
         <ButtonCommon
           class="menu-detail-btn-cancel"
-          @mousedown.prevent="onClose"
+          @touchend="onClose"
         >
           <DictText keyName="CANCEL_BUTTON" />
         </ButtonCommon>
 
         <div class="menu-detail-quantity">
           <ButtonCommon
-            @mousedown.prevent="logic.decrease()"
+            @touchend.prevent="logic.decrease()"
             :disabled="logic.quantity <= 1"
           >
             −
           </ButtonCommon>
           <span>{{ logic.quantity }}</span>
           <ButtonCommon
-            @mousedown.prevent="logic.increase()"
+            @touchend.prevent="logic.increase()"
             :disabled="logic.quantity >= 10"
           >
             +
@@ -74,7 +74,7 @@
 
         <ButtonCommon
           class="menu-detail-btn-confirm"
-          @mousedown.prevent="onConfirm"
+          @touchend.prevent="onConfirm"
         >
           <DictText keyName="CONFIRM_BUTTON" />
         </ButtonCommon>

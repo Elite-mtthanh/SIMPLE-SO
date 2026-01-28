@@ -35,7 +35,7 @@
           :id="btn.id"
           :type="getButtonCommonType(btn.id)"
           text-color="inverse"
-          @mousedown="onMousedownClick"
+          @touchend="onMousedownClick"
         >
           <DictText :keyName="btn.text" />
         </ButtonCommon>
