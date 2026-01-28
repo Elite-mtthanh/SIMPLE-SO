@@ -1,10 +1,10 @@
 import { ref, Ref } from 'vue';
 import { AppConfig } from '../../model/AppConfig';
-import { Language, DialogButtonId, DialogMessageType } from '../../model/Enums';
 import { ServiceIF } from '../../services/ServiceIF';
 import { DialogArgs } from '../../model/Dialog';
 import { GlobalEvent } from './GlobalEvent';
 import bellIcon from '../../assets/Image/icon/bell-dialog-icon.png';
+import { DialogButtonId, DialogMessageType, Language } from '@/model/Enums';
 
 export class FooterLogic {
   /** allergen dialog visibility status */
@@ -13,8 +13,8 @@ export class FooterLogic {
   /** available language options */
   readonly languageOptions = [
     { label: '日本語', value: Language.JA },
-    { label: '中文', value: Language.ZH },
-    { label: 'English', value: Language.EN }
+    { label: 'English', value: Language.EN },
+    { label: '中文', value: Language.ZH }
   ];
 
   /**

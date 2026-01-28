@@ -7,7 +7,7 @@
       :class="{
         'menu-size-item-active': selectedSize?.select_cd === size.select_cd,
       }"
-      @mousedown.prevent="onSelectSize(size)"
+      @mousedown="onSelectSize(size)"
     >
       {{ size.name }}
     </ButtonCommon>

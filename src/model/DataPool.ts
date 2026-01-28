@@ -23,11 +23,27 @@ export class DataPool {
   }
 
   getMenus(parent_menu_cd: string): Menu[] {
-    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === MenuType.Menu);
+    return this.allMenus.filter(menu =>
+      menu.parent_menu_cd === parent_menu_cd
+      && menu.menu_type === MenuType.Menu
+    );
   }
 
-  getCategories(parent_menu_cd: string = '000'): Menu[] {
-    return this.allMenus.filter(menu => menu.parent_menu_cd === parent_menu_cd && menu.menu_type === MenuType.Category);
+  hasMenuInCategory(categoryCd: string): boolean {
+    return this.allMenus.some(menu =>
+      menu.menu_type === MenuType.Menu &&
+      typeof menu.parent_menu_cd === 'string' &&
+      menu.parent_menu_cd.trim() === categoryCd
+    );
+  }
+
+
+  getCategories(parent_menu_cd: string): Menu[] {
+    return this.allMenus.filter(menu =>
+      menu.menu_type === MenuType.Category &&
+      !!menu.parent_menu_cd &&
+      menu.parent_menu_cd === parent_menu_cd
+    );
   }
 
   getCategoryByCd(categoryCd: string): Menu | null {

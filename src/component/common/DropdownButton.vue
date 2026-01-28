@@ -82,6 +82,8 @@ export default defineComponent({
 <style scoped>
 .dropdown-wrapper {
   position: relative;
+  border: 1px solid #475191;
+  border-radius: 6px;
 }
 
 .dropdown-wrapper-panel {
@@ -89,10 +91,8 @@ export default defineComponent({
   bottom: 100%;
   left: 0;
   width: 100%;
-  margin-bottom: 8px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  border-radius: 6px;
 }
 
 .dropdown-wrapper-panel-item {
@@ -106,6 +106,9 @@ export default defineComponent({
   transition: background 0.15s ease;
   color: var(--text-link);
   height: 90px;
+  border: 1px solid #475197;
+  width: 300px;
+  gap: 8px;
 }
 
 .dropdown-wrapper-panel-item.active {
@@ -119,5 +122,6 @@ export default defineComponent({
   line-height: 18px;
   letter-spacing: 0%;
   text-align: center;
+  margin-left: 8px;
 }
 </style>

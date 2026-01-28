@@ -6,14 +6,12 @@
       `bg-button-${type}`,
       { disabled, pressed, 'base-button-has-icon': !!icon },
     ]"
-    @mousedown="onMouseDown"
-    @mouseup="onMouseUp"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
     @touchstart="onTouchStart"
-    @touchend="onTouchEnd"
     @touchmove="onTouchMove"
-    @touchcancel="onTouchCancel"
+    @touchend="onTouchEnd"
+    @mousedown="onTouchStart"
+    @mouseleave="onTouchMove"
+    @mouseup="onTouchEnd"
   >
     <div
       v-if="icon && iconPosition === 'left'"
@@ -48,43 +46,20 @@ import ImageView from './ImageView.vue';
 export default defineComponent({
   name: 'ButtonCommon',
   props: {
-    type: {
-      type: String,
-      default: 'primary',
-    },
-    textColor: {
-      type: String,
-      default: 'primary',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    id: {
-      type: Number,
-      default: 0,
-    },
-    text: {
-      type: String,
-      default: '',
-    },
-    icon: {
-      type: String,
-      default: '',
-    },
+    type: { type: String, default: 'primary' },
+    textColor: { type: String, default: 'primary' },
+    disabled: { type: Boolean, default: false },
+    id: { type: Number, default: 0 },
+    text: { type: String, default: '' },
+    icon: { type: String, default: '' },
     iconPosition: {
       type: String as () => 'left' | 'right',
       default: 'left',
     },
-    iconSize: {
-      type: Number,
-      default: 24,
-    },
+    iconSize: { type: Number, default: 24 },
   },
-  components: {
-    ImageView,
-  },
-  emits: ['confirm'],
+  components: { ImageView },
+  emits: ['mousedown'],
   setup(props, { emit }) {
     const el = ref<HTMLElement | null>(null);
     const pressed = ref(false);
@@ -98,53 +73,55 @@ export default defineComponent({
       );
     };
 
-    const onMouseDown = () => {
-      if (props.disabled) return;
-      pressed.value = true;
-      active.value = true;
-    };
-
-    const onMouseUp = () => {
-      if (!active.value || !pressed.value) return;
-      pressed.value = false;
-      active.value = false;
-      emit('confirm', props.id);
-    };
-
-    const onMouseEnter = () => {
-      if (active.value) pressed.value = true;
-    };
-
-    const onMouseLeave = () => {
-      pressed.value = false;
-    };
-
     const onTouchStart = () => {
       if (props.disabled) return;
-      pressed.value = true;
       active.value = true;
+      pressed.value = true;
     };
 
-    const onTouchMove = (e: TouchEvent) => {
+    const onTouchMove = (e: TouchEvent | MouseEvent) => {
       if (!active.value) return;
-      const t = e.touches[0];
-      pressed.value = isInside(t.clientX, t.clientY);
+
+      let x = 0;
+      let y = 0;
+
+      if (e instanceof TouchEvent) {
+        const t = e.touches[0];
+        if (!t) return;
+        x = t.clientX;
+        y = t.clientY;
+      } else {
+        x = e.clientX;
+        y = e.clientY;
+      }
+
+      pressed.value = isInside(x, y);
     };
 
-    const onTouchEnd = (e: TouchEvent) => {
+    const onTouchEnd = (e: TouchEvent | MouseEvent) => {
       if (!active.value) return;
-      const t = e.changedTouches[0];
-      const valid = isInside(t.clientX, t.clientY);
 
-      pressed.value = false;
+      let x = 0;
+      let y = 0;
+
+      if (e instanceof TouchEvent) {
+        const t = e.changedTouches[0];
+        if (!t) return;
+        x = t.clientX;
+        y = t.clientY;
+      } else {
+        x = e.clientX;
+        y = e.clientY;
+      }
+
+      const valid = isInside(x, y);
+
       active.value = false;
-
-      if (valid) emit('confirm', props.id);
-    };
-
-    const onTouchCancel = () => {
       pressed.value = false;
-      active.value = false;
+
+      if (valid) {
+        emit('mousedown', props.id);
+      }
     };
 
     const iconWrapperStyle = computed(() => ({
@@ -155,14 +132,9 @@ export default defineComponent({
     return {
       el,
       pressed,
-      onMouseDown,
-      onMouseUp,
-      onMouseEnter,
-      onMouseLeave,
       onTouchStart,
       onTouchMove,
       onTouchEnd,
-      onTouchCancel,
       iconWrapperStyle,
     };
   },
@@ -197,9 +169,11 @@ export default defineComponent({
 }
 
 .base-button-text {
-  font-size: 22px;
-  font-weight: 700;
-  white-space: nowrap;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 18px;
+  letter-spacing: 0%;
+  text-align: right;
 }
 
 .base-button-text-icon {

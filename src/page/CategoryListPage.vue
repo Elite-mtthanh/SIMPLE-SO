@@ -6,13 +6,15 @@
       </span>
     </header>
 
-    <div class="category-content">
-      <CategoryItem
-        v-for="category in categories"
-        :key="category.id"
-        :category="category"
-        @select="onSelectCategory"
-      />
+    <div class="category-content-wrapper">
+      <div class="category-content">
+        <CategoryItem
+          v-for="category in categories"
+          :key="category.id"
+          :category="category"
+          @select="onSelectCategory"
+        />
+      </div>
     </div>
 
     <AppFooter
@@ -27,7 +29,7 @@
   <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
-    @close="onCloseAllergen"
+    @on-close="onCloseAllergen"
   />
 </template>
 
@@ -74,7 +76,7 @@ export default defineComponent({
   flex-direction: column;
 }
 .category-header {
-  height: 1677px;
+  width: 1677px;
   height: 107px;
   display: flex;
   align-items: center;
@@ -100,11 +102,18 @@ export default defineComponent({
   text-overflow: ellipsis;
 }
 
-.category-content {
+.category-content-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px 16px;
   margin-bottom: 43px;
+}
+
+.category-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 17px 20px;
+  width: 1580px; 
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
-  <div class="menu-detail-mask" @mousedown.self.prevent="onClose">
+<PressLayer @touchend="onClose">
+  <div class="menu-detail-mask">
     <div class="menu-detail-card">
       <div class="menu-detail-header">
         <div class="menu-detail-image">
@@ -80,6 +81,7 @@
       </div>
     </div>
   </div>
+</PressLayer>
 </template>
 
 <script lang="ts">
@@ -92,6 +94,7 @@ import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { MenuSelect } from '@/model/Menu';
+import PressLayer from '@/component/common/PressLayer.vue';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
@@ -101,6 +104,7 @@ export default defineComponent({
     ButtonCommon,
     MenuSizeSelector,
     MenuToppingList,
+    PressLayer,
   },
   props: {
     menuCd: {
@@ -108,18 +112,18 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['close', 'confirm'],
+  emits: ['on-close', 'on-confirm'],
   setup(props, { emit }) {
     const logicInstance = new MenuDetailLogic();
     logicInstance.load(props.menuCd);
     const logic = reactive(logicInstance);
 
     const onClose = () => {
-      emit('close');
+      emit('on-close');
     };
 
     const onConfirm = () => {
-      emit('confirm', logic.getConfirmData());
+      emit('on-confirm', logic.getConfirmData());
     };
 
     return {

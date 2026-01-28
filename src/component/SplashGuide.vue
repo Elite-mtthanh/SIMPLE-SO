@@ -6,7 +6,9 @@
       :key="index"
     >
       <div class="splash-item-step-card">
-        <ImageView :src="item.image" alt="" />
+        <div class="splash-item-step-card-image">
+          <ImageView :src="item.image" alt="" />
+        </div>
         <DictText :keyName="item.key" class="splash-item-step-card-text" />
       </div>
 
@@ -16,8 +18,8 @@
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
+          width="48"
+          height="48"
           viewBox="0 0 20 20"
         >
           <path
@@ -67,7 +69,6 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
 }
 
 .splash-item-step {
@@ -78,13 +79,12 @@ export default defineComponent({
 .splash-item-step-card {
   width: 250px;
   height: 300px;
-  background-color: #d8ebe3;
-  border-radius: 12px;
+  background-color: var(--background-items);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   text-align: center;
 }
 
@@ -94,19 +94,29 @@ export default defineComponent({
   object-fit: contain;
 }
 
+.splash-item-step-card-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .splash-item-step-card-text {
   color: var(--text-link);
   font-size: 30px;
   line-height: 35px;
   text-align: center;
   vertical-align: middle;
-  padding: 20px 16px;
+  height: 97px;
+  width: 250px;
+  font-weight: 600;
+  margin-top: 29px;
 }
 
 .splash-item-step-arrow {
   font-size: 28px;
   font-weight: 700;
-  color: #333;
-  margin: 0 10px;
+  color: var(--text-primary);
+  margin-left: 6px;
+  margin-right: 6px;
 }
 </style>

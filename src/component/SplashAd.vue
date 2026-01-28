@@ -1,6 +1,8 @@
 <template>
   <div class="item-splash">
-    <ImageView :src="image" alt="" />
+    <div class="item-splash-image">
+      <ImageView :src="image" alt="" />
+    </div>
   </div>
 </template>
 
@@ -29,5 +31,10 @@ export default defineComponent({
   gap: 12px;
   width: 1379px;
   height: 337px;
+}
+
+.item-splash-image {
+  width: 1040px;
+  height: 280px;
 }
 </style>

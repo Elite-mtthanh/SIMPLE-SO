@@ -1,11 +1,11 @@
 import { ref, computed, watch, Ref } from 'vue';
 import { DataPool } from '@/model/DataPool';
-import { Language } from '@/model/Enums';
 import { Menu, MenuItem } from '@/model/Menu';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
 import { AppConfig } from '@/model/AppConfig';
 import { getMenuDescription, getMenuName } from '@/util/DictNormalizerUtil';
+import { Language } from '@/model/Enums';
 
 export class MenuListPageLogic {
   private dataPool = DataPool.Instance;

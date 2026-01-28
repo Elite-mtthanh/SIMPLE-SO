@@ -50,7 +50,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['close'],
+  emits: ['on-close'],
   setup(props, { emit }) {
     const image = computed(() => {
       switch (props.currentLang) {
@@ -65,7 +65,7 @@ export default defineComponent({
     });
 
     const onMousedownCloseAllergen = () => {
-      emit('close');
+      emit('on-close');
     };
 
     return { image, allergenIcon, onMousedownCloseAllergen };
@@ -99,7 +99,7 @@ export default defineComponent({
 
 .allergen-header-icon {
   width: 79px;
-  height: 70px;
+  height: 75px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -14,16 +14,21 @@ export class CategoryListPageLogic {
 
   /** allergen dialog visibility status */
   readonly showAllergen = this.footerLogic.showAllergen;
-  
+
   /** current language */
   readonly currentLang = this.config.currentLang;
-  
+
   /** get list of categories */
   readonly categoryList = computed(() => {
     const parentMenuCd = '000';
     const lang = this.config.currentLang.value;
 
-    const categories = this.dataPool.getCategories(parentMenuCd);
+    const categories = this.dataPool
+      .getCategories(parentMenuCd)
+      .filter(category =>
+        this.dataPool.hasMenuInCategory(category.menu_cd)
+      )
+      .slice(0, 10);
 
     return categories.map(menu => ({
       id: menu.id,

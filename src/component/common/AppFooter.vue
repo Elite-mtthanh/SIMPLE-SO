@@ -130,10 +130,9 @@ export default defineComponent({
         localLang.value = val;
       }
     );
-
-    const year = ref(0);
-    const month = ref(0);
-    const day = ref(0);
+    const year = ref<number | string>(0);
+    const month = ref('');
+    const day = ref('');
     const time = ref('');
 
     let timer: number | undefined;
@@ -142,8 +141,8 @@ export default defineComponent({
       const now = new Date();
 
       year.value = now.getFullYear();
-      month.value = now.getMonth() + 1;
-      day.value = now.getDate();
+      month.value = String(now.getMonth() + 1).padStart(2, '0');
+      day.value = String(now.getDate()).padStart(2, '0');
 
       const h = String(now.getHours()).padStart(2, '0');
       const m = String(now.getMinutes()).padStart(2, '0');
@@ -213,8 +212,8 @@ export default defineComponent({
 
 <style scoped>
 .footer {
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 53px;
+  padding-right: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -222,7 +221,7 @@ export default defineComponent({
 
 .footer-left {
   display: flex;
-  gap: 20px;
+  gap: 27px;
   align-items: center;
 }
 
