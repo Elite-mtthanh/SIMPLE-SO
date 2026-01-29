@@ -21,6 +21,8 @@
       :mode="FooterMode.Category"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
+      :cartCount="footerLogic.cartCount"
+      @on-open-cart="openOrderList"
       @on-call-staff="onCallStaff"
       @on-open-allergen="onOpenAllergen"
     />
@@ -59,12 +61,14 @@ export default defineComponent({
       currentLang: logic.currentLang,
       showAllergen: logic.showAllergen,
       languageOptions: logic.languageOptions,
+      footerLogic: logic,
 
       onCallStaff: () => logic.callStaff(),
       onOpenAllergen: () => logic.openAllergen(),
       onCloseAllergen: () => logic.closeAllergen(),
       onSelectCategory: (category: any) => logic.goToMenuPage(category),
       onChangeLang: (lang: Language) => logic.changeLanguage(lang),
+      openOrderList: () => logic.openOrderList(),
     };
   },
 });

@@ -77,4 +77,11 @@ export class FooterLogic {
 
     await GlobalEvent.Instance.showCommonDialog(resultDialog);
   }
+
+  /**
+   * open order list page
+   */
+  openCart(): void {
+    GlobalEvent.Instance.goToOrderListPage();
+  }
 }

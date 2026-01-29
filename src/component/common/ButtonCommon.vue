@@ -99,7 +99,7 @@ export default defineComponent({
     };
 
     const onTouchEnd = (e: TouchEvent | MouseEvent) => {
-      if (!active.value) return;
+      if (props.disabled) return;
 
       let x = 0;
       let y = 0;
@@ -114,14 +114,12 @@ export default defineComponent({
         y = e.clientY;
       }
 
-      const valid = isInside(x, y);
+      if (isInside(x, y)) {
+        emit('touchend', props.id);
+      }
 
       active.value = false;
       pressed.value = false;
-
-      if (valid) {
-        emit('touchend', props.id);
-      }
     };
 
     const iconWrapperStyle = computed(() => ({

@@ -6,6 +6,7 @@ import { Menu } from '@/model/Menu';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
 import { getMenuName } from '@/util/DictNormalizerUtil';
+import { CartStorage } from '@/storage/CartStorage';
 
 export class CategoryListPageLogic {
   private dataPool = DataPool.Instance;
@@ -80,5 +81,13 @@ export class CategoryListPageLogic {
   goToMenuPage(categoryCode: Menu): void {
     GlobalEvent.Instance.goToMenuPage(categoryCode.menu_cd);
     console.log(categoryCode.menu_cd)
+  }
+
+  openOrderList(): void {
+    GlobalEvent.Instance.goToOrderListPage();
+  }
+
+  get cartCount(): number {
+    return CartStorage.getCart().length;
   }
 }

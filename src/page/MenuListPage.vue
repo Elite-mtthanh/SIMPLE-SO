@@ -7,32 +7,40 @@
     </header>
 
     <div class="menu-pagination-wrapper">
-      <PressLayer v-if="currentPage > 0" @touchend="onPrev">
-        <div class="page-btn page-btn-prev">
-          <ImageView src="/Image/menu/prev.png" alt="previous" />
+      <div class="swipe-area" @touchstart="onSwipeStart" @touchend="onSwipeEnd">
+        <div class="menu-content">
+          <MenuItem
+            v-for="menu in pagedMenus"
+            :key="menu.id"
+            :item="menu"
+            @on-select="onMenuClick"
+          />
         </div>
-      </PressLayer>
-
-      <div class="menu-content">
-        <MenuItem
-          v-for="menu in pagedMenus"
-          :key="menu.id"
-          :item="menu"
-          @on-select="onMenuClick"
-        />
       </div>
 
-      <PressLayer v-if="currentPage < totalPages - 1" @touchend="onNext">
-        <div class="page-btn page-btn-next">
-          <ImageView src="/Image/menu/next.png" alt="next" />
-        </div>
-      </PressLayer>
+      <div
+        v-if="currentPage > 0"
+        class="page-btn page-btn-prev"
+        @click="onPrev"
+        @touchend.prevent="onPrev"
+      >
+        <ImageView src="/Image/menu/prev.png" />
+      </div>
+
+      <div
+        v-if="currentPage < totalPages - 1"
+        class="page-btn page-btn-next"
+        @click="onNext"
+        @touchend.prevent="onNext"
+      >
+        <ImageView src="/Image/menu/next.png" />
+      </div>
     </div>
 
     <div class="menu-pagination" v-if="totalPages > 1">
       <div class="page-dots">
         <span
-          v-for="i in totalPages"
+          v-for="i in visiblePages"
           :key="i"
           class="dot"
           :class="{ active: i - 1 === currentPage }"
@@ -45,7 +53,8 @@
         :mode="FooterMode.Menu"
         :currentLang="currentLang"
         :language-options="languageOptions"
-        @update:currentLang="onChangeLang"
+        :cartCount="footerLogic.cartCount"
+        @on-open-cart="openOrderList"
         @on-call-staff="onCallStaff"
         @on-open-allergen="onOpenAllergen"
         @on-back="onBack"
@@ -68,10 +77,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { FooterMode, Language } from '@/model/Enums';
+import { FooterMode } from '@/model/Enums';
 import { MenuListPageLogic } from '@/logic/page/MenuListPageLogic';
 import AppFooter from '@/component/common/AppFooter.vue';
-import PressLayer from '@/component/common/PressLayer.vue';
 import ImageView from '@/component/common/ImageView.vue';
 import MenuItem from '@/component/MenuItem.vue';
 import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
@@ -81,7 +89,6 @@ export default defineComponent({
   name: 'MenuList',
   components: {
     AppFooter,
-    PressLayer,
     ImageView,
     MenuItem,
     MenuDetailDialog,
@@ -93,14 +100,15 @@ export default defineComponent({
 
     return {
       FooterMode,
-
       currentLang: logic.currentLang,
       languageOptions: logic.languageOptions,
       showAllergen: logic.showAllergen,
+      footerLogic: logic,
 
       categoryName: logic.categoryName,
       pagedMenus: logic.pagedMenus,
       totalPages: logic.totalPages,
+      visiblePages: logic.visiblePages,
       currentPage: logic.pageIndex,
       selectedMenuCd,
 
@@ -110,10 +118,12 @@ export default defineComponent({
       onNext: () => logic.nextPage(),
       onPrev: () => logic.prevPage(),
       onBack: () => logic.backToCategory(),
-      onChangeLang: (lang: Language) => logic.changeLanguage(lang),
+      openOrderList: () => logic.openOrderList(),
       onMenuClick: (menuCd: string) => {
         selectedMenuCd.value = menuCd;
       },
+      onSwipeStart: (event: TouchEvent) => logic.onTouchStart(event),
+      onSwipeEnd: (event: TouchEvent) => logic.onTouchEnd(event),
     };
   },
 });
@@ -141,6 +151,16 @@ export default defineComponent({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.swipe-area {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.page-btn {
+  z-index: 5;
 }
 
 .menu-content {

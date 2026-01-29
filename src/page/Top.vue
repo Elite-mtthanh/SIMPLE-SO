@@ -22,6 +22,7 @@ import StartPage from '@/page/StartPage.vue';
 import GlobalDialog from '@/component/common/GlobalDialog.vue';
 import CategoryListPage from '@/page/CategoryListPage.vue';
 import MenuListPage from '@/page/MenuListPage.vue';
+import OrderListPage from './OrderListPage.vue';
 
 export default defineComponent({
   name: 'top-page',
@@ -30,6 +31,7 @@ export default defineComponent({
     GlobalDialog,
     CategoryListPage,
     MenuListPage,
+    OrderListPage,
   },
   setup() {
     let logic = new TopLogic();

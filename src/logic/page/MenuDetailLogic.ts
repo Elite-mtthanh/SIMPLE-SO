@@ -2,6 +2,9 @@ import { DataPool } from '@/model/DataPool';
 import { MenuItem, MenuSelect } from '@/model/Menu';
 import { AppConfig } from '@/model/AppConfig';
 import { getMenuDescription, getMenuName, getMenuSelectName } from '@/util/DictNormalizerUtil';
+import { CartStorage } from '@/storage/CartStorage';
+
+const MAX_QUANTITY_PER_MENU = 10;
 
 export class MenuDetailLogic {
   private dataPool = DataPool.Instance;
@@ -29,7 +32,7 @@ export class MenuDetailLogic {
    * load menu details by menu code
    * @param menuCd menu code to load
    */
-  load(menuCd: string): void {
+  getMenuDetail(menuCd: string): void {
     const rawMenu = this.dataPool.getMenuByCd(menuCd);
     if (!rawMenu) {
       return;
@@ -93,10 +96,39 @@ export class MenuDetailLogic {
   }
 
   /**
+   * Get maximum quantity that can be ordered
+   * @returns Maximum quantity considering cart items
+   */
+  getMaxQuantity(): number {
+    const size = this.selectedSize
+      ? {
+          selectCd: this.selectedSize.select_cd,
+          name: this.selectedSize.select_name1,
+          price: this.selectedSize.price,
+        }
+      : null;
+
+    const toppings = this.selectedToppings.map(t => ({
+      selectCd: t.select_cd,
+      name: t.select_name1,
+      price: t.price,
+    }));
+
+    const maxAddable = CartStorage.getMaxAddableQuantity(
+      this.menu.menu_cd,
+      size,
+      toppings
+    );
+
+    return Math.min(MAX_QUANTITY_PER_MENU, maxAddable);
+  }
+
+  /**
    * increase order quantity
    */
   increase(): void {
-    if (this.quantity < 10) {
+    const maxQuantity = this.getMaxQuantity();
+    if (this.quantity < maxQuantity) {
       this.quantity++;
     }
   }
@@ -137,12 +169,53 @@ export class MenuDetailLogic {
    */
   getConfirmData() {
     return {
-      menu: this.menu,
+      menuCd: this.menu.menu_cd,
+      name: this.menu.name,
+      imagePath: this.menu.imagePath,
+      basePrice: this.menu.price,
+
       quantity: this.quantity,
-      size: this.selectedSize,
-      toppings: [...this.selectedToppings],
+
+      size: this.selectedSize
+        ? {
+          selectCd: this.selectedSize.select_cd,
+          name: this.selectedSize.select_name1,
+          price: this.selectedSize.price,
+        }
+        : null,
+
+      toppings: this.selectedToppings.map(t => ({
+        selectCd: t.select_cd,
+        name: t.select_name1,
+        price: t.price,
+      })),
+
       total: this.getTotalPrice(),
     };
+  }
+
+  /**
+   * Load data from cart item for editing
+   * @param cartItem Cart item to load from
+   */
+  loadFromCartItem(cartItem: any): void {
+    // Set quantity
+    this.quantity = cartItem.quantity;
+
+    // Set selected size
+    if (cartItem.size) {
+      const size = this.sizes.find(s => s.select_cd === cartItem.size.selectCd);
+      if (size) {
+        this.selectedSize = size;
+      }
+    }
+
+    // Set selected toppings
+    if (cartItem.toppings && cartItem.toppings.length > 0) {
+      this.selectedToppings = cartItem.toppings
+        .map((t: any) => this.toppings.find(topping => topping.select_cd === t.selectCd))
+        .filter((t: any) => t !== undefined);
+    }
   }
 
   /**

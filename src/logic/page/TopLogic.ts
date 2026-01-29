@@ -10,7 +10,6 @@ export class TopLogic {
     isShow: boolean;
     info: DialogArgs | null;
   };
-
   constructor() {
     this.currentPageName = computed(() => {
       return PageStack.Instance.currentPageName.value;

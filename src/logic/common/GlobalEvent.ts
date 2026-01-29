@@ -97,4 +97,16 @@ export class GlobalEvent {
       new PageArgs('MenuListPage', PageStackType.New, { categoryCode: categoryCode })
     );
   }
+
+  public goToOrderListPage() {
+    this.emitChangeScreen(
+      new PageArgs('OrderListPage', PageStackType.SingleTop)
+    );
+  }
+
+  public backToCategoryPage() {
+    this.emitChangeScreen(
+      new PageArgs('CategoryListPage', PageStackType.Back, null, -1, true)
+    );
+  }
 }

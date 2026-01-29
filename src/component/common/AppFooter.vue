@@ -50,8 +50,11 @@
         class="footer-right-cart"
         :disabled="cartCount === 0"
       >
-        <span class="footer-right-cart-badge"> +{{ cartCount }} </span>
+        <span class="footer-right-cart-badge">
+          {{ displayCartCount }}
+        </span>
       </ButtonCommon>
+
       <div>
         <div class="footer-right-date">
           {{ year }}
@@ -160,6 +163,11 @@ export default defineComponent({
       }
     });
 
+    const displayCartCount = computed(() => {
+      if (props.cartCount <= 0) return '';
+      return props.cartCount > 99 ? '99+' : `+${props.cartCount}`;
+    });
+
     const showBack = computed(() => props.mode === FooterMode.Menu);
 
     const showCart = computed(
@@ -202,6 +210,7 @@ export default defineComponent({
       day,
       time,
       onBack,
+      displayCartCount,
       onMousedownCallStaff,
       onMousedownOpenAllergen,
       onMousedownOpenCart,

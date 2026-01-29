@@ -91,7 +91,7 @@ export default defineComponent({
           return 'text-accent-dialog';
         case DialogMessageType.Success:
           return 'text-success';
-        default:
+        case DialogMessageType.Default:
           return 'text-link';
       }
     };

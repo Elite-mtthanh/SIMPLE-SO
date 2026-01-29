@@ -5,6 +5,7 @@
       :textColor="textColor"
       :icon="icon"
       iconPosition="right"
+      :iconSize="48"
       @touchend="onMousedownToggle"
     >
       <slot name="label" />
