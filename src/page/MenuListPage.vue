@@ -6,31 +6,35 @@
       </span>
     </header>
 
-    <div 
-      class="menu-pagination-wrapper"
-      @touchstart="onSwipeStart"
-      @touchend="onSwipeEnd"
-    >
-      <PressLayer v-if="currentPage > 0" @touchend="onPrev">
-        <div class="page-btn page-btn-prev">
-          <ImageView src="/Image/menu/prev.png" alt="previous" />
+    <div class="menu-pagination-wrapper">
+      <div class="swipe-area" @touchstart="onSwipeStart" @touchend="onSwipeEnd">
+        <div class="menu-content">
+          <MenuItem
+            v-for="menu in pagedMenus"
+            :key="menu.id"
+            :item="menu"
+            @on-select="onMenuClick"
+          />
         </div>
-      </PressLayer>
-
-      <div class="menu-content">
-        <MenuItem
-          v-for="menu in pagedMenus"
-          :key="menu.id"
-          :item="menu"
-          @on-select="onMenuClick"
-        />
       </div>
 
-      <PressLayer v-if="currentPage < totalPages - 1" @touchend="onNext">
-        <div class="page-btn page-btn-next">
-          <ImageView src="/Image/menu/next.png" alt="next" />
-        </div>
-      </PressLayer>
+      <div
+        v-if="currentPage > 0"
+        class="page-btn page-btn-prev"
+        @click="onPrev"
+        @touchend.prevent="onPrev"
+      >
+        <ImageView src="/Image/menu/prev.png" />
+      </div>
+
+      <div
+        v-if="currentPage < totalPages - 1"
+        class="page-btn page-btn-next"
+        @click="onNext"
+        @touchend.prevent="onNext"
+      >
+        <ImageView src="/Image/menu/next.png" />
+      </div>
     </div>
 
     <div class="menu-pagination" v-if="totalPages > 1">
@@ -76,7 +80,6 @@ import { defineComponent, ref } from 'vue';
 import { FooterMode } from '@/model/Enums';
 import { MenuListPageLogic } from '@/logic/page/MenuListPageLogic';
 import AppFooter from '@/component/common/AppFooter.vue';
-import PressLayer from '@/component/common/PressLayer.vue';
 import ImageView from '@/component/common/ImageView.vue';
 import MenuItem from '@/component/MenuItem.vue';
 import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
@@ -86,7 +89,6 @@ export default defineComponent({
   name: 'MenuList',
   components: {
     AppFooter,
-    PressLayer,
     ImageView,
     MenuItem,
     MenuDetailDialog,
@@ -149,6 +151,16 @@ export default defineComponent({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.swipe-area {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.page-btn {
+  z-index: 5;
 }
 
 .menu-content {

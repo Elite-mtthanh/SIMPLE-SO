@@ -48,11 +48,14 @@
 
         <MenuDetailFooter
           :quantity="logic.quantity"
+          :maxQuantity="logic.getMaxQuantity()"
           :totalPrice="logic.getTotalPrice()"
+          :editMode="editMode"
           @on-cancel="onClose"
           @on-confirm="onConfirm"
           @on-increase="logic.increase()"
           @on-decrease="logic.decrease()"
+          @on-delete="onDelete"
         />
       </div>
     </div>
@@ -69,8 +72,9 @@ import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
 import MenuDetailFooter from '@/component/MenuDetailFooter.vue';
 import { formatPrice } from '@/util/FormatPrice';
-import { MenuSelect } from '@/model/Menu';
+import { MenuSelect, CartItem } from '@/model/Menu';
 import { CartStorage } from '@/storage/CartStorage';
+import { PropType } from 'vue';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
@@ -87,11 +91,29 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    editMode: {
+      type: Boolean,
+      default: false,
+    },
+    cartItem: {
+      type: Object as PropType<CartItem>,
+      default: null,
+    },
+    cartIndex: {
+      type: Number,
+      default: -1,
+    },
   },
   emits: ['on-close', 'on-confirm'],
   setup(props, { emit }) {
     const logicInstance = new MenuDetailLogic();
     logicInstance.getMenuDetail(props.menuCd);
+    
+    // If in edit mode, load the cart item data
+    if (props.editMode && props.cartItem) {
+      logicInstance.loadFromCartItem(props.cartItem);
+    }
+    
     const logic = reactive(logicInstance);
 
     const onClose = () => {
@@ -99,15 +121,30 @@ export default defineComponent({
     };
 
     const onConfirm = () => {
-      emit('on-confirm', logic.getConfirmData());
       const item = logic.getConfirmData();
 
-      CartStorage.addItem({
-        ...item,
-        imagePath: item.imagePath || '',
-      });
+      if (props.editMode && props.cartIndex >= 0) {
+        // Edit mode: update existing item
+        CartStorage.updateItem(props.cartIndex, {
+          ...item,
+          imagePath: item.imagePath || '',
+        });
+      } else {
+        // Add mode: add new item
+        CartStorage.addItem({
+          ...item,
+          imagePath: item.imagePath || '',
+        });
+      }
 
       emit('on-confirm', item);
+      emit('on-close');
+    };
+
+    const onDelete = () => {
+      if (props.editMode && props.cartIndex >= 0) {
+        CartStorage.removeItem(props.cartIndex);
+      }
       emit('on-close');
     };
 
@@ -115,6 +152,7 @@ export default defineComponent({
       logic,
       onClose,
       onConfirm,
+      onDelete,
       formatPrice,
       onSelectSize: (size: MenuSelect) => logic.setSelectedSize(size),
       onToggleTopping: (topping: MenuSelect) => logic.toggleTopping(topping),

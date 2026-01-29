@@ -103,4 +103,10 @@ export class GlobalEvent {
       new PageArgs('OrderListPage', PageStackType.SingleTop)
     );
   }
+
+  public backToCategoryPage() {
+    this.emitChangeScreen(
+      new PageArgs('CategoryListPage', PageStackType.Back, null, -1, true)
+    );
+  }
 }

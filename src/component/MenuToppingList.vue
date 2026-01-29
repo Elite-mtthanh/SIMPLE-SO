@@ -1,9 +1,3 @@
-<!--
-  Author: Truong
-  Menu Topping List Component
-  - Ẩn component khi không có topping
-  - Hiển thị danh sách topping với checkbox để chọn
--->
 <template>
   <div class="menu-topping" v-if="toppings.length">
     <div class="menu-topping-scroll">
@@ -100,26 +94,7 @@ export default defineComponent({
   padding-right: 6px;
   box-sizing: border-box;
   scrollbar-width: thin;
-  scrollbar-color: #9e9e9e #D3D3D3;
-}
-
-.menu-topping-scroll::-webkit-scrollbar {
-  width: 12px;
-}
-
-.menu-topping-scroll::-webkit-scrollbar-track {
-  background: #D3D3D3;
-  border-radius: 10px;
-}
-
-.menu-topping-scroll::-webkit-scrollbar-thumb {
-  background-color: #9e9e9e;
-  border-radius: 10px;
-  border: 3px solid #D3D3D3;
-}
-
-.menu-topping-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: #7d7d7d;
+  scrollbar-color: #9e9e9e #d3d3d3;
 }
 
 .menu-topping-item {
@@ -127,7 +102,7 @@ export default defineComponent({
   height: 100px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; 
   margin: 0 26px 10px 28px;
   cursor: pointer;
 }
@@ -150,23 +125,17 @@ export default defineComponent({
 }
 
 .menu-topping-name {
-  display: flex;
-  align-items: center;
-  justify-self: start;
   width: 855px;
   height: 98px;
-  display: flex;
-  align-items: center;
+  line-height: 98px; 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 400;
   font-size: 45px;
-  leading-trim: NONE;
-  line-height: 64px;
-  letter-spacing: 0%;
-  vertical-align: middle;
   margin-left: 14px;
+  min-width: 0; 
+  flex-shrink: 1;
 }
 
 .menu-topping-price {

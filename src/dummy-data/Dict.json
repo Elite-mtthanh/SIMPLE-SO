@@ -1,38 +1,165 @@
-[{"key_name":"DESK_NUMBER_LABEL","ja":"卓番","zh":"表数","en":"Table"},
-{"key_name":"GUIDE_1_LABEL","ja":"タブレッドで 商品を選択","zh":"在红色选项卡中选择产品","en":"Selecting products on a tablet"},
-{"key_name":"GUIDE_2_LABEL","ja":"カードに追加","zh":"添加到卡片","en":"Add to cart"},
-{"key_name":"GUIDE_3_LABEL","ja":"注文","zh":"次序","en":"Order"},
-{"key_name":"GUIDE_4_LABEL","ja":"食べる","zh":"吃","en":"Eat"},
-{"key_name":"GUIDE_5_LABEL","ja":"支払い","zh":"付款","en":"Payment"},
-{"key_name":"START_LABEL","ja":"画面をタッチして注文ください。","zh":"触摸屏幕下订单。","en":"Touch the screen to place your order."},
-{"key_name":"LANGUAGE_BUTTON","ja":"日本語","zh":"中文","en":"English"},
-{"key_name":"CALL_STAFF_BUTTON","ja":"店員呼び出す","zh":"致电店员","en":"Call the clerk"},
-{"key_name":"ALLERGEN_BUTTON","ja":"アレルゲン","zh":"过敏原","en":"Allergen"},
-{"key_name":"YEAR_LABEL","ja":"年","zh":"年","en":"/"},
-{"key_name":"MONTH_LABEL","ja":"月","zh":"月","en":"/"},
-{"key_name":"DAY_LABEL","ja":"日","zh":"日","en":""},
-{"key_name":"CALL_STAFF_CONFIRM_MESSAGE","ja":"店員を呼び出しますか？","zh":"您要打电话给店员吗？","en":"Do you want to call the clerk?"},
-{"key_name":"CALL_STAFF_SUCCESS_MESSAGE","ja":"店員呼び出しました !","zh":"店员打来了电话！","en":"The clerk called!"},
-{"key_name":"CALL_STAFF_SUCCESSE_COMMENT","ja":"少々おまちください。","zh":"请给我一点时间。","en":"Please give me a moment."},
-{"key_name":"CALL_STAFF_ERROR_MESSAGE","ja":"店員呼び出す","zh":"致电店员","en":"Call the clerk"},
-{"key_name":"CALL_STAFF_ERROR_COMMENT","ja":"エラーが発生しました。","zh":"发生错误","en":"An error has occurred"},
-{"key_name":"CLOSE_BUTTON","ja":"閉じる","zh":"关闭","en":"Close"},
-{"key_name":"ALLERGEN_LABEL","ja":"アレルゲンについて","zh":"关于过敏原","en":"About allergens"},
-{"key_name":"CATEGORY_LABEL","ja":"カテゴリーリスト","zh":"类别列表","en":"Category List"},
-{"key_name":"SINGLE_MENU_LABEL","ja":"単品","zh":"只","en":"Only"},
-{"key_name":"HAS_TOPPING_LABEL","ja":"トッピング","zh":"配料","en":"Topping"},
-{"key_name":"CANCEL_BUTTON","ja":"キャンセル","zh":"取消","en":"Cancel"},
-{"key_name":"CONFIRM_BUTTON","ja":"確定","zh":"决定","en":"Confirm"},
-{"key_name":"LIST_ORDER_LABEL","ja":"注文ーリスト","zh":"订单清单","en":"Order list"},
-{"key_name":"NUMBER_ORDER_LABEL","ja":"個","zh":"块","en":"Piece"},
-{"key_name":"BACK_BUTTON","ja":"戻る","zh":"返回","en":"Back"},
-{"key_name":"ORDER_BUTTON","ja":"注文する","zh":"下单","en":"Order"},
-{"key_name":"TOTAL_LABEL","ja":"合計","zh":"和","en":"Total"},
-{"key_name":"DELETE_CONFIRM_MESSAGE","ja":"本当に削除うしますか","zh":"您确定要删除它吗？","en":"Are you sure you want to delete it?"},
-{"key_name":"AGREE_BUTTON","ja":"はい","zh":"是的","en":"Yes"},
-{"key_name":"ORDER_SUCCESS_MESSAGE","ja":"ご注文ありがとうございました","zh":"感谢您的订单","en":"Thank you for your order"},
-{"key_name":"ORDER_ERROR_MESSAGE","ja":"エラーが発生しました。","zh":"发生错误。","en":"An error has occurred."},
-{"key_name":"ORDER_ERROR_COMMENT","ja":"店員を呼び出してくだい。","zh":"打电话给店员。","en":"Call the clerk."},
-{"key_name":"ORDER_CONFIRM_MESSAGE","ja":"注文を行います。","zh":"下订单。","en":"Please call the staff"},
-{"key_name":"ORDER_CONFIRM_COMMENT","ja":"よろしでしょうか？","zh":"你确定吗？","en":"Are you sure?"},
-{"key_name":"OVER_QUANTITY_MESSAGE","ja":"カートに許容される数量を超える","zh":"超出购物车中允许的数量 ...","en":"Exceeding the quantity allowed in the cart"}]
+[
+  {
+    "key_name": "DESK_NUMBER_LABEL",
+    "ja": "卓番",
+    "zh": "表数",
+    "en": "Table"
+  },
+  {
+    "key_name": "GUIDE_1_LABEL",
+    "ja": "タブレッドで 商品を選択",
+    "zh": "在红色选项卡中选择产品",
+    "en": "Selecting products on a tablet"
+  },
+  {
+    "key_name": "GUIDE_2_LABEL",
+    "ja": "カードに追加",
+    "zh": "添加到卡片",
+    "en": "Add to cart"
+  },
+  { "key_name": "GUIDE_3_LABEL", "ja": "注文", "zh": "次序", "en": "Order" },
+  { "key_name": "GUIDE_4_LABEL", "ja": "食べる", "zh": "吃", "en": "Eat" },
+  {
+    "key_name": "GUIDE_5_LABEL",
+    "ja": "支払い",
+    "zh": "付款",
+    "en": "Payment"
+  },
+  {
+    "key_name": "START_LABEL",
+    "ja": "画面をタッチして注文ください。",
+    "zh": "触摸屏幕下订单。",
+    "en": "Touch the screen to place your order."
+  },
+  {
+    "key_name": "LANGUAGE_BUTTON",
+    "ja": "日本語",
+    "zh": "中文",
+    "en": "English"
+  },
+  {
+    "key_name": "CALL_STAFF_BUTTON",
+    "ja": "店員呼び出す",
+    "zh": "致电店员",
+    "en": "Call the clerk"
+  },
+  {
+    "key_name": "ALLERGEN_BUTTON",
+    "ja": "アレルゲン",
+    "zh": "过敏原",
+    "en": "Allergen"
+  },
+  { "key_name": "YEAR_LABEL", "ja": "年", "zh": "年", "en": "/" },
+  { "key_name": "MONTH_LABEL", "ja": "月", "zh": "月", "en": "/" },
+  { "key_name": "DAY_LABEL", "ja": "日", "zh": "日", "en": "" },
+  {
+    "key_name": "CALL_STAFF_CONFIRM_MESSAGE",
+    "ja": "店員を呼び出しますか？",
+    "zh": "您要打电话给店员吗？",
+    "en": "Do you want to call the clerk?"
+  },
+  {
+    "key_name": "CALL_STAFF_SUCCESS_MESSAGE",
+    "ja": "店員呼び出しました !",
+    "zh": "店员打来了电话！",
+    "en": "The clerk called!"
+  },
+  {
+    "key_name": "CALL_STAFF_SUCCESSE_COMMENT",
+    "ja": "少々おまちください。",
+    "zh": "请给我一点时间。",
+    "en": "Please give me a moment."
+  },
+  {
+    "key_name": "CALL_STAFF_ERROR_MESSAGE",
+    "ja": "店員呼び出す",
+    "zh": "致电店员",
+    "en": "Call the clerk"
+  },
+  {
+    "key_name": "CALL_STAFF_ERROR_COMMENT",
+    "ja": "エラーが発生しました。",
+    "zh": "发生错误",
+    "en": "An error has occurred"
+  },
+  { "key_name": "CLOSE_BUTTON", "ja": "閉じる", "zh": "关闭", "en": "Close" },
+  {
+    "key_name": "ALLERGEN_LABEL",
+    "ja": "アレルゲンについて",
+    "zh": "关于过敏原",
+    "en": "About allergens"
+  },
+  {
+    "key_name": "CATEGORY_LABEL",
+    "ja": "カテゴリーリスト",
+    "zh": "类别列表",
+    "en": "Category List"
+  },
+  { "key_name": "SINGLE_MENU_LABEL", "ja": "単品", "zh": "只", "en": "Only" },
+  {
+    "key_name": "HAS_TOPPING_LABEL",
+    "ja": "トッピング",
+    "zh": "配料",
+    "en": "Topping"
+  },
+  {
+    "key_name": "CANCEL_BUTTON",
+    "ja": "キャンセル",
+    "zh": "取消",
+    "en": "Cancel"
+  },
+  { "key_name": "CONFIRM_BUTTON", "ja": "確定", "zh": "决定", "en": "Confirm" },
+  {
+    "key_name": "LIST_ORDER_LABEL",
+    "ja": "注文ーリスト",
+    "zh": "订单清单",
+    "en": "Order list"
+  },
+  { "key_name": "NUMBER_ORDER_LABEL", "ja": "個", "zh": "块", "en": "Piece" },
+  { "key_name": "BACK_BUTTON", "ja": "戻る", "zh": "返回", "en": "Back" },
+  { "key_name": "ORDER_BUTTON", "ja": "注文する", "zh": "下单", "en": "Order" },
+  { "key_name": "TOTAL_LABEL", "ja": "合計", "zh": "和", "en": "Total" },
+  {
+    "key_name": "DELETE_CONFIRM_MESSAGE",
+    "ja": "本当に削除うしますか",
+    "zh": "您确定要删除它吗？",
+    "en": "Are you sure you want to delete it?"
+  },
+  { "key_name": "AGREE_BUTTON", "ja": "はい", "zh": "是的", "en": "Yes" },
+  {
+    "key_name": "ORDER_SUCCESS_MESSAGE",
+    "ja": "ご注文ありがとうございました",
+    "zh": "感谢您的订单",
+    "en": "Thank you for your order"
+  },
+  {
+    "key_name": "ORDER_ERROR_MESSAGE",
+    "ja": "エラーが発生しました。",
+    "zh": "发生错误。",
+    "en": "An error has occurred."
+  },
+  {
+    "key_name": "ORDER_ERROR_COMMENT",
+    "ja": "店員を呼び出してくだい。",
+    "zh": "打电话给店员。",
+    "en": "Call the clerk."
+  },
+  {
+    "key_name": "ORDER_CONFIRM_MESSAGE",
+    "ja": "注文を行います。",
+    "zh": "下订单。",
+    "en": "Please call the staff"
+  },
+  {
+    "key_name": "ORDER_CONFIRM_COMMENT",
+    "ja": "よろしでしょうか？",
+    "zh": "你确定吗？",
+    "en": "Are you sure?"
+  },
+  {
+    "key_name": "OVER_QUANTITY_MESSAGE",
+    "ja": "カートに許容される数量を超える",
+    "zh": "超出购物车中允许的数量 ...",
+    "en": "Exceeding the quantity allowed in the cart"
+  }
+]

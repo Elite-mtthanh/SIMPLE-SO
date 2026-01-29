@@ -15,24 +15,26 @@ export class MenuListPageLogic {
 
   /** number of items per page */
   private pageSize = 4;
-  
+
   /** current page index */
   private currentPage = ref(0);
-  
+
   /** list of menu items */
   private menus = ref<MenuItem[]>([]);
 
   /** swipe detection properties */
   private touchStartX = 0;
   private touchStartY = 0;
-  private minSwipeDistance = 50; // minimum distance for a swipe
+  private moved = false;
+  private minSwipeDistance = 50;
+
 
   /** allergen dialog visibility status */
   readonly showAllergen = this.footerLogic.showAllergen;
-  
+
   /** current language */
   readonly currentLang = this.config.currentLang;
-  
+
   /** get current category name */
   readonly categoryName = computed(() => {
     const cd = GlobalEvent.Instance.currentCategoryCd.value;
@@ -41,13 +43,13 @@ export class MenuListPageLogic {
     if (!category) return '';
     return getMenuName(category, this.currentLang.value);
   });
-  
+
   /** get menus for current page */
   readonly pagedMenus = computed(() => {
     const start = this.currentPage.value * this.pageSize;
     return this.menus.value.slice(start, start + this.pageSize);
   });
-  
+
   /** get total number of pages */
   readonly totalPages = computed(() => {
     return Math.ceil(this.menus.value.length / this.pageSize);
@@ -151,22 +153,15 @@ export class MenuListPageLogic {
   /**
    * handle touch end event for swipe detection
    */
-  onTouchEnd(event: TouchEvent): void {
-    const touch = event.changedTouches[0];
-    const deltaX = touch.clientX - this.touchStartX;
-    const deltaY = touch.clientY - this.touchStartY;
+  onTouchEnd(e: TouchEvent) {
+    const deltaX = e.changedTouches[0].clientX - this.touchStartX;
 
-    // Check if horizontal swipe is more dominant than vertical
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > this.minSwipeDistance) {
-      if (deltaX > 0) {
-        // Swipe right (previous page)
-        this.prevPage();
-      } else {
-        // Swipe left (next page)
-        this.nextPage();
-      }
-    }
+    // 👇 CỰC KỲ QUAN TRỌNG
+    if (Math.abs(deltaX) < 50) return; // coi là tap
+
+    deltaX > 0 ? this.prevPage() : this.nextPage();
   }
+
 
   /**
    * navigate back to category page

@@ -23,8 +23,8 @@
 
         <PressLayer
           class="menu-detail-quantity-btn"
-          @touchend="quantity < 10 && onIncrease()"
-          :class="{ disabled: quantity >= 10 }"
+          @touchend="quantity < maxQuantity && onIncrease()"
+          :class="{ disabled: quantity >= maxQuantity }"
         >
           <ImageView src="/Image/menu/plus.png" />
         </PressLayer>
@@ -65,12 +65,20 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    maxQuantity: {
+      type: Number,
+      required: true,
+    },
     totalPrice: {
       type: Number,
       required: true,
     },
+    editMode: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ['on-cancel', 'on-confirm', 'on-increase', 'on-decrease'],
+  emits: ['on-cancel', 'on-confirm', 'on-increase', 'on-decrease', 'on-delete'],
   setup(_, { emit }) {
     return {
       formatPrice,
@@ -78,6 +86,7 @@ export default defineComponent({
       onConfirm: () => emit('on-confirm'),
       onIncrease: () => emit('on-increase'),
       onDecrease: () => emit('on-decrease'),
+      onDelete: () => emit('on-delete'),
     };
   },
 });
@@ -147,6 +156,7 @@ export default defineComponent({
 }
 
 .menu-detail-btn-cancel,
+.menu-detail-btn-delete,
 .menu-detail-btn-confirm {
   font-weight: 600;
   font-size: 45px;

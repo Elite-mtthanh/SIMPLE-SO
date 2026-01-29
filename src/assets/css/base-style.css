@@ -27,6 +27,7 @@
   --btn-active: #ef9e9e;
   --btn-link: #475191;
   --btn-gray: #d9d9d9;
+  --btn-red: #DC2C2C;
 
   /* Color for Text */
   --text-primary: #000000;
@@ -99,3 +100,6 @@ body {
 .bg-button-gray {
   background: var(--btn-gray);
 } /* nút xám nhạt */
+.bg-button-red {
+  background: var(--btn-red);
+} /* nút đỏ */
