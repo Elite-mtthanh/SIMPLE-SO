@@ -104,3 +104,14 @@ body {
 .bg-button-red {
   background: var(--btn-red);
 } /* nút đỏ */
+
+/* Fade transition for pages and dialogs */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

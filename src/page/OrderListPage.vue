@@ -14,15 +14,17 @@
       />
     </div>
 
-    <MenuDetailDialog
-      v-if="editingItem"
-      :menuCd="editingItem.menuCd"
-      :editMode="true"
-      :cartItem="editingItem"
-      :cartIndex="editingIndex"
-      @on-close="closeEditDialog"
-      @on-confirm="handleEditConfirm"
-    />
+    <Transition name="fade">
+      <MenuDetailDialog
+        v-if="editingItem"
+        :menuCd="editingItem.menuCd"
+        :editMode="true"
+        :cartItem="editingItem"
+        :cartIndex="editingIndex"
+        @on-close="closeEditDialog"
+        @on-confirm="handleEditConfirm"
+      />
+    </Transition>
 
     <div class="cart-total">
       <div class="cart-total-wrapper">

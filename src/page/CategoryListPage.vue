@@ -28,11 +28,13 @@
     />
   </div>
 
-  <AllergenDialog
-    v-if="showAllergen"
-    :currentLang="currentLang"
-    @on-close="onCloseAllergen"
-  />
+  <Transition name="fade">
+    <AllergenDialog
+      v-if="showAllergen"
+      :currentLang="currentLang"
+      @on-close="onCloseAllergen"
+    />
+  </Transition>
 </template>
 
 <script lang="ts">

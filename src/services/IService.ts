@@ -4,7 +4,7 @@ export interface IService {
   GetConfig(): string;
   GetSplashGuide(): string;
   GetDictRaw(key: string): string;
-  CallStaff(): Promise<number>;
+  CallStaff(): Promise<boolean>;
 
   GetMenuList(): Menu[];
   GetMenuSelect(): MenuSelect[];

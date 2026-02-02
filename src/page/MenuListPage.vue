@@ -63,17 +63,21 @@
     </div>
   </div>
 
-  <MenuDetailDialog
-    v-if="selectedMenuCd"
-    :menu-cd="selectedMenuCd"
-    @on-close="selectedMenuCd = null"
-  />
+  <Transition name="fade">
+    <MenuDetailDialog
+      v-if="selectedMenuCd"
+      :menu-cd="selectedMenuCd"
+      @on-close="selectedMenuCd = null"
+    />
+  </Transition>
 
-  <AllergenDialog
-    v-if="showAllergen"
-    :currentLang="currentLang"
-    @on-close="onCloseAllergen"
-  />
+  <Transition name="fade">
+    <AllergenDialog
+      v-if="showAllergen"
+      :currentLang="currentLang"
+      @on-close="onCloseAllergen"
+    />
+  </Transition>
 </template>
 
 <script lang="ts">

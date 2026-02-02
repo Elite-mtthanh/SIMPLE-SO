@@ -36,3 +36,10 @@ export enum MenuSelectType {
   Size = 'size',
   Topping = 'topping',
 }
+
+export enum currentPageStackType{
+  New = 1,
+  Back = 2,
+  SingleTop = 3,
+  NoHistory = 4,
+}

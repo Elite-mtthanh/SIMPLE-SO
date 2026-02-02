@@ -27,11 +27,11 @@ export class ServiceIF {
     return normalizeDictRow(row);
   }
 
-  static callStaff(): Promise<number> {
+  static callStaff(): Promise<boolean> {
     return this.TIF.CallStaff();
   }
 
-  static setCallStaffTestResult(value: 0 | 1): void {
+  static setCallStaffTestResult(value: true | false): void {
     if (this.TIF instanceof Mock) {
       this.TIF.SetCallStaffResult(value);
     }

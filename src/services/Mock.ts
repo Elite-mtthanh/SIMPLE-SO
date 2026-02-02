@@ -7,7 +7,7 @@ import Selects from '@/dummy-data/Menu_selects.json';
 import { Menu, MenuSelect, StockoutMenu } from '@/model/Menu';
 
 export class Mock implements IService {
-  private isCallStaffSuccess: number | null = null;
+  private isCallStaffSuccess: boolean | null = null;
 
   GetConfig(): string {
     return JSON.stringify({ env: 'mock' });
@@ -17,7 +17,7 @@ export class Mock implements IService {
     return JSON.stringify(SplashData);
   }
 
-  SetCallStaffResult(value: 0 | 1) {
+  SetCallStaffResult(value: true | false) {
     this.isCallStaffSuccess = value;
   }
 
@@ -28,9 +28,9 @@ export class Mock implements IService {
     return JSON.stringify(row);
   }
 
-  async CallStaff(): Promise<number> {
+  async CallStaff(): Promise<boolean> {
     await new Promise(r => setTimeout(r, 3000));
-    return this.isCallStaffSuccess ?? (Math.random() > 0.5 ? 1 : 0);
+    return this.isCallStaffSuccess ?? true;
   }
 
   GetMenuList(): Menu[] {

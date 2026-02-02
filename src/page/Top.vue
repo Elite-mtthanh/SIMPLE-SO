@@ -1,17 +1,21 @@
 <template>
   <div class="top-main">
-    <keep-alive>
-      <component
-        :is="currentPageName"
-        :key="pageKey"
-        :page-args="currentPageArgs"
-        v-bind="currentPageArgs?.Data || {}"
-      />
-    </keep-alive>
+    <Transition name="fade" mode="out-in" appear>
+      <div :key="pageKey" class="page-wrapper">
+        <component
+          :is="currentPageName"
+          :page-args="currentPageArgs"
+          v-bind="currentPageArgs?.Data || {}"
+        />
+      </div>
+    </Transition>
 
-    <keep-alive v-if="commonDialogSettings.isShow && commonDialogSettings.info">
-      <GlobalDialog :dialog-args="commonDialogSettings.info" />
-    </keep-alive>
+    <Transition name="fade">
+      <GlobalDialog
+        v-if="commonDialogSettings.isShow && commonDialogSettings.info"
+        :dialog-args="commonDialogSettings.info"
+      />
+    </Transition>
   </div>
 </template>
 
@@ -34,7 +38,7 @@ export default defineComponent({
     CategoryListPage,
     MenuListPage,
     OrderListPage,
-    OrderResultPage
+    OrderResultPage,
   },
   setup() {
     let logic = new TopLogic();
@@ -63,5 +67,13 @@ export default defineComponent({
   width: var(--display-resolution-width);
   height: var(--display-resolution-height);
   background-color: var(--background-app);
+  position: relative;
+}
+
+.page-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

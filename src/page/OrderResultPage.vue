@@ -1,5 +1,5 @@
 <template>
-  <div class="order-result">
+  <div class="order-result" @touchend="onTapScreen" @click="onTapScreen">
     <div class="order-result-image">
       <ImageView
         v-if="success"
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onActivated } from 'vue';
+import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue';
 import DictText from '@/component/common/DictText.vue';
 import ImageView from '@/component/common/ImageView.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
@@ -38,22 +38,39 @@ export default defineComponent({
 
   setup() {
     const success = ref(GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true);
+    let timerId: ReturnType<typeof setTimeout> | null = null;
 
-    onActivated(() => {
+    const goToStartPage = () => {
+      if (timerId !== null) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+      const args = GlobalEvent.Instance.getCurrentPageArgs();
+      const isSuccess = args?.Data?.success === true;
+      if (isSuccess) {
+        CartStorage.clear();
+        GlobalEvent.Instance.emitEvent('cart-updated');
+      }
+      GlobalEvent.Instance.showStartPage();
+    };
+
+    onMounted(() => {
       success.value = GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
-
-      setTimeout(() => {
-        const args = GlobalEvent.Instance.getCurrentPageArgs();
-        const isSuccess = args?.Data?.success === true;
-        if (isSuccess) {
-          CartStorage.clear();
-          GlobalEvent.Instance.emitEvent('cart-updated');
-        }
-        GlobalEvent.Instance.showStartPage();
-      }, 5000);
+      timerId = setTimeout(goToStartPage, 5000);
     });
 
-    return { success };
+    onBeforeUnmount(() => {
+      if (timerId !== null) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+    });
+
+    const onTapScreen = () => {
+      goToStartPage();
+    };
+
+    return { success, onTapScreen };
   },
 });
 </script>
@@ -67,6 +84,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .order-result-image {

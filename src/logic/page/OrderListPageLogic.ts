@@ -111,7 +111,8 @@ export class OrderListPageLogic {
     const result = await GlobalEvent.Instance.showCommonDialog(dialog);
     if (result !== DialogButtonId.Confirm) return;
 
-    const success = Math.random() < 0.7;
+    // const success = Math.random() < 0.5;
+    const success = true;
     GlobalEvent.Instance.goToOrderResultPage({ success });
   }
 }
