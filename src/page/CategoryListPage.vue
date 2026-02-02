@@ -1,5 +1,5 @@
 <template>
-  <div class="category">
+  <div ref="pageEl" class="category anim-fade-scale">
     <header class="category-header">
       <span class="category-header-label">
         <DictText keyName="CATEGORY_LABEL" />
@@ -28,23 +28,22 @@
     />
   </div>
 
-  <Transition name="fade">
-    <AllergenDialog
-      v-if="showAllergen"
-      :currentLang="currentLang"
-      @on-close="onCloseAllergen"
-    />
-  </Transition>
+  <AllergenDialog
+    v-if="showAllergen"
+    :currentLang="currentLang"
+    @on-close="onCloseAllergen"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, onActivated, onMounted, ref } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
 import DictText from '@/component/common/DictText.vue';
 import AppFooter from '@/component/common/AppFooter.vue';
 import CategoryItem from '@/component/CategoryItem.vue';
 import { CategoryListPageLogic } from '@/logic/page/CategoryListPageLogic';
 import AllergenDialog from '@/component/AllergenDialog.vue';
+import { playEnter } from '@/util/AnimationUtil';
 
 export default defineComponent({
   name: 'CategoryList',
@@ -55,10 +54,16 @@ export default defineComponent({
     CategoryItem,
   },
   setup() {
+    const pageEl = ref<HTMLElement | null>(null);
     const logic = new CategoryListPageLogic();
     const cartCount = computed(() => logic.cartCount.value);
 
+    const triggerEnterAnimation = () => playEnter(pageEl);
+    onMounted(triggerEnterAnimation);
+    onActivated(triggerEnterAnimation);
+
     return {
+      pageEl,
       FooterMode,
       categories: logic.categoryList,
       currentLang: logic.currentLang,

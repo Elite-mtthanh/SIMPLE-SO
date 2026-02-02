@@ -1,5 +1,5 @@
 <template>
-  <div class="order-result" @touchend="onTapScreen" @click="onTapScreen">
+  <div ref="pageEl" class="order-result anim-fade-scale" @touchend="onTapScreen" @click="onTapScreen">
     <div class="order-result-image">
       <ImageView
         v-if="success"
@@ -26,19 +26,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue';
+import { defineComponent, ref, onMounted, onBeforeUnmount, onActivated } from 'vue';
 import DictText from '@/component/common/DictText.vue';
 import ImageView from '@/component/common/ImageView.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { CartStorage } from '@/storage/CartStorage';
+import { playEnter } from '@/util/AnimationUtil';
 
 export default defineComponent({
   name: 'OrderResultPage',
   components: { DictText, ImageView },
 
   setup() {
+    const pageEl = ref<HTMLElement | null>(null);
     const success = ref(GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true);
     let timerId: ReturnType<typeof setTimeout> | null = null;
+
+    const triggerEnterAnimation = () => playEnter(pageEl);
+    onActivated(triggerEnterAnimation);
 
     const goToStartPage = () => {
       if (timerId !== null) {
@@ -57,6 +62,7 @@ export default defineComponent({
     onMounted(() => {
       success.value = GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
       timerId = setTimeout(goToStartPage, 5000);
+      triggerEnterAnimation();
     });
 
     onBeforeUnmount(() => {
@@ -70,7 +76,7 @@ export default defineComponent({
       goToStartPage();
     };
 
-    return { success, onTapScreen };
+    return { pageEl, success, onTapScreen };
   },
 });
 </script>

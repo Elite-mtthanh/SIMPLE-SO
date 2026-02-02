@@ -1,7 +1,7 @@
 <template>
   <PopupCommon @close="onClose">
     <div class="menu-detail-mask">
-      <div class="menu-detail-card">
+      <div ref="dialogEl" class="menu-detail-card anim-fade-scale">
         <div class="menu-detail-header">
           <div class="menu-detail-header-image">
             <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
@@ -63,7 +63,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import {
+  defineComponent,
+  nextTick,
+  onActivated,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
 import { MenuDetailLogic } from '@/logic/page/MenuDetailLogic';
 import ImageView from '@/component/common/ImageView.vue';
 import DictText from '@/component/common/DictText.vue';
@@ -72,6 +80,7 @@ import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
 import MenuDetailFooter from '@/component/MenuDetailFooter.vue';
 import { formatPrice } from '@/util/FormatPrice';
+import { playEnter, playLeave } from '@/util/AnimationUtil';
 import { PropType } from 'vue';
 import { CartItem } from '@/model/Menu';
 
@@ -105,6 +114,7 @@ export default defineComponent({
   },
   emits: ['on-close', 'on-confirm'],
   setup(props, { emit }) {
+    const dialogEl = ref<HTMLElement | null>(null);
     const logic = reactive(new MenuDetailLogic());
     logic.getMenuDetail(props.menuCd);
 
@@ -112,15 +122,53 @@ export default defineComponent({
       logic.loadFromCartItem(props.cartItem);
     }
 
+    watch(
+      () => props.menuCd,
+      (newMenuCd, oldMenuCd) => {
+        if (newMenuCd && newMenuCd !== oldMenuCd) {
+          logic.getMenuDetail(newMenuCd);
+          if (props.editMode && props.cartItem) {
+            logic.loadFromCartItem(props.cartItem);
+          }
+        }
+      }
+    );
+
+    watch(
+      () => props.cartItem,
+      (newCartItem) => {
+        if (props.editMode && newCartItem && props.menuCd) {
+          logic.getMenuDetail(props.menuCd);
+          logic.loadFromCartItem(newCartItem);
+        }
+      }
+    );
+
+    const triggerEnterAnimation = () => playEnter(dialogEl);
+    onMounted(triggerEnterAnimation);
+    onActivated(triggerEnterAnimation);
+    watch(
+      () => props.menuCd,
+      (newVal) => {
+        if (newVal) {
+          nextTick(() => playEnter(dialogEl));
+        }
+      }
+    );
+
+    const onClose = () => {
+      playLeave(dialogEl, 'anim-leave', 250, () => emit('on-close'));
+    };
+
     const onConfirm = () => {
       const item = logic.confirm(props.editMode, props.cartIndex);
       emit('on-confirm', item);
-      emit('on-close');
+      onClose();
     };
 
     const onDelete = () => {
       logic.delete(props.cartIndex);
-      emit('on-close');
+      onClose();
     };
 
     const onIncreaseQuantity = () => {
@@ -135,18 +183,19 @@ export default defineComponent({
       );
 
       if (result === 'deleted') {
-        emit('on-close');
+        onClose();
       }
     };
 
     return {
       logic,
       formatPrice,
+      dialogEl,
       onConfirm,
       onDelete,
       onIncreaseQuantity,
       onDecreaseQuantity,
-      onClose: () => emit('on-close'),
+      onClose,
       onSelectSize: logic.setSelectedSize.bind(logic),
       onToggleTopping: logic.toggleTopping.bind(logic),
     };

@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <div ref="pageEl" class="menu anim-fade-scale">
     <header class="menu-header">
       <span class="menu-header-label">
         {{ categoryName }}
@@ -63,25 +63,23 @@
     </div>
   </div>
 
-  <Transition name="fade">
+  <keep-alive>
     <MenuDetailDialog
-      v-if="selectedMenuCd"
-      :menu-cd="selectedMenuCd"
+      v-show="selectedMenuCd"
+      :menu-cd="selectedMenuCd || ''"
       @on-close="selectedMenuCd = null"
     />
-  </Transition>
+  </keep-alive>
 
-  <Transition name="fade">
-    <AllergenDialog
-      v-if="showAllergen"
-      :currentLang="currentLang"
-      @on-close="onCloseAllergen"
-    />
-  </Transition>
+  <AllergenDialog
+    v-if="showAllergen"
+    :currentLang="currentLang"
+    @on-close="onCloseAllergen"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed, onActivated, onMounted } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
 import { MenuListPageLogic } from '@/logic/page/MenuListPageLogic';
 import AppFooter from '@/component/common/AppFooter.vue';
@@ -89,6 +87,7 @@ import ImageView from '@/component/common/ImageView.vue';
 import MenuItem from '@/component/MenuItem.vue';
 import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
 import AllergenDialog from '@/component/AllergenDialog.vue';
+import { playEnter } from '@/util/AnimationUtil';
 
 export default defineComponent({
   name: 'MenuList',
@@ -100,11 +99,17 @@ export default defineComponent({
     AllergenDialog,
   },
   setup() {
+    const pageEl = ref<HTMLElement | null>(null);
     const logic = new MenuListPageLogic();
     const selectedMenuCd = ref<string | null>(null);
     const cartCount = computed(() => logic.cartCount.value);
 
+    const triggerEnterAnimation = () => playEnter(pageEl);
+    onMounted(triggerEnterAnimation);
+    onActivated(triggerEnterAnimation);
+
     return {
+      pageEl,
       FooterMode,
       currentLang: logic.currentLang,
       languageOptions: logic.languageOptions,
@@ -129,7 +134,7 @@ export default defineComponent({
         selectedMenuCd.value = menuCd;
       },
       onSwipeStart: (event: TouchEvent) => logic.onTouchStart(event),
-      onSwipeEnd: (event: TouchEvent) => logic.onTouchEnd(event), 
+      onSwipeEnd: (event: TouchEvent) => logic.onTouchEnd(event),
     };
   },
 });

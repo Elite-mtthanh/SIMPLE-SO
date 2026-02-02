@@ -47,6 +47,11 @@ export class MenuDetailLogic {
     this.rawMenu = rawMenu;
     const lang = AppConfig.Instance.currentLang.value;
     console.log('lang:', lang);
+    this.quantity = 1;
+    this.selectedToppings = [];
+    this.selectedSize = null;
+    this.sizes = [];
+    this.toppings = [];
 
     this.menu = {
       id: rawMenu.id,

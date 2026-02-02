@@ -28,7 +28,7 @@
   --btn-active: #ef9e9e;
   --btn-link: #475191;
   --btn-gray: #d9d9d9;
-  --btn-red: #DC2C2C;
+  --btn-red: #dc2c2c;
 
   /* Color for Text */
   --text-primary: #000000;
@@ -44,7 +44,7 @@
   --background-dialog: #fffcf5;
   --background-items: #d1e7dd;
   --background-app: #fffcf5;
-  --background-select-toppoing: #FFF3E6;
+  --background-select-toppoing: #fff3e6;
 }
 
 body {
@@ -105,13 +105,31 @@ body {
   background: var(--btn-red);
 } /* nút đỏ */
 
-/* Fade transition for pages and dialogs */
-.fade-enter-active,
-.fade-leave-active {
+.anim-fade {
+  opacity: 0;
   transition: opacity 0.25s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.anim-fade.anim-enter {
+  opacity: 1;
+}
+
+.anim-fade.anim-leave {
   opacity: 0;
+}
+
+.anim-fade-scale {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.anim-fade-scale.anim-enter {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.anim-fade-scale.anim-leave {
+  opacity: 0;
+  transform: scale(0.96);
 }

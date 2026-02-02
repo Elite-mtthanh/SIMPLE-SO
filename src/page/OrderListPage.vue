@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-wrapper">
+  <div ref="pageEl" class="cart-wrapper anim-fade-scale">
     <div class="cart-header">
       <DictText keyName="LIST_ORDER_LABEL" />（{{ totalQuantity
       }}<DictText keyName="NUMBER_ORDER_LABEL" />）
@@ -14,17 +14,17 @@
       />
     </div>
 
-    <Transition name="fade">
+    <keep-alive>
       <MenuDetailDialog
-        v-if="editingItem"
-        :menuCd="editingItem.menuCd"
+        v-show="editingItem"
+        :menuCd="editingItem?.menuCd || ''"
         :editMode="true"
-        :cartItem="editingItem"
+        :cartItem="editingItem || undefined"
         :cartIndex="editingIndex"
         @on-close="closeEditDialog"
         @on-confirm="handleEditConfirm"
       />
-    </Transition>
+    </keep-alive>
 
     <div class="cart-total">
       <div class="cart-total-wrapper">
@@ -58,22 +58,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, onActivated, onMounted, ref } from 'vue';
 import OrderItem from '@/component/OrderItem.vue';
 import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
 import DictText from '@/component/common/DictText.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { OrderListPageLogic } from '@/logic/page/OrderListPageLogic';
+import { playEnter } from '@/util/AnimationUtil';
 
 export default defineComponent({
   name: 'OrderListPage',
   components: { OrderItem, DictText, MenuDetailDialog, ButtonCommon },
 
   setup() {
+    const pageEl = ref<HTMLElement | null>(null);
     const logic = new OrderListPageLogic();
 
+    const triggerEnterAnimation = () => playEnter(pageEl);
+    onMounted(triggerEnterAnimation);
+    onActivated(triggerEnterAnimation);
+
     return {
+      pageEl,
       items: logic.items,
       editingItem: logic.editingItem,
       editingIndex: logic.editingIndex,

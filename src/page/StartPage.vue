@@ -1,5 +1,5 @@
 <template>
-  <div class="splash-page">
+  <div ref="pageEl" class="splash-page anim-fade-scale">
     <div class="splash-page-content">
       <PressLayer @touchend="onGoToCategory">
         <header class="splash-page-header">
@@ -31,17 +31,15 @@
     @on-open-allergen="onOpenAllergen"
   />
 
-  <Transition name="fade">
     <AllergenDialog
       v-if="showAllergen"
       :currentLang="currentLang"
       @on-close="onCloseAllergen"
     />
-  </Transition>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onActivated, onMounted, ref } from 'vue';
 import { StartPageLogic } from '@/logic/page/StartPageLogic';
 
 import SplashGuide from '@/component/SplashGuide.vue';
@@ -50,6 +48,7 @@ import DictText from '@/component/common/DictText.vue';
 import AppFooter from '@/component/common/AppFooter.vue';
 import AllergenDialog from '@/component/AllergenDialog.vue';
 import PressLayer from '@/component/common/PressLayer.vue';
+import { playEnter } from '@/util/AnimationUtil';
 
 import { FooterMode, Language, SplashType } from '@/model/Enums';
 
@@ -64,13 +63,18 @@ export default defineComponent({
     PressLayer,
   },
   setup() {
+    const pageEl = ref<HTMLElement | null>(null);
     const logic = new StartPageLogic();
 
+    const triggerEnterAnimation = () => playEnter(pageEl);
     onMounted(async () => {
+      triggerEnterAnimation();
       await logic.activate();
     });
+    onActivated(triggerEnterAnimation);
 
     return {
+      pageEl,
       splashData: logic.splashData,
       currentLang: logic.currentLang,
       showAllergen: logic.showAllergen,
