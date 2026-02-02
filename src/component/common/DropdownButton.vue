@@ -85,6 +85,7 @@ export default defineComponent({
   position: relative;
   border: 1px solid #475191;
   border-radius: 6px;
+  z-index: var(--z-dropdown);
 }
 
 .dropdown-wrapper-panel {
@@ -121,7 +122,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 30px;
   line-height: 18px;
-  letter-spacing: 0%;
+
   text-align: center;
   margin-left: 8px;
 }

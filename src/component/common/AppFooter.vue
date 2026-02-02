@@ -46,7 +46,7 @@
         :icon="cartIcon"
         textColor="inverse"
         @touchend="onMousedownOpenCart"
-        :iconSize="50"
+        :iconSize="70"
         class="footer-right-cart"
         :disabled="cartCount === 0"
       >
@@ -164,7 +164,7 @@ export default defineComponent({
     });
 
     const displayCartCount = computed(() => {
-      if (props.cartCount <= 0) return '';
+      if (props.cartCount <= 0) return '+0';
       return props.cartCount > 99 ? '99+' : `+${props.cartCount}`;
     });
 
@@ -283,7 +283,9 @@ export default defineComponent({
   justify-content: center;
   width: 286px;
   pointer-events: none;
-  font-size: 45px;
   color: var(--text-inverse);
+  font-weight: 600;
+  font-size: 70px;
+  line-height: 18px;
 }
 </style>

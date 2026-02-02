@@ -66,7 +66,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 45px;
   line-height: 64px;
-  letter-spacing: 0%;
+
   text-align: center;
   vertical-align: middle;
 }

@@ -3,7 +3,7 @@
     <div class="menu-detail-mask">
       <div class="menu-detail-card">
         <div class="menu-detail-header">
-          <div class="menu-detail-image">
+          <div class="menu-detail-header-image">
             <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
           </div>
 
@@ -48,13 +48,13 @@
 
         <MenuDetailFooter
           :quantity="logic.quantity"
-          :maxQuantity="logic.getMaxQuantity()"
+          :maxQuantity="logic.getMaxQuantity(cartIndex)"
           :totalPrice="logic.getTotalPrice()"
           :editMode="editMode"
           @on-cancel="onClose"
           @on-confirm="onConfirm"
-          @on-increase="logic.increase()"
-          @on-decrease="logic.decrease()"
+          @on-increase="onIncreaseQuantity"
+          @on-decrease="onDecreaseQuantity"
           @on-delete="onDelete"
         />
       </div>
@@ -72,9 +72,8 @@ import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
 import MenuDetailFooter from '@/component/MenuDetailFooter.vue';
 import { formatPrice } from '@/util/FormatPrice';
-import { MenuSelect, CartItem } from '@/model/Menu';
-import { CartStorage } from '@/storage/CartStorage';
 import { PropType } from 'vue';
+import { CartItem } from '@/model/Menu';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
@@ -106,56 +105,50 @@ export default defineComponent({
   },
   emits: ['on-close', 'on-confirm'],
   setup(props, { emit }) {
-    const logicInstance = new MenuDetailLogic();
-    logicInstance.getMenuDetail(props.menuCd);
-    
-    // If in edit mode, load the cart item data
-    if (props.editMode && props.cartItem) {
-      logicInstance.loadFromCartItem(props.cartItem);
-    }
-    
-    const logic = reactive(logicInstance);
+    const logic = reactive(new MenuDetailLogic());
+    logic.getMenuDetail(props.menuCd);
 
-    const onClose = () => {
-      emit('on-close');
-    };
+    if (props.editMode && props.cartItem) {
+      logic.loadFromCartItem(props.cartItem);
+    }
 
     const onConfirm = () => {
-      const item = logic.getConfirmData();
-
-      if (props.editMode && props.cartIndex >= 0) {
-        // Edit mode: update existing item
-        CartStorage.updateItem(props.cartIndex, {
-          ...item,
-          imagePath: item.imagePath || '',
-        });
-      } else {
-        // Add mode: add new item
-        CartStorage.addItem({
-          ...item,
-          imagePath: item.imagePath || '',
-        });
-      }
-
+      const item = logic.confirm(props.editMode, props.cartIndex);
       emit('on-confirm', item);
       emit('on-close');
     };
 
     const onDelete = () => {
-      if (props.editMode && props.cartIndex >= 0) {
-        CartStorage.removeItem(props.cartIndex);
-      }
+      logic.delete(props.cartIndex);
       emit('on-close');
+    };
+
+    const onIncreaseQuantity = () => {
+      const index = props.editMode ? props.cartIndex : -1;
+      logic.increaseQuantity(index);
+    };
+
+    const onDecreaseQuantity = async () => {
+      const result = await logic.decreaseQuantity(
+        props.editMode,
+        props.cartIndex
+      );
+
+      if (result === 'deleted') {
+        emit('on-close');
+      }
     };
 
     return {
       logic,
-      onClose,
+      formatPrice,
       onConfirm,
       onDelete,
-      formatPrice,
-      onSelectSize: (size: MenuSelect) => logic.setSelectedSize(size),
-      onToggleTopping: (topping: MenuSelect) => logic.toggleTopping(topping),
+      onIncreaseQuantity,
+      onDecreaseQuantity,
+      onClose: () => emit('on-close'),
+      onSelectSize: logic.setSelectedSize.bind(logic),
+      onToggleTopping: logic.toggleTopping.bind(logic),
     };
   },
 });
@@ -180,12 +173,12 @@ export default defineComponent({
   margin: 17px 20px 0 20px;
 }
 
-.menu-detail-image {
+.menu-detail-header-image {
   flex-shrink: 0;
   margin: 29px 0 29px 27px;
 }
 
-.menu-detail-image img {
+.menu-detail-header-image img {
   width: 312px;
   height: 300px;
   object-fit: cover;
@@ -220,7 +213,6 @@ export default defineComponent({
   font-weight: 400;
   font-size: 25px;
   line-height: 30px;
-  letter-spacing: 0%;
 }
 
 .menu-detail-info-bottom {
@@ -259,7 +251,7 @@ export default defineComponent({
   font-style: Bold;
   font-size: 50px;
   line-height: 64px;
-  letter-spacing: 0%;
+
   vertical-align: middle;
   margin-top: 15px;
   margin-left: 20px;

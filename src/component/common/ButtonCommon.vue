@@ -170,7 +170,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 30px;
   line-height: 18px;
-  letter-spacing: 0%;
+
   text-align: right;
 }
 

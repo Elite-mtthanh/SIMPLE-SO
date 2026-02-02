@@ -5,6 +5,7 @@
         :is="currentPageName"
         :key="pageKey"
         :page-args="currentPageArgs"
+        v-bind="currentPageArgs?.Data || {}"
       />
     </keep-alive>
 
@@ -23,6 +24,7 @@ import GlobalDialog from '@/component/common/GlobalDialog.vue';
 import CategoryListPage from '@/page/CategoryListPage.vue';
 import MenuListPage from '@/page/MenuListPage.vue';
 import OrderListPage from './OrderListPage.vue';
+import OrderResultPage from './OrderResultPage.vue';
 
 export default defineComponent({
   name: 'top-page',
@@ -32,6 +34,7 @@ export default defineComponent({
     CategoryListPage,
     MenuListPage,
     OrderListPage,
+    OrderResultPage
   },
   setup() {
     let logic = new TopLogic();

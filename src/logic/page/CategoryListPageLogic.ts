@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { computed, ref, Ref } from 'vue';
 import { DataPool } from '@/model/DataPool';
 import { AppConfig } from '@/model/AppConfig';
 import { Language } from '@/model/Enums';
@@ -9,9 +9,26 @@ import { getMenuName } from '@/util/DictNormalizerUtil';
 import { CartStorage } from '@/storage/CartStorage';
 
 export class CategoryListPageLogic {
+  /** data pool instance */
   private dataPool = DataPool.Instance;
+  /** app config instance */
   private config = AppConfig.Instance;
+  /** footer logic for language, allergen, call staff */
   private footerLogic = new FooterLogic();
+
+  /** cart count for footer (reactive, updates on cart-updated) */
+  private cartCountRef = ref(CartStorage.getCart().length);
+
+  constructor() {
+    GlobalEvent.Instance.on('cart-updated', () => {
+      this.cartCountRef.value = CartStorage.getCart().length;
+    });
+  }
+
+  /** cart count for footer (reactive) */
+  get cartCount(): Ref<number> {
+    return this.cartCountRef;
+  }
 
   /** allergen dialog visibility status */
   readonly showAllergen = this.footerLogic.showAllergen;
@@ -80,14 +97,12 @@ export class CategoryListPageLogic {
    */
   goToMenuPage(categoryCode: Menu): void {
     GlobalEvent.Instance.goToMenuPage(categoryCode.menu_cd);
-    console.log(categoryCode.menu_cd)
   }
 
+  /**
+   * open order list page
+   */
   openOrderList(): void {
     GlobalEvent.Instance.goToOrderListPage();
-  }
-
-  get cartCount(): number {
-    return CartStorage.getCart().length;
   }
 }

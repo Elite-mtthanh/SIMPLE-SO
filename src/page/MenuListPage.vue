@@ -53,8 +53,9 @@
         :mode="FooterMode.Menu"
         :currentLang="currentLang"
         :language-options="languageOptions"
-        :cartCount="footerLogic.cartCount"
-        @on-open-cart="openOrderList"
+        :cartCount="cartCount"
+        @update:currentLang="onChangeLanguage"
+        @on-open-cart="onOpenOrderList"
         @on-call-staff="onCallStaff"
         @on-open-allergen="onOpenAllergen"
         @on-back="onBack"
@@ -76,8 +77,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { FooterMode } from '@/model/Enums';
+import { defineComponent, ref, computed } from 'vue';
+import { FooterMode, Language } from '@/model/Enums';
 import { MenuListPageLogic } from '@/logic/page/MenuListPageLogic';
 import AppFooter from '@/component/common/AppFooter.vue';
 import ImageView from '@/component/common/ImageView.vue';
@@ -97,6 +98,7 @@ export default defineComponent({
   setup() {
     const logic = new MenuListPageLogic();
     const selectedMenuCd = ref<string | null>(null);
+    const cartCount = computed(() => logic.cartCount.value);
 
     return {
       FooterMode,
@@ -104,26 +106,26 @@ export default defineComponent({
       languageOptions: logic.languageOptions,
       showAllergen: logic.showAllergen,
       footerLogic: logic,
-
+      cartCount,
       categoryName: logic.categoryName,
       pagedMenus: logic.pagedMenus,
       totalPages: logic.totalPages,
       visiblePages: logic.visiblePages,
       currentPage: logic.pageIndex,
       selectedMenuCd,
-
+      onChangeLanguage: (lang: Language) => logic.changeLanguage(lang),
       onCallStaff: () => logic.callStaff(),
       onOpenAllergen: () => logic.openAllergen(),
       onCloseAllergen: () => logic.closeAllergen(),
       onNext: () => logic.nextPage(),
       onPrev: () => logic.prevPage(),
       onBack: () => logic.backToCategory(),
-      openOrderList: () => logic.openOrderList(),
+      onOpenOrderList: () => logic.openOrderList(),
       onMenuClick: (menuCd: string) => {
         selectedMenuCd.value = menuCd;
       },
       onSwipeStart: (event: TouchEvent) => logic.onTouchStart(event),
-      onSwipeEnd: (event: TouchEvent) => logic.onTouchEnd(event),
+      onSwipeEnd: (event: TouchEvent) => logic.onTouchEnd(event), 
     };
   },
 });

@@ -102,7 +102,7 @@ export default defineComponent({
   height: 100px;
   display: flex;
   align-items: center;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   margin: 0 26px 10px 28px;
   cursor: pointer;
 }
@@ -127,14 +127,14 @@ export default defineComponent({
 .menu-topping-name {
   width: 855px;
   height: 98px;
-  line-height: 98px; 
+  line-height: 98px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 400;
   font-size: 45px;
   margin-left: 14px;
-  min-width: 0; 
+  min-width: 0;
   flex-shrink: 1;
 }
 
@@ -146,9 +146,9 @@ export default defineComponent({
   height: 100px;
   font-weight: 400;
   font-size: 45px;
-  leading-trim: NONE;
+
   line-height: 64px;
-  letter-spacing: 0%;
+
   text-align: right;
   vertical-align: middle;
   color: var(--text-price);

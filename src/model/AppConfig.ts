@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
 import { Language } from './Enums';
 
 export class AppConfig {
@@ -10,7 +10,11 @@ export class AppConfig {
     Language.ZH,
   ];
 
-  currentLang = ref<Language>(this.languages[0]);
+  currentLang: Ref<Language>;
+
+  constructor() {
+    this.currentLang = ref<Language>(this.languages[0]);
+  }
 
   static init(): void {
     this.Instance = new AppConfig();

@@ -46,7 +46,7 @@
 
       <ButtonCommon
         class="btn-order"
-        @touchend="onCallStaff"
+        @touchend="onComfirmOrder"
         text-color="inverse"
         type="red"
         ><DictText keyName="ORDER_BUTTON"
@@ -56,55 +56,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, computed } from 'vue';
 import OrderItem from '@/component/OrderItem.vue';
 import MenuDetailDialog from '@/component/MenuDetailDialog.vue';
 import DictText from '@/component/common/DictText.vue';
-import { formatPrice } from '@/util/FormatPrice';
-import { CartLogic } from '@/logic/page/OrderListPageLogic';
-import { CartItem } from '@/model/Menu';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
-import { GlobalEvent } from '@/logic/common/GlobalEvent';
+import { formatPrice } from '@/util/FormatPrice';
+import { OrderListPageLogic } from '@/logic/page/OrderListPageLogic';
 
 export default defineComponent({
   name: 'OrderListPage',
   components: { OrderItem, DictText, MenuDetailDialog, ButtonCommon },
-  emits: ['on-close', 'on-order'],
+
   setup() {
-    const logic = new CartLogic();
-    const editingItem = ref<CartItem | null>(null);
-    const editingIndex = ref<number>(-1);
-
-    const openEditDialog = (item: CartItem, index: number) => {
-      editingItem.value = item;
-      editingIndex.value = index;
-    };
-
-    const closeEditDialog = () => {
-      editingItem.value = null;
-      editingIndex.value = -1;
-    };
-
-    const handleEditConfirm = () => {
-      closeEditDialog();
-    };
-
-    const onBackCategory = () => {
-      GlobalEvent.Instance.backToCategoryPage();
-    };
+    const logic = new OrderListPageLogic();
 
     return {
       items: logic.items,
-      totalQuantity: logic.totalQuantity,
-      totalPrice: logic.totalPrice,
+      editingItem: logic.editingItem,
+      editingIndex: logic.editingIndex,
+      totalQuantity: computed(() => logic.totalQuantity),
+      totalPrice: computed(() => logic.totalPrice),
       formatPrice,
-      editingItem,
-      editingIndex,
-      openEditDialog,
-      closeEditDialog,
-      handleEditConfirm,
-      onBackCategory,
-      onCallStaff: () => logic.callStaff(),
+      openEditDialog: logic.openEdit.bind(logic),
+      closeEditDialog: logic.closeEdit.bind(logic),
+      handleEditConfirm: logic.handleEditConfirm.bind(logic),
+      onBackCategory: logic.backToCategory.bind(logic),
+      onComfirmOrder: logic.confirmOrder.bind(logic),
     };
   },
 });
@@ -126,7 +104,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 70px;
   line-height: 18px;
-  letter-spacing: 0%;
+
   text-align: center;
 }
 
@@ -156,7 +134,7 @@ export default defineComponent({
   font-weight: 700;
 }
 
-.cart-total{
+.cart-total {
   display: flex;
   justify-content: end;
   align-items: center;
@@ -175,7 +153,7 @@ export default defineComponent({
   font-weight: 700;
   font-size: 70px;
   line-height: 30px;
-  letter-spacing: 0%;
+
   text-align: right;
   vertical-align: middle;
   color: var(--text-link);
@@ -185,7 +163,7 @@ export default defineComponent({
   font-weight: 700;
   font-size: 70px;
   line-height: 30px;
-  letter-spacing: 0%;
+
   text-align: right;
   vertical-align: middle;
   color: var(--text-price);

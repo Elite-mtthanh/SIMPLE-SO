@@ -17,6 +17,7 @@
   --z-overlay: 1000;
   --z-dialog: 1100;
   --z-stockout: 10;
+  --z-dropdown: 999;
 
   /* Colors for Button */
   --btn-primary: #b02a37;

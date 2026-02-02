@@ -24,41 +24,32 @@ export class CartStorage {
   }
 
   /**
-   * Get total quantity of a specific menu item in cart
+   * Get total quantity of a specific menu item in cart (regardless of size/topping)
    * @param menuCd Menu code to check
-   * @param size Selected size (optional)
-   * @param toppings Selected toppings
-   * @returns Total quantity in cart
+   * @returns Total quantity in cart for this menu
    */
-  static getMenuQuantityInCart(
-    menuCd: string,
-    size: CartItem['size'] | null,
-    toppings: CartItem['toppings']
-  ): number {
+  static getMenuQuantityInCart(menuCd: string): number {
     const cart = this.getCart();
-
-    const matchingItems = cart.filter(c =>
-      c.menuCd === menuCd &&
-      (c.size?.selectCd ?? null) === (size?.selectCd ?? null) &&
-      this.isSameToppings(c.toppings, toppings)
-    );
-
+    const matchingItems = cart.filter(c => c.menuCd === menuCd);
     return matchingItems.reduce((sum, item) => sum + item.quantity, 0);
   }
 
   /**
    * Get maximum quantity that can be added for a menu item
    * @param menuCd Menu code to check
-   * @param size Selected size (optional)
-   * @param toppings Selected toppings
+   * @param excludeIndex Index to exclude from calculation (for edit mode)
    * @returns Maximum quantity that can be added
    */
   static getMaxAddableQuantity(
     menuCd: string,
-    size: CartItem['size'] | null,
-    toppings: CartItem['toppings']
+    excludeIndex: number = -1
   ): number {
-    const currentQuantity = this.getMenuQuantityInCart(menuCd, size, toppings);
+    const cart = this.getCart();
+    const matchingItems = cart
+      .map((item, index) => ({ item, index }))
+      .filter(({ item, index }) => item.menuCd === menuCd && index !== excludeIndex);
+    
+    const currentQuantity = matchingItems.reduce((sum, { item }) => sum + item.quantity, 0);
     return Math.max(0, MAX_QUANTITY_PER_MENU - currentQuantity);
   }
 
@@ -69,6 +60,19 @@ export class CartStorage {
   static addItem(item: CartItem): void {
     const cart = this.getCart();
 
+    // Check total quantity of this menu in cart (all variants)
+    const totalMenuQuantity = this.getMenuQuantityInCart(item.menuCd);
+    const maxAddable = MAX_QUANTITY_PER_MENU - totalMenuQuantity;
+
+    // If already at max, don't add
+    if (maxAddable <= 0) {
+      return;
+    }
+
+    // Cap the quantity to add
+    const quantityToAdd = Math.min(item.quantity, maxAddable);
+    const pricePerItem = item.total / item.quantity;
+    
     const existing = cart.find(c =>
       c.menuCd === item.menuCd &&
       (c.size?.selectCd ?? null) === (item.size?.selectCd ?? null) &&
@@ -76,25 +80,14 @@ export class CartStorage {
     );
 
     if (existing) {
-      // Check if adding would exceed max quantity
-      const newQuantity = existing.quantity + item.quantity;
-      if (newQuantity > MAX_QUANTITY_PER_MENU) {
-        existing.quantity = MAX_QUANTITY_PER_MENU;
-        // Recalculate total based on capped quantity
-        const pricePerItem = item.total / item.quantity;
-        existing.total = pricePerItem * MAX_QUANTITY_PER_MENU;
-      } else {
-        existing.quantity = newQuantity;
-        existing.total += item.total;
-      }
+      existing.quantity += quantityToAdd;
+      existing.total += pricePerItem * quantityToAdd;
     } else {
-      // Cap quantity if it exceeds max
-      if (item.quantity > MAX_QUANTITY_PER_MENU) {
-        item.quantity = MAX_QUANTITY_PER_MENU;
-        const pricePerItem = item.total / item.quantity;
-        item.total = pricePerItem * MAX_QUANTITY_PER_MENU;
-      }
-      cart.push(item);
+      cart.push({
+        ...item,
+        quantity: quantityToAdd,
+        total: pricePerItem * quantityToAdd,
+      });
     }
 
     this.saveCart(cart);
@@ -110,13 +103,19 @@ export class CartStorage {
     const cart = this.getCart();
 
     if (index >= 0 && index < cart.length) {
-      if (newItem.quantity > MAX_QUANTITY_PER_MENU) {
-        newItem.quantity = MAX_QUANTITY_PER_MENU;
-        const pricePerItem = newItem.total / newItem.quantity;
-        newItem.total = pricePerItem * MAX_QUANTITY_PER_MENU;
-      }
+      // Get total quantity of this menu excluding the item being edited
+      const maxAddable = this.getMaxAddableQuantity(newItem.menuCd, index);
+      
+      // Cap the quantity
+      const cappedQuantity = Math.min(newItem.quantity, maxAddable);
+      const pricePerItem = newItem.total / newItem.quantity;
 
-      cart[index] = newItem;
+      cart[index] = {
+        ...newItem,
+        quantity: cappedQuantity,
+        total: pricePerItem * cappedQuantity,
+      };
+      
       this.saveCart(cart);
       GlobalEvent.Instance.emitEvent('cart-updated');
     }

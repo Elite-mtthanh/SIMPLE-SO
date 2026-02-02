@@ -114,7 +114,6 @@ export default defineComponent({
   font-weight: 600;
   font-size: 200px;
   line-height: 18px;
-  letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
 }

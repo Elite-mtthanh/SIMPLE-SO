@@ -1,0 +1,120 @@
+<template>
+  <div class="order-result">
+    <div class="order-result-image">
+      <ImageView
+        v-if="success"
+        src="/Image/order/human-order-complete.png"
+        class="order-result-image-success"
+      />
+      <ImageView
+        v-else
+        src="/Image/order/human-order-error.png"
+        class="order-result-image-error"
+      />
+    </div>
+
+    <div class="order-result-subtext">
+      <div class="order-result-subtext-success" v-if="success">
+        <DictText keyName="ORDER_SUCCESS_MESSAGE" />
+      </div>
+      <div class="order-result-subtext-error" v-else>
+        <DictText keyName="ORDER_ERROR_MESSAGE" />
+        <DictText keyName="ORDER_ERROR_COMMENT" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, onActivated } from 'vue';
+import DictText from '@/component/common/DictText.vue';
+import ImageView from '@/component/common/ImageView.vue';
+import { GlobalEvent } from '@/logic/common/GlobalEvent';
+import { CartStorage } from '@/storage/CartStorage';
+
+export default defineComponent({
+  name: 'OrderResultPage',
+  components: { DictText, ImageView },
+
+  setup() {
+    const success = ref(GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true);
+
+    onActivated(() => {
+      success.value = GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
+
+      setTimeout(() => {
+        const args = GlobalEvent.Instance.getCurrentPageArgs();
+        const isSuccess = args?.Data?.success === true;
+        if (isSuccess) {
+          CartStorage.clear();
+          GlobalEvent.Instance.emitEvent('cart-updated');
+        }
+        GlobalEvent.Instance.showStartPage();
+      }, 5000);
+    });
+
+    return { success };
+  },
+});
+</script>
+
+<style scoped>
+.order-result {
+  width: 100%;
+  height: 100%;
+  background: var(--background-app);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-result-image {
+  margin-top: 116px;
+}
+
+.order-result-image-success {
+  height: 656px;
+  width: 400px;
+}
+
+.order-result-image-error {
+  height: 678px;
+  width: 600px;
+}
+
+.result-text {
+  font-weight: 600;
+  font-size: 100px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.order-result-subtext {
+  height: 334px;
+  width: 1680px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.order-result-subtext-success {
+  font-weight: 600;
+  font-size: 100px;
+  line-height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  color: var(--text-link);
+}
+
+.order-result-subtext-error {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 100px;
+  line-height: 120px;
+  text-align: center;
+  vertical-align: middle;
+  color: var(--text-error);
+}
+</style>

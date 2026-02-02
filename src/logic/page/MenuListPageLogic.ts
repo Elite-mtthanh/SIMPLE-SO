@@ -9,8 +9,11 @@ import { CartStorage } from '@/storage/CartStorage';
 import { Language } from '@/model/Enums';
 
 export class MenuListPageLogic {
+  /** data pool instance */
   private dataPool = DataPool.Instance;
+  /** app config instance */
   private config = AppConfig.Instance;
+  /** footer logic for language, allergen, call staff */
   private footerLogic = new FooterLogic();
 
   /** number of items per page */
@@ -25,9 +28,6 @@ export class MenuListPageLogic {
   /** swipe detection properties */
   private touchStartX = 0;
   private touchStartY = 0;
-  private moved = false;
-  private minSwipeDistance = 50;
-
 
   /** allergen dialog visibility status */
   readonly showAllergen = this.footerLogic.showAllergen;
@@ -63,9 +63,9 @@ export class MenuListPageLogic {
     return Math.min(total, 4);
   });
 
-  /**
-   * constructor - initialize and setup watchers
-   */
+  /** cart count for footer (reactive, updates on cart-updated) */
+  private cartCountRef = ref(CartStorage.getCart().length);
+
   constructor() {
     this.reloadMenus();
 
@@ -81,6 +81,10 @@ export class MenuListPageLogic {
         this.reloadMenus();
       }
     );
+
+    GlobalEvent.Instance.on('cart-updated', () => {
+      this.cartCountRef.value = CartStorage.getCart().length;
+    });
   }
 
   /**
@@ -155,10 +159,7 @@ export class MenuListPageLogic {
    */
   onTouchEnd(e: TouchEvent) {
     const deltaX = e.changedTouches[0].clientX - this.touchStartX;
-
-    // 👇 CỰC KỲ QUAN TRỌNG
-    if (Math.abs(deltaX) < 50) return; // coi là tap
-
+    if (Math.abs(deltaX) < 50) return;
     deltaX > 0 ? this.prevPage() : this.nextPage();
   }
 
@@ -183,8 +184,6 @@ export class MenuListPageLogic {
 
     const lang = this.currentLang.value;
     const menus = this.dataPool.getMenus(categoryCd);
-
-    // Limit to maximum 16 items (4 pages x 4 items per page)
     const limitedMenus = menus.slice(0, 16);
 
     this.menus.value = limitedMenus.map(menu => ({
@@ -199,7 +198,7 @@ export class MenuListPageLogic {
     }));
   }
 
-  /** get current category name */
+  /** get current category display name for header */
   get currentCategoryName(): string {
     const categoryCd = GlobalEvent.Instance.currentCategoryCd.value;
 
@@ -219,11 +218,15 @@ export class MenuListPageLogic {
     GlobalEvent.Instance.goToCategoryPage();
   }
 
+  /**
+   * open order list page
+   */
   openOrderList(): void {
     GlobalEvent.Instance.goToOrderListPage();
   }
 
-  get cartCount(): number {
-    return CartStorage.getCart().length;
+  /** cart count for footer (reactive) */
+  get cartCount(): Ref<number> {
+    return this.cartCountRef;
   }
 }

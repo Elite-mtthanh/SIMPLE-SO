@@ -161,5 +161,6 @@
     "ja": "カートに許容される数量を超える",
     "zh": "超出购物车中允许的数量 ...",
     "en": "Exceeding the quantity allowed in the cart"
-  }
+  },
+  { "key_name": "SOLD_OUT", "ja": "完売", "zh": "售罄", "en": "SOLD OUT" }
 ]

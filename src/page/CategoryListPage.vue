@@ -21,7 +21,7 @@
       :mode="FooterMode.Category"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
-      :cartCount="footerLogic.cartCount"
+      :cartCount="cartCount"
       @on-open-cart="openOrderList"
       @on-call-staff="onCallStaff"
       @on-open-allergen="onOpenAllergen"
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
 import DictText from '@/component/common/DictText.vue';
 import AppFooter from '@/component/common/AppFooter.vue';
@@ -54,6 +54,7 @@ export default defineComponent({
   },
   setup() {
     const logic = new CategoryListPageLogic();
+    const cartCount = computed(() => logic.cartCount.value);
 
     return {
       FooterMode,
@@ -62,7 +63,7 @@ export default defineComponent({
       showAllergen: logic.showAllergen,
       languageOptions: logic.languageOptions,
       footerLogic: logic,
-
+      cartCount,
       onCallStaff: () => logic.callStaff(),
       onOpenAllergen: () => logic.openAllergen(),
       onCloseAllergen: () => logic.closeAllergen(),
@@ -118,6 +119,6 @@ export default defineComponent({
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 17px 20px;
-  width: 1580px; 
+  width: 1580px;
 }
 </style>

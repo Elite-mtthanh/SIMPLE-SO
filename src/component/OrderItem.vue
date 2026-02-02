@@ -2,7 +2,9 @@
   <PressLayer @touchend="onTouchend">
     <div class="cart-item">
       <div class="cart-item-left">
-        <img class="cart-item-image" :src="item.imagePath" />
+        <div class="cart-item-image">
+          <ImageView :src="item.imagePath" />
+        </div>
 
         <div class="cart-item-info-detail">
           <div class="cart-item-name">
@@ -29,10 +31,11 @@ import { defineComponent, PropType } from 'vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { CartItem } from '@/model/Menu';
 import PressLayer from './common/PressLayer.vue';
+import ImageView from './common/ImageView.vue';
 
 export default defineComponent({
   name: 'CartItem',
-  components: { PressLayer },
+  components: { PressLayer, ImageView },
   props: {
     item: {
       type: Object as PropType<CartItem>,
@@ -58,7 +61,6 @@ export default defineComponent({
   width: 1574px;
   height: 200px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   background-color: var(--background-items);
   border-radius: 8px;
@@ -66,7 +68,6 @@ export default defineComponent({
 
 .cart-item-left {
   display: flex;
-  align-items: center;
   flex: 1;
   min-width: 0;
 }
@@ -74,15 +75,21 @@ export default defineComponent({
 .cart-item-image {
   width: 180px;
   height: 180px;
+  overflow: hidden;
+  margin: 10px 0 10px 9px;
   border-radius: 10px;
-  object-fit: cover;
-  margin-left: 9px;
+}
+
+.cart-item-image :deep(img) {
+  width: 365px;
+  height: 357px;
+  object-fit: none;
+  transform: scale(1.4);
 }
 
 .cart-item-info-detail {
   display: flex;
   flex-direction: column;
-  margin-left: 23px;
   min-width: 0;
 }
 
@@ -97,17 +104,24 @@ export default defineComponent({
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-left: 23px;
+  margin-top: 10px;
 }
 
 .cart-item-size {
   width: fit-content;
-  padding: 4px 16px;
-  font-size: 30px;
+  height: 50px;
+  width: 50px;
   font-weight: 600;
   color: var(--text-inverse);
   background-color: var(--btn-link);
   border-radius: 6px;
-  margin-top: 6px;
+  margin: 11px 0 9px 10px;
+  font-size: 45px;
+  line-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-item-right {
@@ -115,7 +129,6 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding-right: 14px;
 }
 
 .cart-item-quantity {
@@ -126,6 +139,7 @@ export default defineComponent({
   color: var(--text-link);
   text-align: right;
   margin-bottom: 64px;
+  padding-right: 4px;
 }
 
 .cart-item-price {
@@ -138,12 +152,10 @@ export default defineComponent({
   background-color: var(--text-accent);
   color: var(--text-inverse);
   border-radius: 1000px;
-  font-weight: 700;
+  font-weight: 700px;
   font-size: 30px;
   line-height: 30px;
-  letter-spacing: 0%;
-  text-align: right;
-  vertical-align: middle;
+  
   margin: 0 14px 18px 0;
 }
 </style>

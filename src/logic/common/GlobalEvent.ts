@@ -78,6 +78,10 @@ export class GlobalEvent {
     this.eventBus.emit(EmitEvent.ChangeScreen, args);
   }
 
+  public getCurrentPageArgs(): PageArgs | null {
+    return this.currentPageArgs;
+  }
+
   public showStartPage() {
     this.emitChangeScreen(
       new PageArgs('start-page', PageStackType.NoHistory)
@@ -107,6 +111,12 @@ export class GlobalEvent {
   public backToCategoryPage() {
     this.emitChangeScreen(
       new PageArgs('CategoryListPage', PageStackType.Back, null, -1, true)
+    );
+  }
+
+  public goToOrderResultPage(data: { success: boolean }) {
+    this.emitChangeScreen(
+      new PageArgs('OrderResultPage', PageStackType.NoHistory, data)
     );
   }
 }

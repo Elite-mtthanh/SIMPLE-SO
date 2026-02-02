@@ -13,8 +13,8 @@
       <div class="menu-detail-quantity">
         <PressLayer
           class="menu-detail-quantity-btn"
-          @touchend="quantity > 1 && onDecrease()"
-          :class="{ disabled: quantity <= 1 }"
+          @touchend="(editMode ? quantity > 0 : quantity > 1) && onDecrease()"
+          :class="{ disabled: editMode ? quantity <= 0 : quantity <= 1 }"
         >
           <ImageView src="/Image/menu/minus.png" />
         </PressLayer>
@@ -150,22 +150,17 @@ export default defineComponent({
   font-weight: 600;
   font-size: 80px;
   line-height: 64px;
-  letter-spacing: 0%;
   vertical-align: middle;
   color: var(--text-price);
 }
 
-.menu-detail-btn-cancel,
-.menu-detail-btn-delete,
-.menu-detail-btn-confirm {
+.menu-detail-btn-cancel :deep(*),
+.menu-detail-btn-confirm :deep(*) {
   font-weight: 600;
   font-size: 45px;
-  leading-trim: NONE;
   line-height: 64px;
-  letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
   border-radius: 6px;
-  margin-right: 52px;
 }
 </style>
