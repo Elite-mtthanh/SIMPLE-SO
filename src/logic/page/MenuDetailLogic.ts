@@ -1,7 +1,3 @@
-/**
- * MenuDetailLogic - Logic for menu detail dialog
- * Author: Truong
- */
 import { DataPool } from '@/model/DataPool';
 import { CartItem, MenuItem, MenuSelect } from '@/model/Menu';
 import { AppConfig } from '@/model/AppConfig';
@@ -147,29 +143,24 @@ export class MenuDetailLogic {
    * @returns Promise that resolves to true if quantity was increased, false if limit reached
    */
   async increase(editIndex: number = -1): Promise<boolean> {
-    // Check if increasing will exceed 99 items in cart
     const cart = CartStorage.getCart();
-    let totalInCart = 0;
+    let totalItemsInCart = 0;
     
-    // Calculate total quantity in cart, excluding current item if in edit mode
     for (let i = 0; i < cart.length; i++) {
-      if (cart[i].menuCd === this.menu.menu_cd) {
-        if (editIndex === -1 || i !== editIndex) {
-          totalInCart += cart[i].quantity;
-        }
+      if (editIndex === -1 || i !== editIndex) {
+        totalItemsInCart += cart[i].quantity;
       }
     }
     
-    // In edit mode: totalInCart doesn't include current item's quantity
-    // In add mode: totalInCart is total of all items with this menuCd
-    const totalAfterIncrease = totalInCart + this.quantity + 1;
+    const totalAfterIncrease = totalItemsInCart + this.quantity + 1;
     
-    if (totalAfterIncrease >= 99) {
+    if (totalAfterIncrease > 99) {
       await this.showOverQuantityDialog();
       return false;
     }
 
     const maxQuantity = this.getMaxQuantity(editIndex);
+    
     if (this.quantity < maxQuantity) {
       this.quantity++;
       return true;
@@ -337,18 +328,18 @@ export class MenuDetailLogic {
   async increaseQuantity(editIndex: number): Promise<boolean> {
     // Check if increasing will exceed 99 items in cart
     const cart = CartStorage.getCart();
-    let totalInCart = 0;
+    let totalItemsInCart = 0;
     
-    // Calculate total quantity in cart, excluding current item being edited
+    // Calculate TOTAL quantity of ALL items in cart, excluding current item being edited
     for (let i = 0; i < cart.length; i++) {
-      if (cart[i].menuCd === this.menu.menu_cd && i !== editIndex) {
-        totalInCart += cart[i].quantity;
+      if (i !== editIndex) {
+        totalItemsInCart += cart[i].quantity;
       }
     }
     
-    const totalAfterIncrease = totalInCart + this.quantity + 1;
+    const totalAfterIncrease = totalItemsInCart + this.quantity + 1;
     
-    if (totalAfterIncrease >= 99) {
+    if (totalAfterIncrease > 99) {
       await this.showOverQuantityDialog();
       return false;
     }

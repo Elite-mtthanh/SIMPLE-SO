@@ -5,41 +5,43 @@
         <ImageView :src="backIcon" @mousedown.prevent="onBack" />
       </div>
 
-      <DropdownButtonCommon
-        v-model="localLang"
-        :items="languageOptions"
-        type="soft"
-        textColor="link"
-        :icon="arrowDownIcon"
-        @update:modelValue="onChangeLang"
-      >
-        <template #label>
-          <DictText keyName="LANGUAGE_BUTTON" />
-        </template>
-      </DropdownButtonCommon>
+      <div class="footer-left-buttons">
+        <DropdownButtonCommon
+          v-model="localLang"
+          :items="languageOptions"
+          type="soft"
+          textColor="link"
+          :icon="arrowDownIcon"
+          @update:modelValue="onChangeLang"
+        >
+          <template #label>
+            <DictText keyName="LANGUAGE_BUTTON" />
+          </template>
+        </DropdownButtonCommon>
 
-      <ButtonCommon
-        type="primary"
-        :icon="bellIcon"
-        textColor="inverse"
-        @touchend="onMousedownCallStaff"
-        :iconSize="48"
-        class="footer-left-bell"
-      >
-        <DictText keyName="CALL_STAFF_BUTTON" />
-      </ButtonCommon>
+        <ButtonCommon
+          type="primary"
+          :icon="bellIcon"
+          textColor="inverse"
+          @touchend="onMousedownCallStaff"
+          :iconSize="48"
+          class="footer-left-bell"
+        >
+          <DictText keyName="CALL_STAFF_BUTTON" />
+        </ButtonCommon>
 
-      <ButtonCommon
-        type="soft"
-        :icon="allergenIcon"
-        textColor="link"
-        @touchend="onMousedownOpenAllergen"
-        :iconHeight="75"
-        :iconWidth="79"
-        class="footer-left-allergen"
-      >
-        <DictText keyName="ALLERGEN_BUTTON" />
-      </ButtonCommon>
+        <ButtonCommon
+          type="soft"
+          :icon="allergenIcon"
+          textColor="link"
+          @touchend="onMousedownOpenAllergen"
+          :iconHeight="75"
+          :iconWidth="79"
+          class="footer-left-allergen"
+        >
+          <DictText keyName="ALLERGEN_BUTTON" />
+        </ButtonCommon>
+      </div>
     </div>
 
     <div class="footer-right">
@@ -224,7 +226,7 @@ export default defineComponent({
 
 <style scoped>
 .footer {
-  padding-left: 53px;
+  padding-left: 51px;
   padding-right: 20px;
   display: flex;
   align-items: center;
@@ -233,14 +235,20 @@ export default defineComponent({
 
 .footer-left {
   display: flex;
-  gap: 27px;
   align-items: center;
+}
+
+.footer-left-buttons {
+  display: flex;
+  align-items: center;
+  gap: 27px;
 }
 
 .footer-left-back-icon {
   cursor: pointer;
   height: 90px;
   width: 90px;
+  margin-right: 22px;
 }
 
 .footer-right {
