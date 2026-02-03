@@ -282,8 +282,9 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 700;
+  line-height: 30px;
   background: var(--text-accent);
   padding: 10px 36px;
   border-radius: 50px;

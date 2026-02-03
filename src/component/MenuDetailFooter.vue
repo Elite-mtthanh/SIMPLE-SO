@@ -105,6 +105,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   gap: 36px;
+  margin-left: 52px;
 }
 
 .menu-detail-quantity {
@@ -114,8 +115,8 @@ export default defineComponent({
 }
 
 .menu-detail-quantity-btn {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: var(--btn-link);
   display: flex;

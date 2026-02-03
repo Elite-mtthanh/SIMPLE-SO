@@ -1,49 +1,67 @@
 <template>
-  <div ref="pageEl" class="order-result anim-fade-scale" @touchend="onTapScreen" @click="onTapScreen">
-    <div class="order-result-image">
-      <ImageView
-        v-if="success"
-        src="/Image/order/human-order-complete.png"
-        class="order-result-image-success"
-      />
-      <ImageView
-        v-else
-        src="/Image/order/human-order-error.png"
-        class="order-result-image-error"
-      />
-    </div>
+  <PressLayer @touchend="onTapScreen">
+    <div ref="pageEl" class="order-result anim-fade-scale">
+      <div class="order-result-image">
+        <ImageView
+          v-if="success"
+          src="/Image/order/human-order-complete.png"
+          class="order-result-image-success"
+        />
+        <ImageView
+          v-else
+          src="/Image/order/human-order-error.png"
+          class="order-result-image-error"
+        />
+      </div>
 
-    <div class="order-result-subtext">
-      <div class="order-result-subtext-success" v-if="success">
-        <DictText keyName="ORDER_SUCCESS_MESSAGE" />
-      </div>
-      <div class="order-result-subtext-error" v-else>
-        <DictText keyName="ORDER_ERROR_MESSAGE" />
-        <DictText keyName="ORDER_ERROR_COMMENT" />
+      <div class="order-result-subtext">
+        <div class="order-result-subtext-success" v-if="success">
+          <DictText keyName="ORDER_SUCCESS_MESSAGE" />
+        </div>
+        <div class="order-result-subtext-error" v-else>
+          <DictText keyName="ORDER_ERROR_MESSAGE" />
+          <DictText keyName="ORDER_ERROR_COMMENT" />
+        </div>
       </div>
     </div>
-  </div>
+  </PressLayer>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onBeforeUnmount, onActivated } from 'vue';
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  onActivated,
+} from 'vue';
 import DictText from '@/component/common/DictText.vue';
 import ImageView from '@/component/common/ImageView.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { CartStorage } from '@/storage/CartStorage';
 import { playEnter } from '@/util/AnimationUtil';
+import PressLayer from '@/component/common/PressLayer.vue';
 
 export default defineComponent({
   name: 'OrderResultPage',
-  components: { DictText, ImageView },
+  components: { DictText, ImageView, PressLayer },
 
   setup() {
     const pageEl = ref<HTMLElement | null>(null);
-    const success = ref(GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true);
+    const success = ref(
+      GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true
+    );
     let timerId: ReturnType<typeof setTimeout> | null = null;
 
+    const startTimer = () => {
+      if (timerId !== null) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+      timerId = setTimeout(goToStartPage, 5000);
+    };
+
     const triggerEnterAnimation = () => playEnter(pageEl);
-    onActivated(triggerEnterAnimation);
 
     const goToStartPage = () => {
       if (timerId !== null) {
@@ -60,9 +78,17 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      success.value = GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
-      timerId = setTimeout(goToStartPage, 5000);
+      success.value =
+        GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
       triggerEnterAnimation();
+      startTimer();
+    });
+
+    onActivated(() => {
+      success.value =
+        GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
+      triggerEnterAnimation();
+      startTimer();
     });
 
     onBeforeUnmount(() => {

@@ -113,7 +113,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 70px;
   line-height: 18px;
-
+  color: var(--text-link);
   text-align: center;
 }
 
@@ -134,13 +134,6 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
   padding: 0 56px 31px 50px;
-}
-
-.btn-back {
-  width: 220px;
-  height: 70px;
-  font-size: 22px;
-  font-weight: 700;
 }
 
 .cart-total {
@@ -172,15 +165,17 @@ export default defineComponent({
   font-weight: 700;
   font-size: 70px;
   line-height: 30px;
-
   text-align: right;
   vertical-align: middle;
   color: var(--text-price);
 }
-.btn-order {
-  width: 220px;
-  height: 70px;
-  font-size: 24px;
-  font-weight: 800;
+
+.btn-back :deep(*),
+.btn-order :deep(*) {
+  font-weight: 600;
+  font-size: 45px;
+  line-height: 64px;
+  text-align: center;
+  vertical-align: middle;
 }
 </style>
