@@ -1,11 +1,8 @@
 <template>
   <PopupCommon>
-    <div class="dialog-card">
+    <div ref="dialogEl" class="dialog-card anim-fade-scale">
       <div class="dialog-card-header" v-if="dialogArgs.title">
-        <div
-          v-if="dialogArgs.iconButton"
-          class="dialog-card-message-icon"
-        >
+        <div v-if="dialogArgs.iconButton" class="dialog-card-message-icon">
           <ImageView :src="dialogArgs.iconButton" alt="icon" />
         </div>
         <span class="dialog-card-header-title">
@@ -45,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, onActivated, onMounted, PropType, ref } from 'vue';
 import ButtonCommon from './ButtonCommon.vue';
 import PopupCommon from './PopupCommon.vue';
 import DictText from '@/component/common/DictText.vue';
@@ -53,6 +50,7 @@ import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { DialogButtonId, DialogMessageType } from '@/model/Enums';
 import { DialogArgs } from '@/model/Dialog';
 import ImageView from './ImageView.vue';
+import { playEnter, playLeave } from '@/util/AnimationUtil';
 
 export default defineComponent({
   name: 'GlobalDialog',
@@ -69,9 +67,18 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const dialogEl = ref<HTMLElement | null>(null);
+
+    const triggerEnterAnimation = () => playEnter(dialogEl);
+
+    onMounted(triggerEnterAnimation);
+    onActivated(triggerEnterAnimation);
+
     const onMousedownClick = (id: DialogButtonId) => {
-      props.dialogArgs.resolve?.(id);
-      GlobalEvent.Instance.dismissCommonDialog();
+      playLeave(dialogEl, 'anim-leave', 250, () => {
+        props.dialogArgs.resolve?.(id);
+        GlobalEvent.Instance.dismissCommonDialog();
+      });
     };
 
     const getButtonCommonType = (id: DialogButtonId) => {
@@ -91,12 +98,13 @@ export default defineComponent({
           return 'text-accent-dialog';
         case DialogMessageType.Success:
           return 'text-success';
-        default:
+        case DialogMessageType.Default:
           return 'text-link';
       }
     };
 
     return {
+      dialogEl,
       onMousedownClick,
       DialogButtonId,
       getButtonCommonType,

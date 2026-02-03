@@ -1,7 +1,9 @@
 <template>
   <PressLayer @touchend="onSelect">
     <div class="menu-item" :class="{ 'menu-item-soldout': item.soldOut }">
-      <div v-if="item.soldOut" class="menu-item-soldout-overlay">SOLD OUT</div>
+      <div v-if="item.soldOut" class="menu-item-soldout-overlay">
+        <DictText keyName="SOLD_OUT" />
+      </div>
 
       <div class="menu-item-image">
         <ImageView :src="item.imagePath || ''" fit="contain" />
@@ -28,12 +30,14 @@ import ImageView from '@/component/common/ImageView.vue';
 import PressLayer from '@/component/common/PressLayer.vue';
 import { MenuItem } from '@/model/Menu';
 import { formatPrice } from '@/util/FormatPrice';
+import DictText from './common/DictText.vue';
 
 export default defineComponent({
   name: 'MenuItem',
   components: {
     ImageView,
     PressLayer,
+    DictText,
   },
   emits: ['on-select'],
   props: {
@@ -137,7 +141,7 @@ export default defineComponent({
   height: 89px;
   line-height: 30px;
   font-style: Regular;
-  letter-spacing: 0%;
+
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -166,7 +170,7 @@ export default defineComponent({
   margin-bottom: 13px;
   font-style: Bold;
   line-height: 30px;
-  letter-spacing: 0%;
+
   text-align: center;
   vertical-align: middle;
 }

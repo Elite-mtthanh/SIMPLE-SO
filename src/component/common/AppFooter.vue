@@ -46,12 +46,15 @@
         :icon="cartIcon"
         textColor="inverse"
         @touchend="onMousedownOpenCart"
-        :iconSize="50"
+        :iconSize="70"
         class="footer-right-cart"
         :disabled="cartCount === 0"
       >
-        <span class="footer-right-cart-badge"> +{{ cartCount }} </span>
+        <span class="footer-right-cart-badge">
+          {{ displayCartCount }}
+        </span>
       </ButtonCommon>
+
       <div>
         <div class="footer-right-date">
           {{ year }}
@@ -160,6 +163,11 @@ export default defineComponent({
       }
     });
 
+    const displayCartCount = computed(() => {
+      if (props.cartCount <= 0) return '+0';
+      return props.cartCount > 99 ? '99+' : `+${props.cartCount}`;
+    });
+
     const showBack = computed(() => props.mode === FooterMode.Menu);
 
     const showCart = computed(
@@ -202,6 +210,7 @@ export default defineComponent({
       day,
       time,
       onBack,
+      displayCartCount,
       onMousedownCallStaff,
       onMousedownOpenAllergen,
       onMousedownOpenCart,
@@ -274,7 +283,9 @@ export default defineComponent({
   justify-content: center;
   width: 286px;
   pointer-events: none;
-  font-size: 45px;
   color: var(--text-inverse);
+  font-weight: 600;
+  font-size: 70px;
+  line-height: 18px;
 }
 </style>

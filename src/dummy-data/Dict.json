@@ -49,9 +49,9 @@
     "zh": "过敏原",
     "en": "Allergen"
   },
-  { "key_name": "YEAR_LABEL", "ja": "年", "zh": "年", "en": "Year" },
-  { "key_name": "MONTH_LABEL", "ja": "月", "zh": "月", "en": "Month" },
-  { "key_name": "DAY_LABEL", "ja": "日", "zh": "日", "en": "Day" },
+  { "key_name": "YEAR_LABEL", "ja": "年", "zh": "年", "en": "/" },
+  { "key_name": "MONTH_LABEL", "ja": "月", "zh": "月", "en": "/" },
+  { "key_name": "DAY_LABEL", "ja": "日", "zh": "日", "en": "" },
   {
     "key_name": "CALL_STAFF_CONFIRM_MESSAGE",
     "ja": "店員を呼び出しますか？",
@@ -161,5 +161,6 @@
     "ja": "カートに許容される数量を超える",
     "zh": "超出购物车中允许的数量 ...",
     "en": "Exceeding the quantity allowed in the cart"
-  }
+  },
+  { "key_name": "SOLD_OUT", "ja": "完売", "zh": "售罄", "en": "SOLD OUT" }
 ]

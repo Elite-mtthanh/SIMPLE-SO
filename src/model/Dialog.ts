@@ -4,12 +4,20 @@ export class ButtonInfo {
   id: DialogButtonId;
   text: string;
 
+  /**
+   * constructor button info
+   * @param id button id
+   * @param text button display text
+   */
   constructor(id: DialogButtonId, text: string) {
     this.id = id;
     this.text = text;
   }
 }
 
+/**
+* dialog arguments
+*/
 export class DialogArgs {
   title = '';
   message = '';

@@ -6,4 +6,3 @@ sqlite3 db/app.db ".mode json" ".once src/dummy-data/Menus.json" "SELECT * FROM 
 
 - menus_selects
 sqlite3 db/app.db ".mode json" ".once src/dummy-data/Menu_selects.json" "SELECT * FROM menu_selects;"
-

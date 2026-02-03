@@ -1,5 +1,5 @@
 <template>
-  <div class="category">
+  <div ref="pageEl" class="category anim-fade-scale">
     <header class="category-header">
       <span class="category-header-label">
         <DictText keyName="CATEGORY_LABEL" />
@@ -21,6 +21,8 @@
       :mode="FooterMode.Category"
       v-model:currentLang="currentLang"
       :language-options="languageOptions"
+      :cartCount="cartCount"
+      @on-open-cart="openOrderList"
       @on-call-staff="onCallStaff"
       @on-open-allergen="onOpenAllergen"
     />
@@ -34,13 +36,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed, onActivated, onMounted, ref } from 'vue';
 import { FooterMode, Language } from '@/model/Enums';
 import DictText from '@/component/common/DictText.vue';
 import AppFooter from '@/component/common/AppFooter.vue';
 import CategoryItem from '@/component/CategoryItem.vue';
 import { CategoryListPageLogic } from '@/logic/page/CategoryListPageLogic';
 import AllergenDialog from '@/component/AllergenDialog.vue';
+import { playEnter } from '@/util/AnimationUtil';
 
 export default defineComponent({
   name: 'CategoryList',
@@ -51,20 +54,29 @@ export default defineComponent({
     CategoryItem,
   },
   setup() {
+    const pageEl = ref<HTMLElement | null>(null);
     const logic = new CategoryListPageLogic();
+    const cartCount = computed(() => logic.cartCount.value);
+
+    const triggerEnterAnimation = () => playEnter(pageEl);
+    onMounted(triggerEnterAnimation);
+    onActivated(triggerEnterAnimation);
 
     return {
+      pageEl,
       FooterMode,
       categories: logic.categoryList,
       currentLang: logic.currentLang,
       showAllergen: logic.showAllergen,
       languageOptions: logic.languageOptions,
-
+      footerLogic: logic,
+      cartCount,
       onCallStaff: () => logic.callStaff(),
       onOpenAllergen: () => logic.openAllergen(),
       onCloseAllergen: () => logic.closeAllergen(),
       onSelectCategory: (category: any) => logic.goToMenuPage(category),
       onChangeLang: (lang: Language) => logic.changeLanguage(lang),
+      openOrderList: () => logic.openOrderList(),
     };
   },
 });
@@ -114,6 +126,6 @@ export default defineComponent({
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 17px 20px;
-  width: 1580px; 
+  width: 1580px;
 }
 </style>

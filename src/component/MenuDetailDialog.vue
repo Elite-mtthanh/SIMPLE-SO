@@ -1,154 +1,209 @@
 <template>
-<PressLayer @touchend="onClose">
-  <div class="menu-detail-mask">
-    <div class="menu-detail-card">
-      <div class="menu-detail-header">
-        <div class="menu-detail-image">
-          <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
-        </div>
-
-        <div class="menu-detail-info">
-          <div class="menu-detail-info-name">
-            {{ logic.menu.name }}
+  <PopupCommon @close="onClose">
+    <div class="menu-detail-mask">
+      <div ref="dialogEl" class="menu-detail-card anim-fade-scale">
+        <div class="menu-detail-header">
+          <div class="menu-detail-header-image">
+            <ImageView :src="logic.menu.imagePath || ''" fit="cover" />
           </div>
 
-          <div class="menu-detail-info-desc">
-            {{ logic.menu.description }}
-          </div>
+          <div class="menu-detail-info">
+            <div class="menu-detail-info-name">
+              {{ logic.menu.name }}
+            </div>
 
-          <div class="menu-detail-info-bottom">
-            <MenuSizeSelector
-              :sizes="logic.sizes"
-              :selectedSize="logic.selectedSize"
-              @on-select="onSelectSize"
-            />
+            <div class="menu-detail-info-desc">
+              {{ logic.menu.description }}
+            </div>
 
-            <div class="menu-detail-price">
-              {{ formatPrice(logic.menu.price) }}￥
+            <div class="menu-detail-info-bottom">
+              <MenuSizeSelector
+                :sizes="logic.sizes"
+                :selectedSize="logic.selectedSize"
+                @on-select="onSelectSize"
+              />
+
+              <div class="menu-detail-price">
+                <span>{{ formatPrice(logic.menu.price) }}￥</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="menu-detail-label">
-        <DictText
-          :keyName="
-            logic.toppings.length ? 'HAS_TOPPING_LABEL' : 'SINGLE_MENU_LABEL'
-          "
+        <div class="menu-detail-label" v-if="logic.toppings.length">
+          <DictText keyName="HAS_TOPPING_LABEL" />
+        </div>
+        <div class="menu-detail-label" v-else>
+          <DictText keyName="SINGLE_MENU_LABEL" />
+        </div>
+
+        <div class="menu-detail-toppings">
+          <MenuToppingList
+            :toppings="logic.toppings"
+            :selectedToppings="logic.selectedToppings"
+            @on-toggle="onToggleTopping"
+            v-if="logic.toppings.length"
+          />
+        </div>
+
+        <MenuDetailFooter
+          :quantity="logic.quantity"
+          :maxQuantity="logic.getMaxQuantity(cartIndex)"
+          :totalPrice="logic.getTotalPrice()"
+          :editMode="editMode"
+          @on-cancel="onClose"
+          @on-confirm="onConfirm"
+          @on-increase="onIncreaseQuantity"
+          @on-decrease="onDecreaseQuantity"
+          @on-delete="onDelete"
         />
       </div>
-
-      <MenuToppingList
-        :toppings="logic.toppings"
-        :selectedToppings="logic.selectedToppings"
-        @on-toggle="onToggleTopping"
-      />
-
-      <div class="menu-detail-footer">
-        <ButtonCommon
-          class="menu-detail-btn-cancel"
-          @touchend="onClose"
-        >
-          <DictText keyName="CANCEL_BUTTON" />
-        </ButtonCommon>
-
-        <div class="menu-detail-quantity">
-          <ButtonCommon
-            @touchend.prevent="logic.decrease()"
-            :disabled="logic.quantity <= 1"
-          >
-            −
-          </ButtonCommon>
-          <span>{{ logic.quantity }}</span>
-          <ButtonCommon
-            @touchend.prevent="logic.increase()"
-            :disabled="logic.quantity >= 10"
-          >
-            +
-          </ButtonCommon>
-        </div>
-
-        <div class="menu-detail-total">
-          {{ formatPrice(logic.getTotalPrice()) }}￥
-        </div>
-
-        <ButtonCommon
-          class="menu-detail-btn-confirm"
-          @touchend.prevent="onConfirm"
-        >
-          <DictText keyName="CONFIRM_BUTTON" />
-        </ButtonCommon>
-      </div>
     </div>
-  </div>
-</PressLayer>
+  </PopupCommon>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import {
+  defineComponent,
+  nextTick,
+  onActivated,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
 import { MenuDetailLogic } from '@/logic/page/MenuDetailLogic';
 import ImageView from '@/component/common/ImageView.vue';
 import DictText from '@/component/common/DictText.vue';
-import ButtonCommon from '@/component/common/ButtonCommon.vue';
+import PopupCommon from '@/component/common/PopupCommon.vue';
 import MenuSizeSelector from '@/component/MenuSizeSelector.vue';
 import MenuToppingList from '@/component/MenuToppingList.vue';
+import MenuDetailFooter from '@/component/MenuDetailFooter.vue';
 import { formatPrice } from '@/util/FormatPrice';
-import { MenuSelect } from '@/model/Menu';
-import PressLayer from '@/component/common/PressLayer.vue';
+import { playEnter, playLeave } from '@/util/AnimationUtil';
+import { PropType } from 'vue';
+import { CartItem } from '@/model/Menu';
 
 export default defineComponent({
   name: 'MenuDetailDialog',
   components: {
     ImageView,
     DictText,
-    ButtonCommon,
+    PopupCommon,
     MenuSizeSelector,
     MenuToppingList,
-    PressLayer,
+    MenuDetailFooter,
   },
   props: {
     menuCd: {
       type: String,
       required: true,
     },
+    editMode: {
+      type: Boolean,
+      default: false,
+    },
+    cartItem: {
+      type: Object as PropType<CartItem>,
+      default: null,
+    },
+    cartIndex: {
+      type: Number,
+      default: -1,
+    },
   },
   emits: ['on-close', 'on-confirm'],
   setup(props, { emit }) {
-    const logicInstance = new MenuDetailLogic();
-    logicInstance.load(props.menuCd);
-    const logic = reactive(logicInstance);
+    const dialogEl = ref<HTMLElement | null>(null);
+    const logic = reactive(new MenuDetailLogic());
+    logic.getMenuDetail(props.menuCd);
+
+    if (props.editMode && props.cartItem) {
+      logic.loadFromCartItem(props.cartItem);
+    }
+
+    watch(
+      () => props.menuCd,
+      (newMenuCd, oldMenuCd) => {
+        if (newMenuCd && newMenuCd !== oldMenuCd) {
+          logic.getMenuDetail(newMenuCd);
+          if (props.editMode && props.cartItem) {
+            logic.loadFromCartItem(props.cartItem);
+          }
+        }
+      }
+    );
+
+    watch(
+      () => props.cartItem,
+      (newCartItem) => {
+        if (props.editMode && newCartItem && props.menuCd) {
+          logic.getMenuDetail(props.menuCd);
+          logic.loadFromCartItem(newCartItem);
+        }
+      }
+    );
+
+    const triggerEnterAnimation = () => playEnter(dialogEl);
+    onMounted(triggerEnterAnimation);
+    onActivated(triggerEnterAnimation);
+    watch(
+      () => props.menuCd,
+      (newVal) => {
+        if (newVal) {
+          nextTick(() => playEnter(dialogEl));
+        }
+      }
+    );
 
     const onClose = () => {
-      emit('on-close');
+      playLeave(dialogEl, 'anim-leave', 250, () => emit('on-close'));
     };
 
     const onConfirm = () => {
-      emit('on-confirm', logic.getConfirmData());
+      const item = logic.confirm(props.editMode, props.cartIndex);
+      emit('on-confirm', item);
+      onClose();
+    };
+
+    const onDelete = () => {
+      logic.delete(props.cartIndex);
+      onClose();
+    };
+
+    const onIncreaseQuantity = () => {
+      const index = props.editMode ? props.cartIndex : -1;
+      logic.increaseQuantity(index);
+    };
+
+    const onDecreaseQuantity = async () => {
+      const result = await logic.decreaseQuantity(
+        props.editMode,
+        props.cartIndex
+      );
+
+      if (result === 'deleted') {
+        onClose();
+      }
     };
 
     return {
       logic,
-      onClose,
-      onConfirm,
       formatPrice,
-      onSelectSize: (size: MenuSelect) => logic.setSelectedSize(size),
-      onToggleTopping: (topping: MenuSelect) => logic.toggleTopping(topping),
+      dialogEl,
+      onConfirm,
+      onDelete,
+      onIncreaseQuantity,
+      onDecreaseQuantity,
+      onClose,
+      onSelectSize: logic.setSelectedSize.bind(logic),
+      onToggleTopping: logic.toggleTopping.bind(logic),
     };
   },
 });
 </script>
 
 <style scoped>
-.menu-detail-mask {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: var(--z-dialog);
-}
-
 .menu-detail-card {
   width: 1500px;
   height: 965px;
@@ -159,17 +214,20 @@ export default defineComponent({
 }
 
 .menu-detail-header {
+  height: 358px;
+  width: 1460px;
   display: flex;
   background: var(--background-items);
   border-radius: 12px;
+  margin: 17px 20px 0 20px;
 }
 
-.menu-detail-image {
+.menu-detail-header-image {
   flex-shrink: 0;
-  margin: 27px 0 29px 29px;
+  margin: 29px 0 29px 27px;
 }
 
-.menu-detail-image img {
+.menu-detail-header-image img {
   width: 312px;
   height: 300px;
   object-fit: cover;
@@ -177,18 +235,17 @@ export default defineComponent({
 }
 
 .menu-detail-info {
-  margin-left: 24px;
-  flex: 1;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
 }
 
 .menu-detail-info-name {
   width: 1101px;
-  height: 111px;
+  height: 110px;
   font-size: 40px;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 64px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -196,96 +253,64 @@ export default defineComponent({
 }
 
 .menu-detail-info-desc {
-  font-size: 20px;
-  line-height: 1.5;
-  margin-top: 8px;
+  width: 1101px;
+  height: 89px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 30px;
 }
 
 .menu-detail-info-bottom {
-  margin-top: auto;
   display: flex;
   justify-content: space-between;
+}
+
+.menu-detail-info-bottom-size {
+  margin-top: 44px;
+  display: flex;
   align-items: center;
 }
 
 .menu-detail-price {
+  height: 58px;
+  width: 319px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 50px;
   font-weight: 700;
+  line-height: 30px;
   background: var(--text-accent);
-  color: #fff;
-  padding: 8px 32px;
+  padding: 10px 36px;
   border-radius: 50px;
+  white-space: nowrap;
+  margin-top: 66px;
+  margin-right: 24px;
+  color: var(--text-inverse);
 }
 
 .menu-detail-label {
-  margin-top: 16px;
+  width: 471;
+  height: 63;
+  font-weight: 700;
+  font-style: Bold;
   font-size: 50px;
-  font-weight: 700;
+  line-height: 64px;
+
+  vertical-align: middle;
+  margin-top: 15px;
+  margin-left: 20px;
 }
 
-.menu-detail-footer {
-  margin-top: auto;
+.menu-detail-toppings {
+  height: 315px;
   display: flex;
-  align-items: center;
-  gap: 24px;
-  justify-content: center;
-}
-
-.menu-detail-btn-cancel,
-.menu-detail-btn-confirm {
-  width: 300px;
-  height: 100px;
-  font-size: 30px;
-  font-weight: 800;
-  border-radius: 6px;
-}
-
-.menu-detail-btn-cancel {
-  background: #757575;
-  color: #fff;
-}
-
-.menu-detail-btn-confirm {
-  background: #dc2c2c;
-  color: #fff;
-}
-
-.menu-detail-quantity {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.menu-detail-quantity ButtonCommon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  font-size: 34px;
-  font-weight: 700;
-}
-
-.menu-detail-quantity ButtonCommon:disabled {
-  background: #bdbdbd;
-}
-
-.menu-detail-quantity span {
-  width: 90px;
-  height: 64px;
-  border: 2px solid #aaa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  font-weight: 700;
-}
-
-.menu-detail-total {
-  font-size: 36px;
-  font-weight: 800;
-  color: red;
+  justify-content: flex-end;
+  margin-bottom: 78px;
 }
 </style>

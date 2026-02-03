@@ -1,6 +1,6 @@
 <template>
   <PopupCommon closeOnMask>
-    <div class="allergen">
+    <div ref="dialogEl" class="allergen anim-fade-scale">
       <div class="allergen-header">
         <div class="allergen-header-icon">
           <ImageView :src="allergenIcon" alt="allergen icon" />
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, onMounted, PropType, ref } from 'vue';
 import PopupCommon from '@/component/common/PopupCommon.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import DictText from '@/component/common/DictText.vue';
@@ -35,6 +35,7 @@ import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
 import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
 import ImageView from '@/component/common/ImageView.vue';
 import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
+import { playEnter, playLeave } from '@/util/AnimationUtil';
 
 export default defineComponent({
   name: 'AllergenDialog',
@@ -52,6 +53,8 @@ export default defineComponent({
   },
   emits: ['on-close'],
   setup(props, { emit }) {
+    const dialogEl = ref<HTMLElement | null>(null);
+
     const image = computed(() => {
       switch (props.currentLang) {
         case Language.JA:
@@ -64,11 +67,22 @@ export default defineComponent({
       }
     });
 
+    onMounted(() => {
+      playEnter(dialogEl);
+    });
+
     const onMousedownCloseAllergen = () => {
-      emit('on-close');
+      playLeave(dialogEl, 'anim-leave', 250, () => {
+        emit('on-close');
+      });
     };
 
-    return { image, allergenIcon, onMousedownCloseAllergen };
+    return {
+      dialogEl,
+      image,
+      allergenIcon,
+      onMousedownCloseAllergen,
+    };
   },
 });
 </script>

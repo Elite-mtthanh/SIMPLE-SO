@@ -1,5 +1,8 @@
 import { MenuType } from "./Enums";
 
+/**
+ * menu interface
+ */
 export interface Menu {
   id: number;
   menu_cd: string;
@@ -22,6 +25,9 @@ export interface Menu {
   menu_desc5?: string;
 }
 
+/**
+ * menu select interface
+ */
 export interface MenuSelect {
   id: number;
   menu_cd: string;
@@ -38,6 +44,9 @@ export interface MenuSelect {
   select_name5?: string;
 }
 
+/**
+ * category interface
+ */
 export interface Category {
   id: number;
   name: string;
@@ -45,6 +54,9 @@ export interface Category {
   menu_cd: string;
 }
 
+/**
+ * menu item for display
+ */
 export interface MenuItem {
   id: number;
   menu_cd: string;
@@ -57,8 +69,36 @@ export interface MenuItem {
   select_size?: string;
 }
 
+/**
+ * stockout menu interface
+ */
 export interface StockoutMenu {
   menu_cd: string;
 }
 
+/**
+ * cart item interface
+ */
+export interface CartItem {
+  menuCd: string;
+  name: string;
+  imagePath: string;
+  basePrice: number;
+
+  quantity: number;
+
+  size?: {
+    selectCd: string;
+    name: string;
+    price: number;
+  } | null;
+
+  toppings: {
+    selectCd: string;
+    name: string;
+    price: number;
+  }[];
+
+  total: number;
+}
 

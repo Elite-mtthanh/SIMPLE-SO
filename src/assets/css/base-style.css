@@ -17,6 +17,7 @@
   --z-overlay: 1000;
   --z-dialog: 1100;
   --z-stockout: 10;
+  --z-dropdown: 999;
 
   /* Colors for Button */
   --btn-primary: #b02a37;
@@ -27,6 +28,7 @@
   --btn-active: #ef9e9e;
   --btn-link: #475191;
   --btn-gray: #d9d9d9;
+  --btn-red: #dc2c2c;
 
   /* Color for Text */
   --text-primary: #000000;
@@ -36,11 +38,13 @@
   --text-success: #26bd67;
   --text-accent: #ee5c5c;
   --text-accent-dialog: #b02a37;
+  --text-price: #fe0101;
 
   /* Background Colors */
   --background-dialog: #fffcf5;
   --background-items: #d1e7dd;
   --background-app: #fffcf5;
+  --background-select-toppoing: #fff3e6;
 }
 
 body {
@@ -72,6 +76,9 @@ body {
 .text-accent-dialog {
   color: var(--text-accent-dialog);
 } /* màu chữ dialog (đỏ đậm) */
+.text-price {
+  color: var(--text-price);
+} /* màu chữ giá (đỏ) */
 
 .bg-button-primary {
   background: var(--btn-primary);
@@ -88,3 +95,41 @@ body {
 .bg-button-soft {
   background: var(--btn-soft);
 } /* nút nền nhẹ (cam nhạt) */
+.bg-button-link {
+  background: var(--btn-link);
+} /* nút liên kết (xanh) */
+.bg-button-gray {
+  background: var(--btn-gray);
+} /* nút xám nhạt */
+.bg-button-red {
+  background: var(--btn-red);
+} /* nút đỏ */
+
+.anim-fade {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.anim-fade.anim-enter {
+  opacity: 1;
+}
+
+.anim-fade.anim-leave {
+  opacity: 0;
+}
+
+.anim-fade-scale {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.anim-fade-scale.anim-enter {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.anim-fade-scale.anim-leave {
+  opacity: 0;
+  transform: scale(0.96);
+}

@@ -5,12 +5,17 @@
       :textColor="textColor"
       :icon="icon"
       iconPosition="right"
+      :iconSize="48"
       @touchend="onMousedownToggle"
     >
       <slot name="label" />
     </ButtonCommon>
 
-    <div v-if="open" class="dropdown-wrapper-panel">
+    <div
+      v-show="open"
+      ref="panelEl"
+      class="dropdown-wrapper-panel anim-fade-scale"
+    >
       <div
         v-for="item in items"
         :key="item.value"
@@ -25,8 +30,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, nextTick, ref, watch } from 'vue';
 import ButtonCommon from './ButtonCommon.vue';
+import { playEnter, playLeave } from '@/util/AnimationUtil';
 
 export interface DropdownItem {
   label: string;
@@ -61,18 +67,39 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const open = ref(false);
+    const panelEl = ref<HTMLElement | null>(null);
+
+    watch(
+      () => open.value,
+      (isOpen) => {
+        if (isOpen) {
+          nextTick(() => playEnter(panelEl));
+        }
+      }
+    );
+
+    const closePanel = () => {
+      playLeave(panelEl, 'anim-leave', 250, () => {
+        open.value = false;
+      });
+    };
 
     const onMousedownToggle = () => {
-      open.value = !open.value;
+      if (open.value) {
+        closePanel();
+      } else {
+        open.value = true;
+      }
     };
 
     const select = (value: string | number) => {
       emit('update:modelValue', value);
-      open.value = false;
+      closePanel();
     };
 
     return {
       open,
+      panelEl,
       onMousedownToggle,
       select,
     };
@@ -84,6 +111,7 @@ export default defineComponent({
   position: relative;
   border: 1px solid #475191;
   border-radius: 6px;
+  z-index: var(--z-dropdown);
 }
 
 .dropdown-wrapper-panel {
@@ -120,7 +148,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 30px;
   line-height: 18px;
-  letter-spacing: 0%;
+
   text-align: center;
   margin-left: 8px;
 }

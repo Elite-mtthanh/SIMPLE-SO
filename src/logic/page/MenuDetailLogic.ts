@@ -1,27 +1,36 @@
 import { DataPool } from '@/model/DataPool';
-import { MenuItem, MenuSelect } from '@/model/Menu';
+import { CartItem, MenuItem, MenuSelect } from '@/model/Menu';
 import { AppConfig } from '@/model/AppConfig';
 import { getMenuDescription, getMenuName, getMenuSelectName } from '@/util/DictNormalizerUtil';
+import { CartStorage } from '@/storage/CartStorage';
+import { DialogArgs } from '@/model/Dialog';
+import { DialogButtonId, DialogMessageType } from '@/model/Enums';
+import { GlobalEvent } from '../common/GlobalEvent';
+
+const MAX_QUANTITY_PER_MENU = 10;
 
 export class MenuDetailLogic {
+  /** data pool instance */
   private dataPool = DataPool.Instance;
-  private config = AppConfig.Instance;
 
   /** current menu item */
   menu: MenuItem = {} as MenuItem;
-  
+
+  /** raw menu data for reference */
+  private rawMenu: any = null;
+
   /** available size options */
   sizes: MenuSelect[] = [];
-  
+
   /** available topping options */
   toppings: MenuSelect[] = [];
 
   /** order quantity */
   quantity: number = 1;
-  
+
   /** selected size option */
   selectedSize: MenuSelect | null = null;
-  
+
   /** selected topping options */
   selectedToppings: MenuSelect[] = [];
 
@@ -29,13 +38,20 @@ export class MenuDetailLogic {
    * load menu details by menu code
    * @param menuCd menu code to load
    */
-  load(menuCd: string): void {
+  getMenuDetail(menuCd: string): void {
     const rawMenu = this.dataPool.getMenuByCd(menuCd);
     if (!rawMenu) {
       return;
     }
 
-    const lang = this.config.currentLang.value;
+    this.rawMenu = rawMenu;
+    const lang = AppConfig.Instance.currentLang.value;
+    console.log('lang:', lang);
+    this.quantity = 1;
+    this.selectedToppings = [];
+    this.selectedSize = null;
+    this.sizes = [];
+    this.toppings = [];
 
     this.menu = {
       id: rawMenu.id,
@@ -54,7 +70,7 @@ export class MenuDetailLogic {
         ...size,
         name: getMenuSelectName(size, lang),
       }));
-      
+
       const menuToppings = this.dataPool.getMenuToppings(rawMenu.select_size);
       this.toppings = menuToppings.map(topping => ({
         ...topping,
@@ -93,10 +109,26 @@ export class MenuDetailLogic {
   }
 
   /**
-   * increase order quantity
+   * Get maximum quantity that can be ordered
+   * @param editIndex Index of item being edited (for edit mode)
+   * @returns Maximum quantity considering cart items
    */
-  increase(): void {
-    if (this.quantity < 10) {
+  getMaxQuantity(editIndex: number = -1): number {
+    const maxAddable = CartStorage.getMaxAddableQuantity(
+      this.menu.menu_cd,
+      editIndex
+    );
+
+    return Math.min(MAX_QUANTITY_PER_MENU, maxAddable);
+  }
+
+  /**
+   * increase order quantity
+   * @param editIndex Index of item being edited (for edit mode), pass -1 when adding new
+   */
+  increase(editIndex: number = -1): void {
+    const maxQuantity = this.getMaxQuantity(editIndex);
+    if (this.quantity < maxQuantity) {
       this.quantity++;
     }
   }
@@ -104,9 +136,15 @@ export class MenuDetailLogic {
   /**
    * decrease order quantity
    */
-  decrease(): void {
-    if (this.quantity > 1) {
-      this.quantity--;
+  decrease(allowZero: boolean = false): void {
+    if (allowZero) {
+      if (this.quantity > 0) {
+        this.quantity--;
+      }
+    } else {
+      if (this.quantity > 1) {
+        this.quantity--;
+      }
     }
   }
 
@@ -136,13 +174,50 @@ export class MenuDetailLogic {
    * @returns order confirmation data
    */
   getConfirmData() {
+    const lang = AppConfig.Instance.currentLang.value;
     return {
-      menu: this.menu,
+      menuCd: this.menu.menu_cd,
+      name: getMenuName(this.rawMenu, lang),
+      imagePath: this.menu.imagePath,
+      basePrice: this.menu.price,
       quantity: this.quantity,
-      size: this.selectedSize,
-      toppings: [...this.selectedToppings],
+      size: this.selectedSize
+        ? {
+          selectCd: this.selectedSize.select_cd,
+          name: getMenuSelectName(this.selectedSize, lang),
+          price: this.selectedSize.price,
+        }
+        : null,
+
+      toppings: this.selectedToppings.map(t => ({
+        selectCd: t.select_cd,
+        name: getMenuSelectName(t, lang),
+        price: t.price,
+      })),
+
       total: this.getTotalPrice(),
     };
+  }
+
+  /**
+   * Load data from cart item for editing
+   * @param cartItem Cart item to load from
+   */
+  loadFromCartItem(cartItem: any): void {
+    this.quantity = cartItem.quantity;
+
+    if (cartItem.size) {
+      const size = this.sizes.find(s => s.select_cd === cartItem.size.selectCd);
+      if (size) {
+        this.selectedSize = size;
+      }
+    }
+
+    if (cartItem.toppings && cartItem.toppings.length > 0) {
+      this.selectedToppings = cartItem.toppings
+        .map((t: any) => this.toppings.find(topping => topping.select_cd === t.selectCd))
+        .filter((t: any) => t !== undefined);
+    }
   }
 
   /**
@@ -152,5 +227,103 @@ export class MenuDetailLogic {
     this.quantity = 1;
     this.selectedSize = this.sizes.length > 0 ? this.sizes[0] : null;
     this.selectedToppings = [];
+  }
+
+  /**
+   * show confirm dialog before deleting cart item
+   * @returns true if user confirmed
+   */
+  async confirmDeleteOrder(): Promise<boolean> {
+    const confirmDialog = new DialogArgs();
+    confirmDialog.message = 'DELETE_CONFIRM_MESSAGE';
+    confirmDialog.comment = '';
+    confirmDialog.messageType = DialogMessageType.Error;
+    confirmDialog.buttons = [
+      { id: DialogButtonId.Cancel, text: 'CANCEL_BUTTON' },
+      { id: DialogButtonId.Confirm, text: 'AGREE_BUTTON' },
+    ];
+
+    const result = await GlobalEvent.Instance.showCommonDialog(confirmDialog);
+    return result === DialogButtonId.Confirm;
+  }
+
+  /**
+   * confirm add/update cart item and return the item
+   * @param editMode true when editing existing cart item
+   * @param cartIndex index of cart item when editMode is true
+   * @returns the confirmed cart item
+   */
+  confirm(
+    editMode: boolean,
+    cartIndex: number
+  ): CartItem {
+    const lang = AppConfig.Instance.currentLang.value;
+    const item = this.getConfirmData();
+
+    const cartItem: CartItem = {
+      ...item,
+      name: getMenuName(this.rawMenu, lang),
+      imagePath: item.imagePath || '',
+    };
+
+    if (editMode && cartIndex >= 0) {
+      CartStorage.updateItem(cartIndex, cartItem);
+    } else {
+      CartStorage.addItem(cartItem);
+    }
+
+    return cartItem;
+  }
+
+  /**
+   * remove cart item at index
+   * @param cartIndex index of item to remove
+   */
+  delete(cartIndex: number): void {
+    if (cartIndex >= 0) {
+      CartStorage.removeItem(cartIndex);
+    }
+  }
+
+  /**
+   * increase quantity (used in edit mode)
+   * @param editIndex index of item being edited
+   */
+  increaseQuantity(editIndex: number): void {
+    const max = this.getMaxQuantity(editIndex);
+    if (this.quantity < max) {
+      this.quantity++;
+    }
+  }
+
+  /**
+   * decrease quantity; in edit mode at 1, show delete confirm
+   * @param editMode true when editing existing cart item
+   * @param cartIndex index of cart item when editMode is true
+   * @returns 'deleted' | 'decreased' | 'cancel'
+   */
+  async decreaseQuantity(
+    editMode: boolean,
+    cartIndex: number
+  ): Promise<'deleted' | 'decreased' | 'cancel'> {
+    if (!editMode) {
+      if (this.quantity > 1) {
+        this.quantity--;
+      }
+      return 'decreased';
+    }
+    if (this.quantity > 1) {
+      this.quantity--;
+      return 'decreased';
+    }
+
+    const confirmed = await this.confirmDeleteOrder();
+    if (confirmed) {
+      this.delete(cartIndex);
+      return 'deleted';
+    }
+
+    this.quantity = 1;
+    return 'cancel';
   }
 }

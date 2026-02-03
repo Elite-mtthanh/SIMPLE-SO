@@ -4,12 +4,13 @@
       v-for="size in sizes"
       :key="size.select_cd"
       class="menu-size-item"
-      :class="{
-        'menu-size-item-active': selectedSize?.select_cd === size.select_cd,
-      }"
       @touchend="onSelectSize(size)"
+      :type="selectedSize?.select_cd === size.select_cd ? 'link' : 'gray'"
+      :text-color="
+        selectedSize?.select_cd === size.select_cd ? 'inverse' : 'primary'
+      "
     >
-      {{ size.name }}
+      <span class="menu-size-item-name">{{ size.name }}</span>
     </ButtonCommon>
   </div>
 </template>
@@ -31,7 +32,7 @@ export default defineComponent({
       default: null,
     },
   },
-  components: {ButtonCommon},
+  components: { ButtonCommon },
   emits: ['on-select'],
   setup(props, { emit }) {
     const onSelectSize = (size: MenuSelect) => {
@@ -49,22 +50,24 @@ export default defineComponent({
 .menu-size-group {
   display: flex;
   gap: 24px;
+  margin-top: 44px;
 }
 
 .menu-size-item {
   width: 80px;
   height: 80px;
-  background: #e0e0e0;
-  border: 1px solid #9e9e9e;
+  border: 1px solid #000000;
+}
+.menu-size-item-name {
   font-size: 45px;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
-}
+  font-weight: 600;
+  font-size: 45px;
+  line-height: 64px;
 
-.menu-size-item-active {
-  background: #4b57a3;
-  color: #fff;
-  border-color: #4b57a3;
+  text-align: center;
+  vertical-align: middle;
 }
 </style>

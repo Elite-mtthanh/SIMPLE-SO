@@ -61,7 +61,7 @@ export class FooterLogic {
     const resultDialog = new DialogArgs();
     resultDialog.title = '';
 
-    if (isCallStaffSuccess === 1) {
+    if (isCallStaffSuccess === true) {
       resultDialog.message = 'CALL_STAFF_SUCCESS_MESSAGE';
       resultDialog.comment = 'CALL_STAFF_SUCCESSE_COMMENT';
       resultDialog.messageType = DialogMessageType.Success;
@@ -76,5 +76,12 @@ export class FooterLogic {
     ];
 
     await GlobalEvent.Instance.showCommonDialog(resultDialog);
+  }
+
+  /**
+   * open order list page
+   */
+  openCart(): void {
+    GlobalEvent.Instance.goToOrderListPage();
   }
 }
