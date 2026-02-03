@@ -1,6 +1,5 @@
 import { CartItem } from "@/model/Menu";
 import { GlobalEvent } from "@/logic/common/GlobalEvent";
-import { getMenuSelectName } from "@/util/DictNormalizerUtil";
 
 const CART_KEY = 'ORDER_CART';
 const MAX_QUANTITY_PER_MENU = 10;
@@ -60,16 +59,13 @@ export class CartStorage {
   static addItem(item: CartItem): void {
     const cart = this.getCart();
 
-    // Check total quantity of this menu in cart (all variants)
     const totalMenuQuantity = this.getMenuQuantityInCart(item.menuCd);
     const maxAddable = MAX_QUANTITY_PER_MENU - totalMenuQuantity;
 
-    // If already at max, don't add
     if (maxAddable <= 0) {
       return;
     }
 
-    // Cap the quantity to add
     const quantityToAdd = Math.min(item.quantity, maxAddable);
     const pricePerItem = item.total / item.quantity;
     
@@ -103,10 +99,8 @@ export class CartStorage {
     const cart = this.getCart();
 
     if (index >= 0 && index < cart.length) {
-      // Get total quantity of this menu excluding the item being edited
       const maxAddable = this.getMaxAddableQuantity(newItem.menuCd, index);
       
-      // Cap the quantity
       const cappedQuantity = Math.min(newItem.quantity, maxAddable);
       const pricePerItem = newItem.total / newItem.quantity;
 

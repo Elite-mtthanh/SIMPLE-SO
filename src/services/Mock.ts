@@ -9,39 +9,65 @@ import { Menu, MenuSelect, StockoutMenu } from '@/model/Menu';
 export class Mock implements IService {
   private isCallStaffSuccess: boolean | null = null;
 
+  /** set whether CallStaff should succeed or fail */
   GetConfig(): string {
     return JSON.stringify({ env: 'mock' });
   }
 
+  /** get splash guide data */
   GetSplashGuide(): string {
     return JSON.stringify(SplashData);
   }
 
-  SetCallStaffResult(value: true | false) {
+  /**
+   * Set the result for CallStaff
+   * @param value - true to simulate success, false to simulate failure
+   */
+  SetCallStaffResult(value: boolean) {
     this.isCallStaffSuccess = value;
   }
 
+  /**
+   * Retrieves data from dictionary by key
+   * @param key - key to search in dictionary
+   * @returns stringified dictionary data, or 'null' if not found
+   */
   GetDictRaw(key: string): string {
     const row = (DictData as any[]).find(d => d.key_name === key);
     if (!row) return 'null';
-
     return JSON.stringify(row);
   }
 
+  /**
+   * call staff from their table
+   * @returns Promise<boolean> - promise resolves with true if call succeeds, false if fails
+   */
   async CallStaff(): Promise<boolean> {
     await new Promise(r => setTimeout(r, 3000));
     return this.isCallStaffSuccess ?? true;
   }
 
+  /**
+   * Retrieves menu list data
+   * @returns Promise<Menu[]> - a promise that resolves with the menu list data
+   */
   GetMenuList(): Menu[] {
     return Menus as unknown as Menu[];
   }
 
+  /**
+   * Menu select list contains information about menu options, such as size, topping, etc.
+   * @returns MenuSelect[] - an array containing menu select list data
+   */
   GetMenuSelect(): MenuSelect[] {
     return Selects as unknown as MenuSelect[];
   }
 
+  /**
+   * Retrieves the list of out-of-stock items (stockout)
+   * @returns StockoutMenu[] - an array containing out-of-stock items
+   */
   GetStockoutList(): StockoutMenu[] {
-    return JSON.parse(JSON.stringify(StockOutMenuConfig));
+    return JSON.parse(JSON.stringify(StockOutMenuConfig)) as StockoutMenu[];
   }
 }
