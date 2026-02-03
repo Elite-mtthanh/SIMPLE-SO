@@ -16,7 +16,7 @@
         <div class="menu-item-info-price">
           <div class="menu-item-info-price-detail">
             {{ formatPrice(item.price) }}￥
-            <span v-if="item.hasSelectSize">～</span>
+            <span v-if="item.hasSelectSize === '1'">～</span>
           </div>
         </div>
       </div>
@@ -70,6 +70,7 @@ export default defineComponent({
   border-radius: 12px;
   cursor: pointer;
   overflow: hidden;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .menu-item-soldout {
@@ -85,10 +86,11 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   font-size: 50px;
-  font-weight: 700;
   letter-spacing: 1px;
   color: var(--text-inverse);
   pointer-events: none;
+  font-weight: 600;
+  line-height: 18px;
 }
 
 .menu-item-soldout {
@@ -110,7 +112,7 @@ export default defineComponent({
   height: 300px;
   margin: auto;
   object-fit: none;
-  border-radius: 10px;
+  border-radius: 10px 0 0 10px;
 }
 
 .menu-item-info {
@@ -131,6 +133,7 @@ export default defineComponent({
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: pre-line;
 }
 
 .menu-item-info-desc {
@@ -141,7 +144,7 @@ export default defineComponent({
   height: 89px;
   line-height: 30px;
   font-style: Regular;
-
+  white-space: pre-line;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;

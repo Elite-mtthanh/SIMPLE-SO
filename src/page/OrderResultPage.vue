@@ -74,7 +74,7 @@ export default defineComponent({
         CartStorage.clear();
         GlobalEvent.Instance.emitEvent('cart-updated');
       }
-      GlobalEvent.Instance.showStartPage();
+      // GlobalEvent.Instance.showStartPage();
     };
 
     onMounted(() => {
@@ -124,13 +124,13 @@ export default defineComponent({
 }
 
 .order-result-image-success {
-  height: 656px;
+  height: 600px;
   width: 400px;
 }
 
 .order-result-image-error {
-  height: 678px;
-  width: 600px;
+  height: 600px;
+  width: 400px;
 }
 
 .result-text {

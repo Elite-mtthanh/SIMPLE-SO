@@ -12,9 +12,9 @@ export class FooterLogic {
 
   /** available language options */
   readonly languageOptions = [
-    { label: '日本語', value: Language.JA },
+    { label: '中文', value: Language.ZH },
     { label: 'English', value: Language.EN },
-    { label: '中文', value: Language.ZH }
+    { label: '日本語', value: Language.JA }
   ];
 
   /**

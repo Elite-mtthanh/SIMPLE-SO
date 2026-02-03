@@ -38,6 +38,7 @@
       @touchend="onConfirm"
       text-color="inverse"
       type="accent"
+      :class="{ disabled: quantity >= maxQuantity + 1 }"
     >
       <DictText keyName="CONFIRM_BUTTON" />
     </ButtonCommon>
@@ -160,8 +161,11 @@ export default defineComponent({
   font-weight: 600;
   font-size: 45px;
   line-height: 64px;
-  text-align: center;
-  vertical-align: middle;
   border-radius: 6px;
+  height: 100px;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

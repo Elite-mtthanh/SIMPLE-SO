@@ -127,5 +127,6 @@ export default defineComponent({
   justify-content: flex-start;
   gap: 17px 20px;
   width: 1580px;
+  height: 769px;
 }
 </style>

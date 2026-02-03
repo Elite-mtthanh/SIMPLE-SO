@@ -112,7 +112,7 @@ export class OrderListPageLogic {
     if (result !== DialogButtonId.Confirm) return;
 
     // const success = Math.random() < 0.5;
-    const success = true;
+    const success = false;
     GlobalEvent.Instance.goToOrderResultPage({ success });
   }
 }

@@ -7,6 +7,7 @@
       iconPosition="right"
       :iconSize="48"
       @touchend="onMousedownToggle"
+      class="dropdown-wrapper-button"
     >
       <slot name="label" />
     </ButtonCommon>
@@ -112,6 +113,10 @@ export default defineComponent({
   border: 1px solid #475191;
   border-radius: 6px;
   z-index: var(--z-dropdown);
+}
+
+.dropdown-wrapper-button{
+  padding: 0 21px 0 24px;
 }
 
 .dropdown-wrapper-panel {

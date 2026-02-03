@@ -24,6 +24,7 @@
         textColor="inverse"
         @touchend="onMousedownCallStaff"
         :iconSize="48"
+        class="footer-left-bell"
       >
         <DictText keyName="CALL_STAFF_BUTTON" />
       </ButtonCommon>
@@ -33,7 +34,9 @@
         :icon="allergenIcon"
         textColor="link"
         @touchend="onMousedownOpenAllergen"
-        :iconSize="79"
+        :iconHeight="75"
+        :iconWidth="79"
+        class="footer-left-allergen"
       >
         <DictText keyName="ALLERGEN_BUTTON" />
       </ButtonCommon>
@@ -236,8 +239,8 @@ export default defineComponent({
 
 .footer-left-back-icon {
   cursor: pointer;
-  height: 70px;
-  width: 70px;
+  height: 90px;
+  width: 90px;
 }
 
 .footer-right {
@@ -273,6 +276,7 @@ export default defineComponent({
   position: relative;
   width: 240px;
   height: 89px;
+  padding-left: 12px;
 }
 
 .footer-right-cart-badge {
@@ -287,5 +291,14 @@ export default defineComponent({
   font-weight: 600;
   font-size: 70px;
   line-height: 18px;
+  margin-left: 9px;
+}
+
+.footer-left-bell {
+  padding: 0 24px 0 23px;
+}
+
+.footer-left-allergen {
+  padding-right: 24px;
 }
 </style>

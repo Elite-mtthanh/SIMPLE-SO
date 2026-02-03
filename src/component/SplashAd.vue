@@ -28,7 +28,6 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
   width: 1379px;
   height: 337px;
 }

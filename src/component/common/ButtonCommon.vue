@@ -57,6 +57,8 @@ export default defineComponent({
       default: 'left',
     },
     iconSize: { type: Number, default: 24 },
+    iconWidth: { type: Number, default: 0 },
+    iconHeight: { type: Number, default: 0 },
   },
   components: { ImageView },
   emits: ['touchend'],
@@ -122,10 +124,29 @@ export default defineComponent({
       pressed.value = false;
     };
 
-    const iconWrapperStyle = computed(() => ({
-      width: `${props.iconSize}px`,
-      height: `${props.iconSize}px`,
-    }));
+    const iconWrapperStyle = computed(() => {
+      if (props.iconWidth || props.iconHeight) {
+        return {
+          width: props.iconWidth
+            ? `${props.iconWidth}px`
+            : `${props.iconHeight}px`,
+          height: props.iconHeight
+            ? `${props.iconHeight}px`
+            : `${props.iconWidth}px`,
+        };
+      }
+
+      if (props.iconSize) {
+        return {
+          width: `${props.iconSize}px`,
+          height: `${props.iconSize}px`,
+        };
+      }
+      return {
+        width: '100%',
+        height: '100%',
+      };
+    });
 
     return {
       el,
@@ -144,11 +165,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 300px;
   height: 90px;
-  padding: 0 15px;
-
   border-radius: 6px;
   box-sizing: border-box;
 }
@@ -161,9 +179,13 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
   flex-shrink: 0;
+}
+
+.btn-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .base-button-text {

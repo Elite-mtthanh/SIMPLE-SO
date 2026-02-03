@@ -8,7 +8,9 @@
         <DictText keyName="ALLERGEN_LABEL" class="text-link" />
       </div>
       <div class="allergen-content">
-        <ImageView :src="image" alt="allergen" />
+        <div class="allergen-content-image">
+          <ImageView :src="image" alt="allergen" />
+        </div>
       </div>
 
       <div class="allergen-actions">
@@ -91,12 +93,13 @@ export default defineComponent({
 .allergen {
   background: var(--background-dialog);
   border-radius: 10px;
-  padding: 24px 32px 20px;
   box-sizing: border-box;
   width: 1520px;
   height: 965px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .allergen-header {
@@ -109,6 +112,9 @@ export default defineComponent({
   font-weight: 600;
   font-size: 50px;
   line-height: 18px;
+  height: 121px;
+  width: 600px;
+  margin-top: 20px;
 }
 
 .allergen-header-icon {
@@ -125,17 +131,21 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
+  overflow-y: auto;
+  margin-top: -20px;
+  height: 630px;
+  width: 1450px;
 }
 
-.allergen-content :deep(img) {
-  width: 1450px;
-  height: 630px;
+.allergen-content-image :deep(img) {
+  width: 1200px;
+  height: 627px;
   object-fit: contain;
 }
 
 .allergen-actions {
-  margin-top: 20px;
+  margin-top: 85px;
+  margin-bottom: 39px;
   display: flex;
   justify-content: center;
 }
