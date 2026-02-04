@@ -42,6 +42,7 @@ export interface MenuSelect {
   select_name3: string;
   select_name4?: string;
   select_name5?: string;
+  soldOut?: boolean;
 }
 
 /**
@@ -52,6 +53,7 @@ export interface Category {
   name: string;
   image_path: string | null;
   menu_cd: string;
+  soldOut?: boolean;
 }
 
 /**
@@ -74,6 +76,13 @@ export interface MenuItem {
  */
 export interface StockoutMenu {
   menu_cd: string;
+}
+
+/**
+ * stockout size interface
+ */
+export interface StockoutSize {
+  select_cd: string;
 }
 
 /**

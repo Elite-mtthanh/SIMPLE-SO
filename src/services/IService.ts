@@ -1,4 +1,4 @@
-import { Menu, MenuSelect, StockoutMenu } from "@/model/Menu";
+import { Menu, MenuSelect, StockoutMenu, StockoutSize } from "@/model/Menu";
 
 export interface IService {
   GetConfig(): string;
@@ -9,4 +9,5 @@ export interface IService {
   GetMenuList(): Menu[];
   GetMenuSelect(): MenuSelect[];
   GetStockoutList(): StockoutMenu[];
+  GetStockoutSizeList(): StockoutSize[];
 }

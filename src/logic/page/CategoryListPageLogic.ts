@@ -61,7 +61,8 @@ export class CategoryListPageLogic {
       id: menu.id,
       name: getMenuName(menu, lang),
       image_path: menu.image_path,
-      menu_cd: menu.menu_cd
+      menu_cd: menu.menu_cd,
+      soldOut: this.dataPool.isCategoryStockout(menu.menu_cd),
     }));
   });
 

@@ -24,7 +24,7 @@
               />
 
               <div class="menu-detail-price">
-                <span>{{ formatPrice(logic.menu.price) }}￥</span>
+                <span>{{ formatPrice(displayPrice) }}￥</span>
               </div>
             </div>
           </div>
@@ -64,6 +64,7 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   nextTick,
   onActivated,
@@ -187,10 +188,18 @@ export default defineComponent({
       }
     };
 
+    // Computed property để tính giá hiển thị bao gồm size
+    const displayPrice = computed(() => {
+      const basePrice = logic.menu.price;
+      const sizePrice = logic.selectedSize?.price ?? 0;
+      return basePrice + sizePrice;
+    });
+
     return {
       logic,
       formatPrice,
       dialogEl,
+      displayPrice,
       onConfirm,
       onDelete,
       onIncreaseQuantity,

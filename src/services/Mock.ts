@@ -1,22 +1,30 @@
 import { IService } from './IService';
-import SplashData from '@/dummy-data/Config.json';
+import ConfigData from '@/dummy-data/Config.json';
 import StockOutMenuConfig from '@/dummy-data/Stockout.json';
+import StockoutSizeConfig from '@/dummy-data/StockoutSize.json';
 import DictData from '@/dummy-data/Dict.json';
 import Menus from '@/dummy-data/Menus.json';
 import Selects from '@/dummy-data/Menu_selects.json';
-import { Menu, MenuSelect, StockoutMenu } from '@/model/Menu';
+import { Menu, MenuSelect, StockoutMenu, StockoutSize } from '@/model/Menu';
 
 export class Mock implements IService {
   private isCallStaffSuccess: boolean | null = null;
 
-  /** set whether CallStaff should succeed or fail */
+  /** 
+   * get config
+   * retrieves application configuration from Config.json
+   * @returns string - stringified config data containing languageList, deskNumber, etc.
+   */
   GetConfig(): string {
-    return JSON.stringify({ env: 'mock' });
+    return JSON.stringify(ConfigData);
   }
 
-  /** get splash guide data */
+  /** 
+   * get splash guide data
+   * @returns string - stringified splash guide data
+   */
   GetSplashGuide(): string {
-    return JSON.stringify(SplashData);
+    return JSON.stringify(ConfigData);
   }
 
   /**
@@ -69,5 +77,13 @@ export class Mock implements IService {
    */
   GetStockoutList(): StockoutMenu[] {
     return JSON.parse(JSON.stringify(StockOutMenuConfig)) as StockoutMenu[];
+  }
+
+  /**
+   * Retrieves the list of out-of-stock sizes
+   * @returns StockoutSize[] - an array containing out-of-stock sizes
+   */
+  GetStockoutSizeList(): StockoutSize[] {
+    return JSON.parse(JSON.stringify(StockoutSizeConfig)) as StockoutSize[];
   }
 }

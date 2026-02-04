@@ -103,6 +103,9 @@ export default defineComponent({
 }
 
 .splash-item-step-card-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text-link);
   font-size: 30px;
   line-height: 35px;
@@ -110,7 +113,6 @@ export default defineComponent({
   width: 250px;
   height: 97px;
   margin-top: 29px;
-  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

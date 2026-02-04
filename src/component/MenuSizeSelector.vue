@@ -9,6 +9,7 @@
       :text-color="
         selectedSize?.select_cd === size.select_cd ? 'inverse' : 'primary'
       "
+      :disabled="size.soldOut"
     >
       <span class="menu-size-item-name">{{ size.name }}</span>
     </ButtonCommon>
@@ -36,6 +37,7 @@ export default defineComponent({
   emits: ['on-select'],
   setup(props, { emit }) {
     const onSelectSize = (size: MenuSelect) => {
+      if ((size as any).soldOut) return;
       emit('on-select', size);
     };
 

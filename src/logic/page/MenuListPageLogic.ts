@@ -177,6 +177,7 @@ export class MenuListPageLogic {
    * navigate back to category page
    */
   backToCategory(): void {
+    this.currentPage.value = 0;
     GlobalEvent.Instance.goToCategoryPage();
   }
 

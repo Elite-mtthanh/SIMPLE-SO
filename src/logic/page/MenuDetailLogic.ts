@@ -69,6 +69,7 @@ export class MenuDetailLogic {
       this.sizes = menuSizes.map(size => ({
         ...size,
         name: getMenuSelectName(size, lang),
+        soldOut: this.dataPool.isSizeStockout(size.select_cd),
       }));
 
       const menuToppings = this.dataPool.getMenuToppings(rawMenu.select_size);
@@ -78,7 +79,9 @@ export class MenuDetailLogic {
       }));
 
       if (this.sizes.length > 0) {
-        this.selectedSize = this.sizes[0];
+        // Tự động chọn size available đầu tiên
+        const availableSize = this.sizes.find(s => !s.soldOut);
+        this.selectedSize = availableSize || null;
       }
     }
   }
@@ -188,6 +191,7 @@ export class MenuDetailLogic {
    * @param size size to select
    */
   setSelectedSize(size: MenuSelect | null): void {
+    if (size && size.soldOut) return;
     this.selectedSize = size;
   }
 

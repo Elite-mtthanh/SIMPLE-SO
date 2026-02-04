@@ -1,30 +1,28 @@
 <template>
-  <PressLayer @touchend="onTapScreen">
-    <div ref="pageEl" class="order-result anim-fade-scale">
-      <div class="order-result-image">
-        <ImageView
-          v-if="success"
-          src="/Image/order/human-order-complete.png"
-          class="order-result-image-success"
-        />
-        <ImageView
-          v-else
-          src="/Image/order/human-order-error.png"
-          class="order-result-image-error"
-        />
-      </div>
+  <div ref="pageEl" class="order-result anim-fade-scale">
+    <div class="order-result-image">
+      <ImageView
+        v-if="success"
+        src="/Image/order/human-order-complete.png"
+        class="order-result-image-success"
+      />
+      <ImageView
+        v-else
+        src="/Image/order/human-order-error.png"
+        class="order-result-image-error"
+      />
+    </div>
 
-      <div class="order-result-subtext">
-        <div class="order-result-subtext-success" v-if="success">
-          <DictText keyName="ORDER_SUCCESS_MESSAGE" />
-        </div>
-        <div class="order-result-subtext-error" v-else>
-          <DictText keyName="ORDER_ERROR_MESSAGE" />
-          <DictText keyName="ORDER_ERROR_COMMENT" />
-        </div>
+    <div class="order-result-subtext">
+      <div class="order-result-subtext-success" v-if="success">
+        <DictText keyName="ORDER_SUCCESS_MESSAGE" />
+      </div>
+      <div class="order-result-subtext-error" v-else>
+        <DictText keyName="ORDER_ERROR_MESSAGE" />
+        <DictText keyName="ORDER_ERROR_COMMENT" />
       </div>
     </div>
-  </PressLayer>
+  </div>
 </template>
 
 <script lang="ts">
@@ -40,11 +38,12 @@ import ImageView from '@/component/common/ImageView.vue';
 import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { CartStorage } from '@/storage/CartStorage';
 import { playEnter } from '@/util/AnimationUtil';
-import PressLayer from '@/component/common/PressLayer.vue';
+import { AppConfig } from '@/model/AppConfig';
+import { Language } from '@/model/Enums';
 
 export default defineComponent({
   name: 'OrderResultPage',
-  components: { DictText, ImageView, PressLayer },
+  components: { DictText, ImageView },
 
   setup() {
     const pageEl = ref<HTMLElement | null>(null);
@@ -73,8 +72,11 @@ export default defineComponent({
       if (isSuccess) {
         CartStorage.clear();
         GlobalEvent.Instance.emitEvent('cart-updated');
+        AppConfig.Instance.currentLang.value = Language.JA;        
+        GlobalEvent.Instance.showStartPage();
+      } else {
+        GlobalEvent.Instance.goToOrderListPage();
       }
-      // GlobalEvent.Instance.showStartPage();
     };
 
     onMounted(() => {
@@ -98,11 +100,7 @@ export default defineComponent({
       }
     });
 
-    const onTapScreen = () => {
-      goToStartPage();
-    };
-
-    return { pageEl, success, onTapScreen };
+    return { pageEl, success };
   },
 });
 </script>

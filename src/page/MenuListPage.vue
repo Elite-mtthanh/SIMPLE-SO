@@ -19,7 +19,7 @@
       </div>
 
       <div
-        v-if="currentPage > 1"
+        v-if="currentPage > 0"
         class="page-btn page-btn-prev"
         @click="onPrev"
         @touchend.prevent="onPrev"
