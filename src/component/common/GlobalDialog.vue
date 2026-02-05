@@ -2,8 +2,12 @@
   <PopupCommon>
     <div ref="dialogEl" class="dialog-card anim-fade-scale">
       <div class="dialog-card-header" v-if="dialogArgs.title">
-        <div v-if="dialogArgs.iconButton" class="dialog-card-message-icon">
-          <ImageView :src="dialogArgs.iconButton" alt="icon" />
+        <div v-if="dialogArgs.iconButton" class="dialog-card-header-label">
+          <ImageView
+            :src="dialogArgs.iconButton"
+            alt="icon"
+            class="dialog-card-header-label-icon"
+          />
         </div>
         <span class="dialog-card-header-title">
           <DictText :keyName="dialogArgs.title" />
@@ -120,7 +124,7 @@ export default defineComponent({
   min-height: 439px;
   background: var(--background-dialog);
   border-radius: 10px;
-  padding: 40px 60px;
+  padding: 0 60px 53px 51px;
   box-sizing: border-box;
   text-align: center;
   display: flex;
@@ -135,22 +139,31 @@ export default defineComponent({
   margin-bottom: 40px;
 }
 
+.dialog-card-header-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  margin-top: 46px;
+}
+
 .dialog-card-header-title {
   min-height: 121px;
   width: 600px;
   font-size: 50px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-weight: 600;
   color: var(--text-accent-dialog);
   display: flex;
   align-items: center;
   justify-content: start;
+  line-height: 18px;
+  margin-top: 36px;
 }
 
-.dialog-card-message-icon {
-  width: 100px;
-  height: 100px;
-  margin-right: 16px;
+.dialog-card-header-label-icon {
+  width: 75px;
+  height: 84px;
 }
 
 .dialog-card-message {
@@ -158,7 +171,7 @@ export default defineComponent({
   font-weight: 700;
   line-height: 1.4;
   color: var(--text-accent-dialog);
-  margin-bottom: 60px;
+  margin-top: 59px;
 }
 
 .dialog-card-message-content {
@@ -167,8 +180,8 @@ export default defineComponent({
   width: 600px;
   font-size: 50px;
   font-weight: 600;
-  line-height: 1.3;
   text-align: center;
+  line-height: 60px;
 }
 
 .dialog-card-actions {
@@ -182,7 +195,6 @@ export default defineComponent({
 
 .dialog-card-actions.two-button {
   justify-content: space-between;
-  padding: 0 40px;
 }
 
 .dialog-card-actions.two-button > * {

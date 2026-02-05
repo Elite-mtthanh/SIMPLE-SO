@@ -17,12 +17,21 @@ export class CategoryListPageLogic {
   private footerLogic = new FooterLogic();
 
   /** cart count for footer (reactive, updates on cart-updated) */
-  private cartCountRef = ref(CartStorage.getCart().length);
+  private cartCountRef = ref(this.calculateTotalQuantity());
 
   constructor() {
     GlobalEvent.Instance.on('cart-updated', () => {
-      this.cartCountRef.value = CartStorage.getCart().length;
+      this.cartCountRef.value = this.calculateTotalQuantity();
     });
+  }
+
+  /**
+   * Calculate total quantity of all items in cart
+   * @returns total quantity
+   */
+  private calculateTotalQuantity(): number {
+    const cart = CartStorage.getCart();
+    return cart.reduce((total, item) => total + item.quantity, 0);
   }
 
   /** cart count for footer (reactive) */
@@ -52,7 +61,8 @@ export class CategoryListPageLogic {
       id: menu.id,
       name: getMenuName(menu, lang),
       image_path: menu.image_path,
-      menu_cd: menu.menu_cd
+      menu_cd: menu.menu_cd,
+      soldOut: this.dataPool.isCategoryStockout(menu.menu_cd),
     }));
   });
 

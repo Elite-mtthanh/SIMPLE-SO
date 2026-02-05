@@ -1,10 +1,10 @@
 import { ref, computed, watch, Ref } from 'vue';
 import { DataPool } from '@/model/DataPool';
-import { Menu, MenuItem } from '@/model/Menu';
+import { MenuItem } from '@/model/Menu';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
 import { AppConfig } from '@/model/AppConfig';
-import { getMenuDescription, getMenuName } from '@/util/DictNormalizerUtil';
+import { getMenuDescription, getMenuName, normalizeTextWithLineLimit } from '@/util/DictNormalizerUtil';
 import { CartStorage } from '@/storage/CartStorage';
 import { Language } from '@/model/Enums';
 
@@ -64,7 +64,7 @@ export class MenuListPageLogic {
   });
 
   /** cart count for footer (reactive, updates on cart-updated) */
-  private cartCountRef = ref(CartStorage.getCart().length);
+  private cartCountRef = ref(this.calculateTotalQuantity());
 
   constructor() {
     this.reloadMenus();
@@ -83,8 +83,17 @@ export class MenuListPageLogic {
     );
 
     GlobalEvent.Instance.on('cart-updated', () => {
-      this.cartCountRef.value = CartStorage.getCart().length;
+      this.cartCountRef.value = this.calculateTotalQuantity();
     });
+  }
+
+  /**
+   * Calculate total quantity of all items in cart
+   * @returns total quantity
+   */
+  private calculateTotalQuantity(): number {
+    const cart = CartStorage.getCart();
+    return cart.reduce((total, item) => total + item.quantity, 0);
   }
 
   /**
@@ -168,6 +177,7 @@ export class MenuListPageLogic {
    * navigate back to category page
    */
   backToCategory(): void {
+    this.currentPage.value = 0;
     GlobalEvent.Instance.goToCategoryPage();
   }
 
@@ -186,16 +196,27 @@ export class MenuListPageLogic {
     const menus = this.dataPool.getMenus(categoryCd);
     const limitedMenus = menus.slice(0, 16);
 
-    this.menus.value = limitedMenus.map(menu => ({
-      id: menu.id,
-      menu_cd: menu.menu_cd,
-      name: getMenuName(menu, lang),
-      description: getMenuDescription(menu, lang),
-      price: menu.price,
-      imagePath: menu.image_path,
-      soldOut: this.dataPool.isStockout(menu.menu_cd),
-      hasSelectSize: (!!menu.select_size && menu.select_size !== '0') ? '1' : '0',
-    }));
+    this.menus.value = limitedMenus.map(menu => {
+      let displayPrice = menu.price;
+      
+      if (menu.select_size && menu.select_size !== '0' && menu.select_size !== '') {
+        const sizes = this.dataPool.getMenuSizes(menu.select_size);
+        if (sizes.length > 0) {
+          displayPrice = menu.price + sizes[0].price;
+        }
+      }
+
+      return {
+        id: menu.id,
+        menu_cd: menu.menu_cd,
+        name: normalizeTextWithLineLimit(getMenuName(menu, lang), 2),
+        description: normalizeTextWithLineLimit(getMenuDescription(menu, lang), 3),
+        price: displayPrice,
+        imagePath: menu.image_path,
+        soldOut: this.dataPool.isStockout(menu.menu_cd),
+        hasSelectSize: menu.select_size !== null ? '1' : '0',
+      };
+    });
   }
 
   /** get current category display name for header */

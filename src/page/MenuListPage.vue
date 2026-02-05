@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="menu-pagination" v-if="totalPages > 1">
+    <div class="menu-pagination" v-if="totalPages > 0">
       <div class="page-dots">
         <span
           v-for="i in visiblePages"
@@ -155,7 +155,7 @@ export default defineComponent({
 
 .menu-header-label {
   font-size: 70px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-link);
   text-align: center;
   max-width: 100%;
@@ -170,15 +170,11 @@ export default defineComponent({
   z-index: 1;
 }
 
-.page-btn {
-  z-index: 5;
-}
-
 .menu-content {
   display: grid;
   grid-template-columns: repeat(2, 740px);
   grid-template-rows: repeat(2, 300px);
-  gap: 27px;
+  gap: 27px 32px;
   justify-content: center;
   align-content: center;
 }
@@ -206,10 +202,12 @@ export default defineComponent({
 }
 
 .page-btn-prev {
+  padding: 7px 12px 7px 0;
   left: 20px;
 }
 
 .page-btn-next {
+  padding: 10px 0 10px 12px;
   right: 20px;
 }
 

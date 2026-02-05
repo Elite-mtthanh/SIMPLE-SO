@@ -1,7 +1,7 @@
 import { DataPool } from '@/model/DataPool';
 import { CartItem, MenuItem, MenuSelect } from '@/model/Menu';
 import { AppConfig } from '@/model/AppConfig';
-import { getMenuDescription, getMenuName, getMenuSelectName } from '@/util/DictNormalizerUtil';
+import { getMenuDescription, getMenuName, getMenuSelectName, normalizeTextWithLineLimit } from '@/util/DictNormalizerUtil';
 import { CartStorage } from '@/storage/CartStorage';
 import { DialogArgs } from '@/model/Dialog';
 import { DialogButtonId, DialogMessageType } from '@/model/Enums';
@@ -56,8 +56,8 @@ export class MenuDetailLogic {
     this.menu = {
       id: rawMenu.id,
       menu_cd: rawMenu.menu_cd,
-      name: getMenuName(rawMenu, lang),
-      description: getMenuDescription(rawMenu, lang),
+      name: normalizeTextWithLineLimit(getMenuName(rawMenu, lang), 2),
+      description: normalizeTextWithLineLimit(getMenuDescription(rawMenu, lang), 3),
       price: rawMenu.price,
       imagePath: rawMenu.image_path,
       soldOut: this.dataPool.isStockout(rawMenu.menu_cd),
@@ -69,6 +69,7 @@ export class MenuDetailLogic {
       this.sizes = menuSizes.map(size => ({
         ...size,
         name: getMenuSelectName(size, lang),
+        soldOut: this.dataPool.isSizeStockout(size.select_cd),
       }));
 
       const menuToppings = this.dataPool.getMenuToppings(rawMenu.select_size);
@@ -78,7 +79,8 @@ export class MenuDetailLogic {
       }));
 
       if (this.sizes.length > 0) {
-        this.selectedSize = this.sizes[0];
+        const availableSize = this.sizes.find(s => !s.soldOut);
+        this.selectedSize = availableSize || null;
       }
     }
   }
@@ -123,14 +125,49 @@ export class MenuDetailLogic {
   }
 
   /**
+   * show over quantity warning dialog
+   */
+  private async showOverQuantityDialog(): Promise<void> {
+    const dialog = new DialogArgs();
+    dialog.message = 'OVER_QUANTITY_MESSAGE';
+    dialog.comment = '';
+    dialog.messageType = DialogMessageType.Error;
+    dialog.buttons = [
+      { id: DialogButtonId.Confirm, text: 'CLOSE_BUTTON' },
+    ];
+
+    await GlobalEvent.Instance.showCommonDialog(dialog);
+  }
+
+  /**
    * increase order quantity
    * @param editIndex Index of item being edited (for edit mode), pass -1 when adding new
+   * @returns Promise that resolves to true if quantity was increased, false if limit reached
    */
-  increase(editIndex: number = -1): void {
+  async increase(editIndex: number = -1): Promise<boolean> {
+    const cart = CartStorage.getCart();
+    let totalItemsInCart = 0;
+    
+    for (let i = 0; i < cart.length; i++) {
+      if (editIndex === -1 || i !== editIndex) {
+        totalItemsInCart += cart[i].quantity;
+      }
+    }
+    
+    const totalAfterIncrease = totalItemsInCart + this.quantity + 1;
+    
+    if (totalAfterIncrease > 99) {
+      await this.showOverQuantityDialog();
+      return false;
+    }
+
     const maxQuantity = this.getMaxQuantity(editIndex);
+    
     if (this.quantity < maxQuantity) {
       this.quantity++;
+      return true;
     }
+    return false;
   }
 
   /**
@@ -153,6 +190,7 @@ export class MenuDetailLogic {
    * @param size size to select
    */
   setSelectedSize(size: MenuSelect | null): void {
+    if (size && size.soldOut) return;
     this.selectedSize = size;
   }
 
@@ -288,12 +326,31 @@ export class MenuDetailLogic {
   /**
    * increase quantity (used in edit mode)
    * @param editIndex index of item being edited
+   * @returns Promise that resolves to true if quantity was increased, false if limit reached
    */
-  increaseQuantity(editIndex: number): void {
+  async increaseQuantity(editIndex: number): Promise<boolean> {
+    const cart = CartStorage.getCart();
+    let totalItemsInCart = 0;
+    
+    for (let i = 0; i < cart.length; i++) {
+      if (i !== editIndex) {
+        totalItemsInCart += cart[i].quantity;
+      }
+    }
+    
+    const totalAfterIncrease = totalItemsInCart + this.quantity + 1;
+    
+    if (totalAfterIncrease > 99) {
+      await this.showOverQuantityDialog();
+      return false;
+    }
+
     const max = this.getMaxQuantity(editIndex);
     if (this.quantity < max) {
       this.quantity++;
+      return true;
     }
+    return false;
   }
 
   /**

@@ -10,6 +10,8 @@ export class DataPool {
   public allSelects: MenuSelect[] = [];
   /** stockout menu map */
   public stockoutMenu: Record<string, boolean> = {};
+  /** stockout size map */
+  public stockoutSize: Record<string, boolean> = {};
 
   /** initialize singleton instance and load data */
   static init(): void {
@@ -26,6 +28,7 @@ export class DataPool {
     this.allMenus = ServiceIF.getAllMenus();
     this.allSelects = ServiceIF.getAllMenuSelects();
     this.loadStockout();
+    this.loadStockoutSize();
   }
 
   /**
@@ -91,12 +94,68 @@ export class DataPool {
   }
 
   /**
+   * load stockout size data
+   */
+  private loadStockoutSize(): void {
+    const list = ServiceIF.getStockoutSizeList();
+    this.stockoutSize = {};
+
+    list.forEach(size => {
+      this.stockoutSize[size.select_cd] = true;
+    });
+  }
+
+  /**
+   * check whether size is stockout
+   * @param selectCd 
+   * @returns 
+   */
+  isSizeStockout(selectCd: string): boolean {
+    return !!this.stockoutSize[selectCd];
+  }
+
+  /**
    * check whether menu is stockout
+   * menu is considered stockout if:
+   * 1. It's in stockout list, OR
+   * 2. It has sizes and ALL sizes are stockout
    * @param menuCd 
    * @returns 
    */
   isStockout(menuCd: string): boolean {
-    return !!this.stockoutMenu[menuCd];
+    if (this.stockoutMenu[menuCd]) {
+      return true;
+    }
+    
+    const menu = this.getMenuByCd(menuCd);
+    if (!menu || !menu.select_size || menu.select_size === '0' || menu.select_size === '') {
+      return false; 
+    }
+    
+    const sizes = this.getMenuSizes(menu.select_size);
+    if (sizes.length === 0) {
+      return false; 
+    }
+    
+    const allSizesSoldOut = sizes.every(size => this.isSizeStockout(size.select_cd));
+    return allSizesSoldOut;
+  }
+
+  /**
+   * check whether category is stockout
+   * category is considered stockout if ALL menus in it are stockout
+   * @param categoryCd 
+   * @returns 
+   */
+  isCategoryStockout(categoryCd: string): boolean {
+    const menus = this.getMenus(categoryCd);
+    
+    if (menus.length === 0) {
+      return false; 
+    }
+    
+    const allMenusSoldOut = menus.every(menu => this.isStockout(menu.menu_cd));
+    return allMenusSoldOut;
   }
 
   /**

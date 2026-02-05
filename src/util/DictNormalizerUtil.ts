@@ -59,3 +59,30 @@ export function getMenuSelectName(menuSelect: MenuSelect, lang: Language): strin
     default: return menuSelect.select_name1 ?? '';
   }
 }
+
+/**
+ * Normalize a text string by replacing multiple newline characters
+ * @param text The text string to be normalized.
+ * @returns The normalized text string.
+ */
+export function normalizeTextWithLineLimit(
+  text?: string,
+  maxLines = 2
+): string {
+  if (!text) return '';
+
+  const lines = text
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean);
+
+  if (lines.length <= maxLines) {
+    return lines.join('\n');
+  }
+
+  return (
+    lines.slice(0, maxLines).join('\n') + '…'
+  );
+}
+
+

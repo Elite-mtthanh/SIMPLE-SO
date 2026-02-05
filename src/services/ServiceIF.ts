@@ -3,7 +3,7 @@ import { IService } from './IService';
 import { Mock } from './Mock';
 import { Dict } from '@/model/Dict';
 import { normalizeDictRow } from '@/util/DictNormalizerUtil';
-import { Menu, MenuSelect, StockoutMenu } from '@/model/Menu';
+import { Menu, MenuSelect, StockoutMenu, StockoutSize } from '@/model/Menu';
 
 declare let SVS: IService;
 
@@ -106,5 +106,17 @@ export class ServiceIF {
   static getStockoutList(): StockoutMenu[] {
     if (!this.TIF.GetStockoutList) return [];
     return this.TIF.GetStockoutList();
+  }
+
+  /**
+   * get stockout size list
+   * retrieves list of out-of-stock sizes
+   * this list contains sizes currently out of stock,
+   * used to disable size selection on UI
+   * @returns StockoutSize[] - array containing out-of-stock sizes, returns empty array if service doesn't support
+   */
+  static getStockoutSizeList(): StockoutSize[] {
+    if (!this.TIF.GetStockoutSizeList) return [];
+    return this.TIF.GetStockoutSizeList();
   }
 }

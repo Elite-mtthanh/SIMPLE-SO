@@ -108,7 +108,7 @@ export class GlobalEvent {
     );
   }
 
-  public backToCategoryPage() {
+  public backToPreviousPage() {
     this.emitChangeScreen(
       new PageArgs('CategoryListPage', PageStackType.Back, null, -1, true)
     );

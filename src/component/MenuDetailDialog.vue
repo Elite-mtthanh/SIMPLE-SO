@@ -24,7 +24,7 @@
               />
 
               <div class="menu-detail-price">
-                <span>{{ formatPrice(logic.menu.price) }}￥</span>
+                <span>{{ formatPrice(displayPrice) }}￥</span>
               </div>
             </div>
           </div>
@@ -64,6 +64,7 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   nextTick,
   onActivated,
@@ -171,9 +172,9 @@ export default defineComponent({
       onClose();
     };
 
-    const onIncreaseQuantity = () => {
+    const onIncreaseQuantity = async () => {
       const index = props.editMode ? props.cartIndex : -1;
-      logic.increaseQuantity(index);
+      await logic.increaseQuantity(index);
     };
 
     const onDecreaseQuantity = async () => {
@@ -187,10 +188,17 @@ export default defineComponent({
       }
     };
 
+    const displayPrice = computed(() => {
+      const basePrice = logic.menu.price;
+      const sizePrice = logic.selectedSize?.price ?? 0;
+      return basePrice + sizePrice;
+    });
+
     return {
       logic,
       formatPrice,
       dialogEl,
+      displayPrice,
       onConfirm,
       onDelete,
       onIncreaseQuantity,
@@ -245,11 +253,12 @@ export default defineComponent({
   height: 110px;
   font-size: 40px;
   font-weight: 600;
-  line-height: 64px;
+  line-height: 60px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  white-space: pre-line;
 }
 
 .menu-detail-info-desc {
@@ -262,6 +271,7 @@ export default defineComponent({
   font-weight: 400;
   font-size: 25px;
   line-height: 30px;
+  white-space: pre-line;
 }
 
 .menu-detail-info-bottom {

@@ -40,7 +40,7 @@
     <div class="cart-footer">
       <ButtonCommon
         class="btn-back"
-        @touchend="onBackCategory"
+        @touchend="onBackPreviousPage"
         text-color="inverse"
         type="neutral"
         ><DictText keyName="BACK_BUTTON"
@@ -48,7 +48,7 @@
 
       <ButtonCommon
         class="btn-order"
-        @touchend="onComfirmOrder"
+        @touchend="onConfirmOrder"
         text-color="inverse"
         type="red"
         ><DictText keyName="ORDER_BUTTON"
@@ -90,8 +90,8 @@ export default defineComponent({
       openEditDialog: logic.openEdit.bind(logic),
       closeEditDialog: logic.closeEdit.bind(logic),
       handleEditConfirm: logic.handleEditConfirm.bind(logic),
-      onBackCategory: logic.backToCategory.bind(logic),
-      onComfirmOrder: logic.confirmOrder.bind(logic),
+      onBackPreviousPage: logic.backToPreviousPage.bind(logic),
+      onConfirmOrder: logic.confirmOrder.bind(logic),
     };
   },
 });

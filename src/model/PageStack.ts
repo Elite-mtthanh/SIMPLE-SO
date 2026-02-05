@@ -52,6 +52,15 @@ export class PageStack {
     this.currentPageName.value = newPageName;
   }
 
+  public backScreen(): void {
+    if (this.pageStack.value.length > 0) {
+      const previousPage = this.pageStack.value.pop()!;
+      this.currentPageName.value = previousPage;
+    } else {
+      this.currentPageName.value = this.startPageName;
+    }
+  }
+
   private get topPage(): string {
     return this.startPageName;
   }

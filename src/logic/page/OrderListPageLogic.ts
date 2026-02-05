@@ -61,9 +61,15 @@ export class OrderListPageLogic {
     this.editingIndex.value = -1;
   }
 
-  /** handle confirm from edit dialog: close and sync cart */
+  /** 
+   * handle confirm from edit dialog: close, move item to top, and sync cart 
+   */
   handleEditConfirm(): void {
+    const index = this.editingIndex.value;
     this.closeEdit();
+    if (index >= 0) {
+      CartStorage.moveToTop(index);
+    }
     this.syncCart();
   }
 
@@ -80,14 +86,17 @@ export class OrderListPageLogic {
     GlobalEvent.Instance.goToCategoryPage();
   }
 
-  /** back to category page (force close / single top) */
-  backToCategory(): void {
-    GlobalEvent.Instance.backToCategoryPage();
+  /** back to category page */
+  backToPreviousPage(): void {
+    GlobalEvent.Instance.backToPreviousPage();
   }
 
   /** total quantity of all cart items */
   get totalQuantity(): number {
-    return this.items.value.reduce((sum, i) => sum + i.quantity, 0);
+    return Math.min(
+      this.items.value.reduce((sum, i) => sum + i.quantity, 0),
+      99
+    );
   }
 
   /** total price of all cart items */

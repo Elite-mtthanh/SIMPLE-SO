@@ -6,16 +6,26 @@ import { GlobalEvent } from './GlobalEvent';
 import bellIcon from '../../assets/Image/icon/bell-dialog-icon.png';
 import { DialogButtonId, DialogMessageType, Language } from '@/model/Enums';
 
+const LANGUAGE_LABELS: Record<Language, string> = {
+  [Language.ZH]: '中文',
+  [Language.EN]: 'English',
+  [Language.JA]: '日本語'
+};
+
 export class FooterLogic {
   /** allergen dialog visibility status */
   showAllergen: Ref<boolean> = ref(false);
 
-  /** available language options */
-  readonly languageOptions = [
-    { label: '日本語', value: Language.JA },
-    { label: 'English', value: Language.EN },
-    { label: '中文', value: Language.ZH }
-  ];
+  /** 
+   * available language options based on Config.json
+   * dynamically generates options from configured language list
+   */
+  get languageOptions() {
+    return AppConfig.Instance.languages.map(lang => ({
+      label: LANGUAGE_LABELS[lang],
+      value: lang
+    }));
+  }
 
   /**
    * change application language
