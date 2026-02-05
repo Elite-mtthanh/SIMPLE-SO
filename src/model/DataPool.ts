@@ -123,24 +123,20 @@ export class DataPool {
    * @returns 
    */
   isStockout(menuCd: string): boolean {
-    // Check 1: Menu trực tiếp hết hàng
     if (this.stockoutMenu[menuCd]) {
       return true;
     }
     
-    // Check 2: Nếu menu có size, kiểm tra tất cả size có hết hàng không
     const menu = this.getMenuByCd(menuCd);
     if (!menu || !menu.select_size || menu.select_size === '0' || menu.select_size === '') {
-      return false; // Món không có size thì chỉ dựa vào stockout list
+      return false; 
     }
     
-    // Lấy danh sách sizes của món
     const sizes = this.getMenuSizes(menu.select_size);
     if (sizes.length === 0) {
-      return false; // Không có size nào thì không sold out
+      return false; 
     }
     
-    // Kiểm tra TẤT CẢ sizes có hết hàng không
     const allSizesSoldOut = sizes.every(size => this.isSizeStockout(size.select_cd));
     return allSizesSoldOut;
   }
@@ -155,10 +151,9 @@ export class DataPool {
     const menus = this.getMenus(categoryCd);
     
     if (menus.length === 0) {
-      return false; // Không có menu thì không sold out
+      return false; 
     }
     
-    // Kiểm tra TẤT CẢ menus có hết hàng không
     const allMenusSoldOut = menus.every(menu => this.isStockout(menu.menu_cd));
     return allMenusSoldOut;
   }

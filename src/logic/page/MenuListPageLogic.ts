@@ -196,16 +196,27 @@ export class MenuListPageLogic {
     const menus = this.dataPool.getMenus(categoryCd);
     const limitedMenus = menus.slice(0, 16);
 
-    this.menus.value = limitedMenus.map(menu => ({
-      id: menu.id,
-      menu_cd: menu.menu_cd,
-      name: normalizeTextWithLineLimit(getMenuName(menu, lang), 2),
-      description: normalizeTextWithLineLimit(getMenuDescription(menu, lang), 3),
-      price: menu.price,
-      imagePath: menu.image_path,
-      soldOut: this.dataPool.isStockout(menu.menu_cd),
-      hasSelectSize: menu.select_size !== null ? '1' : '0',
-    }));
+    this.menus.value = limitedMenus.map(menu => {
+      let displayPrice = menu.price;
+      
+      if (menu.select_size && menu.select_size !== '0' && menu.select_size !== '') {
+        const sizes = this.dataPool.getMenuSizes(menu.select_size);
+        if (sizes.length > 0) {
+          displayPrice = menu.price + sizes[0].price;
+        }
+      }
+
+      return {
+        id: menu.id,
+        menu_cd: menu.menu_cd,
+        name: normalizeTextWithLineLimit(getMenuName(menu, lang), 2),
+        description: normalizeTextWithLineLimit(getMenuDescription(menu, lang), 3),
+        price: displayPrice,
+        imagePath: menu.image_path,
+        soldOut: this.dataPool.isStockout(menu.menu_cd),
+        hasSelectSize: menu.select_size !== null ? '1' : '0',
+      };
+    });
   }
 
   /** get current category display name for header */

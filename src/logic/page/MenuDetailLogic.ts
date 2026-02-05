@@ -79,7 +79,6 @@ export class MenuDetailLogic {
       }));
 
       if (this.sizes.length > 0) {
-        // Tự động chọn size available đầu tiên
         const availableSize = this.sizes.find(s => !s.soldOut);
         this.selectedSize = availableSize || null;
       }
@@ -330,11 +329,9 @@ export class MenuDetailLogic {
    * @returns Promise that resolves to true if quantity was increased, false if limit reached
    */
   async increaseQuantity(editIndex: number): Promise<boolean> {
-    // Check if increasing will exceed 99 items in cart
     const cart = CartStorage.getCart();
     let totalItemsInCart = 0;
     
-    // Calculate TOTAL quantity of ALL items in cart, excluding current item being edited
     for (let i = 0; i < cart.length; i++) {
       if (i !== editIndex) {
         totalItemsInCart += cart[i].quantity;

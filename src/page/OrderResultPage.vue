@@ -39,7 +39,6 @@ import { GlobalEvent } from '@/logic/common/GlobalEvent';
 import { CartStorage } from '@/storage/CartStorage';
 import { playEnter } from '@/util/AnimationUtil';
 import { AppConfig } from '@/model/AppConfig';
-import { Language } from '@/model/Enums';
 
 export default defineComponent({
   name: 'OrderResultPage',
@@ -72,7 +71,7 @@ export default defineComponent({
       if (isSuccess) {
         CartStorage.clear();
         GlobalEvent.Instance.emitEvent('cart-updated');
-        AppConfig.Instance.currentLang.value = Language.JA;        
+        AppConfig.Instance.currentLang.value = AppConfig.Instance.languages[0];
         GlobalEvent.Instance.showStartPage();
       } else {
         GlobalEvent.Instance.goToOrderListPage();

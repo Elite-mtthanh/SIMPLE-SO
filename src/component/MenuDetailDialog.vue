@@ -188,7 +188,6 @@ export default defineComponent({
       }
     };
 
-    // Computed property để tính giá hiển thị bao gồm size
     const displayPrice = computed(() => {
       const basePrice = logic.menu.price;
       const sizePrice = logic.selectedSize?.price ?? 0;
