@@ -5,6 +5,7 @@ import { GlobalEvent } from '../common/GlobalEvent';
 import { DialogArgs } from '@/model/Dialog';
 import { DialogButtonId, DialogMessageType } from '@/model/Enums';
 import { PageStack } from '@/model/PageStack';
+import { AppConfig } from '@/model/AppConfig';
 
 export class OrderListPageLogic {
   /** list of cart items */
@@ -28,6 +29,13 @@ export class OrderListPageLogic {
         if (len === 0 && this.isOnOrderListPage()) {
           this.navigateToCategoryList();
         }
+      }
+    );
+
+    watch(
+      () => AppConfig.Instance.currentLang.value,
+      () => {
+        this.syncCart();
       }
     );
   }

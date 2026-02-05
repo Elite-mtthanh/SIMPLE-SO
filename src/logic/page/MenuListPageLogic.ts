@@ -202,7 +202,12 @@ export class MenuListPageLogic {
       if (menu.select_size && menu.select_size !== '0' && menu.select_size !== '') {
         const sizes = this.dataPool.getMenuSizes(menu.select_size);
         if (sizes.length > 0) {
-          displayPrice = menu.price + sizes[0].price;
+          const availableSize = sizes.find(size => !this.dataPool.isSizeStockout(size.select_cd));
+          if (availableSize) {
+            displayPrice = menu.price + availableSize.price;
+          } else {
+            displayPrice = menu.price + sizes[0].price;
+          }
         }
       }
 

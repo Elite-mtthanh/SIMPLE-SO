@@ -113,17 +113,23 @@ export class CartStorage {
     const quantityToAdd = Math.min(item.quantity, maxAddable);
     const pricePerItem = item.total / item.quantity;
 
-    const existing = cart.find(c =>
+    const existingIndex = cart.findIndex(c =>
       c.menuCd === item.menuCd &&
       (c.size?.selectCd ?? null) === (item.size?.selectCd ?? null) &&
       this.isSameToppings(c.toppings, item.toppings)
     );
 
-    if (existing) {
+    if (existingIndex >= 0) {
+      const existing = cart[existingIndex];
       existing.quantity += quantityToAdd;
       existing.total += pricePerItem * quantityToAdd;
+      
+      if (existingIndex > 0) {
+        cart.splice(existingIndex, 1);
+        cart.unshift(existing);
+      }
     } else {
-      cart.push({
+      cart.unshift({
         ...item,
         quantity: quantityToAdd,
         total: pricePerItem * quantityToAdd,

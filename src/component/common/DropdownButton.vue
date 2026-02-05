@@ -115,7 +115,7 @@ export default defineComponent({
   z-index: var(--z-dropdown);
 }
 
-.dropdown-wrapper-button{
+.dropdown-wrapper-button {
   padding: 0 21px 0 24px;
 }
 
@@ -123,6 +123,8 @@ export default defineComponent({
   position: absolute;
   bottom: 100%;
   left: 0;
+  display: flex;
+  flex-direction: column-reverse;
   width: 100%;
   overflow: hidden;
   border-radius: 6px;

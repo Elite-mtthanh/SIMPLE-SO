@@ -2,7 +2,9 @@
   <div class="footer">
     <div class="footer-left">
       <div v-if="showBack" class="footer-left-back-icon">
-        <ImageView :src="backIcon" @mousedown.prevent="onBack" />
+        <PressLayer @touchend="onBack">
+          <ImageView :src="backIcon" />
+        </PressLayer>
       </div>
 
       <div class="footer-left-buttons">
@@ -95,6 +97,7 @@ import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
 import backIcon from '@/assets/Image/icon/back-icon.png';
 import cartIcon from '@/assets/Image/icon/cart-icon.png';
 import ImageView from './ImageView.vue';
+import PressLayer from './PressLayer.vue';
 
 export default defineComponent({
   name: 'AppFooter',
@@ -103,6 +106,7 @@ export default defineComponent({
     DropdownButtonCommon,
     DictText,
     ImageView,
+    PressLayer
   },
   props: {
     mode: {
@@ -284,7 +288,7 @@ export default defineComponent({
   position: relative;
   width: 240px;
   height: 89px;
-  padding-left: 12px;
+  padding: 10px 0 9px 12px;
 }
 
 .footer-right-cart-badge {
@@ -293,13 +297,12 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 286px;
   pointer-events: none;
   color: var(--text-inverse);
   font-weight: 600;
   font-size: 70px;
   line-height: 18px;
-  margin-left: 9px;
+  padding-left: 9px;
 }
 
 .footer-left-bell {
@@ -308,5 +311,6 @@ export default defineComponent({
 
 .footer-left-allergen {
   padding-right: 24px;
+  border: 1px solid #475191;
 }
 </style>
