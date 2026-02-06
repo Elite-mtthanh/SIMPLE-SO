@@ -253,7 +253,7 @@ export default defineComponent({
   height: 110px;
   font-size: 40px;
   font-weight: 600;
-  line-height: 60px;
+  line-height: 50px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

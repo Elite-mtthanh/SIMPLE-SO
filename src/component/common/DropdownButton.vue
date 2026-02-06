@@ -1,16 +1,17 @@
 <template>
   <div class="dropdown-wrapper">
-    <ButtonCommon
-      :type="type"
-      :textColor="textColor"
-      :icon="icon"
-      iconPosition="right"
-      :iconSize="48"
-      @touchend="onMousedownToggle"
-      class="dropdown-wrapper-button"
-    >
-      <slot name="label" />
-    </ButtonCommon>
+    <PressLayer @touchend="onMousedownToggle">
+      <ButtonCommon
+        :type="type"
+        :textColor="textColor"
+        :icon="icon"
+        iconPosition="right"
+        :iconSize="48"
+        class="dropdown-wrapper-button"
+      >
+        <slot name="label" />
+      </ButtonCommon>
+    </PressLayer>
 
     <div
       v-show="open"
@@ -34,6 +35,7 @@
 import { defineComponent, nextTick, ref, watch } from 'vue';
 import ButtonCommon from './ButtonCommon.vue';
 import { playEnter, playLeave } from '@/util/AnimationUtil';
+import PressLayer from './PressLayer.vue';
 
 export interface DropdownItem {
   label: string;
@@ -42,7 +44,7 @@ export interface DropdownItem {
 
 export default defineComponent({
   name: 'DropdownButton',
-  components: { ButtonCommon },
+  components: { ButtonCommon, PressLayer },
   props: {
     modelValue: {
       type: [String, Number],

@@ -29,7 +29,9 @@
           :iconSize="48"
           class="footer-left-bell"
         >
-          <DictText keyName="CALL_STAFF_BUTTON" />
+          <span class="footer-left-bell-badge">
+            <DictText keyName="CALL_STAFF_BUTTON" />
+          </span>
         </ButtonCommon>
 
         <ButtonCommon
@@ -106,7 +108,7 @@ export default defineComponent({
     DropdownButtonCommon,
     DictText,
     ImageView,
-    PressLayer
+    PressLayer,
   },
   props: {
     mode: {
@@ -289,24 +291,37 @@ export default defineComponent({
   width: 240px;
   height: 89px;
   padding: 10px 0 9px 12px;
+  gap: 9px;
+}
+
+:deep(.footer-right-cart) {
+  justify-content: flex-start !important;
+}
+
+.footer-right-cart :deep(.base-button-has-icon) {
+  justify-content: flex-start !important;
 }
 
 .footer-right-cart-badge {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
   color: var(--text-inverse);
   font-weight: 600;
   font-size: 70px;
   line-height: 18px;
-  padding-left: 9px;
+  letter-spacing: 0%;
+  height: 88px;
+  width: 137px;
 }
 
 .footer-left-bell {
   padding: 0 24px 0 23px;
+}
+
+.footer-left-bell-badge {
+  width: 180px;
+  height: 18px;
 }
 
 .footer-left-allergen {

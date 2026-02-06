@@ -38,21 +38,21 @@
     </div>
 
     <div class="cart-footer">
-      <ButtonCommon
-        class="btn-back"
-        @touchend="onBackPreviousPage"
-        text-color="inverse"
-        type="neutral"
-        ><DictText keyName="BACK_BUTTON"
-      /></ButtonCommon>
+      <PressLayer @touchend="onBackPreviousPage">
+        <ButtonCommon class="btn-back" text-color="inverse" type="neutral"
+          ><DictText keyName="BACK_BUTTON"
+        /></ButtonCommon>
+      </PressLayer>
 
-      <ButtonCommon
-        class="btn-order"
-        @touchend="onConfirmOrder"
-        text-color="inverse"
-        type="red"
-        ><DictText keyName="ORDER_BUTTON"
-      /></ButtonCommon>
+      <PressLayer>
+        <ButtonCommon
+          class="btn-order"
+          @touchend="onConfirmOrder"
+          text-color="inverse"
+          type="red"
+          ><DictText keyName="ORDER_BUTTON"
+        /></ButtonCommon>
+      </PressLayer>
     </div>
   </div>
 </template>
@@ -66,10 +66,11 @@ import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import { formatPrice } from '@/util/FormatPrice';
 import { OrderListPageLogic } from '@/logic/page/OrderListPageLogic';
 import { playEnter } from '@/util/AnimationUtil';
+import PressLayer from '@/component/common/PressLayer.vue';
 
 export default defineComponent({
   name: 'OrderListPage',
-  components: { OrderItem, DictText, MenuDetailDialog, ButtonCommon },
+  components: { OrderItem, DictText, MenuDetailDialog, ButtonCommon, PressLayer },
 
   setup() {
     const pageEl = ref<HTMLElement | null>(null);
@@ -147,7 +148,7 @@ export default defineComponent({
   justify-content: flex-end;
   align-items: center;
   margin: 57px 53px 19px 0;
-  width: 574px;
+  width: 700px;
   height: 100px;
 }
 

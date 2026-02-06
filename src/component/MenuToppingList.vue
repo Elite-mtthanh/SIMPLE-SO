@@ -1,6 +1,10 @@
 <template>
   <div class="menu-topping" v-if="toppings.length">
-    <div class="menu-topping-scroll">
+    <div
+      ref="scrollContainer"
+      class="menu-topping-scroll"
+      :class="{ 'no-scrollbar': toppings.length < 2 }"
+    >
       <PressLayer
         v-for="topping in toppings"
         :key="topping.select_cd"
@@ -33,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref, onMounted, watch } from 'vue';
 import { MenuSelect } from '@/model/Menu';
 import ImageView from '@/component/common/ImageView.vue';
 import PressLayer from '@/component/common/PressLayer.vue';
@@ -57,6 +61,14 @@ export default defineComponent({
   },
   emits: ['on-toggle'],
   setup(props, { emit }) {
+    const scrollContainer = ref<HTMLElement | null>(null);
+
+    const resetScroll = () => {
+      if (scrollContainer.value) {
+        scrollContainer.value.scrollTop = 0;
+      }
+    };
+
     const isChecked = (topping: MenuSelect): boolean => {
       return props.selectedToppings.some(
         (t) => t.select_cd === topping.select_cd
@@ -67,7 +79,22 @@ export default defineComponent({
       emit('on-toggle', topping);
     };
 
+    onMounted(() => {
+      resetScroll();
+    });
+
+    watch(
+      () => props.toppings,
+      () => {
+        setTimeout(() => {
+          resetScroll();
+        }, 0);
+      },
+      { immediate: true }
+    );
+
     return {
+      scrollContainer,
       isChecked,
       onToggleTopping,
       formatPrice,
@@ -95,6 +122,15 @@ export default defineComponent({
   box-sizing: border-box;
   scrollbar-width: thin;
   scrollbar-color: #9e9e9e #d3d3d3;
+}
+
+.menu-topping-scroll.no-scrollbar {
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.menu-topping-scroll.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 .menu-topping-item {
@@ -146,9 +182,7 @@ export default defineComponent({
   height: 100px;
   font-weight: 400;
   font-size: 45px;
-
   line-height: 64px;
-
   text-align: right;
   vertical-align: middle;
   color: var(--text-price);
