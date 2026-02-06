@@ -129,7 +129,7 @@ export default defineComponent({
   flex: 1;
   border-radius: 6px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   overflow-y: auto;
   margin-top: -20px;
@@ -137,10 +137,15 @@ export default defineComponent({
   width: 1450px;
 }
 
-.allergen-content-image :deep(img) {
+.allergen-content-image {
   width: 1200px;
-  height: 627px;
-  object-fit: contain;
+  min-width: 1200px;
+}
+
+.allergen-content-image :deep(img) {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .allergen-actions {

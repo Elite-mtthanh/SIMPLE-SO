@@ -39,12 +39,16 @@ export class TopLogic {
   }
 
   private handleChangeScreen(name: string, type: PageStackType): void {
-    PageStack.Instance.manageStack(name, type);
 
-    if (PageStack.Instance.currentPageName.value != name) {
-      PageStack.Instance.changeScreen(name);
+    if (type === PageStackType.Back) {
+      PageStack.Instance.backScreen();
     } else {
-      // do nothing
+      PageStack.Instance.manageStack(name, type);
+      if (PageStack.Instance.currentPageName.value != name) {
+        PageStack.Instance.changeScreen(name);
+      } else {
+        // do nothing
+      }
     }
   }
 }

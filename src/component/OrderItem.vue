@@ -132,7 +132,7 @@ export default defineComponent({
 
 .cart-item-name {
   width: 778px;
-  height: 64px;
+  height: 65px;
   font-weight: 600;
   font-size: 40px;
   line-height: 64px;
@@ -145,9 +145,9 @@ export default defineComponent({
 
 .cart-item-description {
   width: 778px;
-  height: 56px;
+  height: 30px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-weight: 400;
@@ -164,7 +164,7 @@ export default defineComponent({
   color: var(--text-inverse);
   background-color: var(--btn-link);
   border-radius: 6px;
-  margin: 11px 0 9px 10px;
+  margin: 0 0 9px 10px;
   font-size: 45px;
   line-height: 64px;
   display: flex;

@@ -49,20 +49,21 @@
     </div>
 
     <div class="footer-right">
-      <ButtonCommon
-        v-if="showCart"
-        :type="cartCount === 0 ? 'neutral' : 'accent'"
-        :icon="cartIcon"
-        textColor="inverse"
-        @touchend="onMousedownOpenCart"
-        :iconSize="70"
-        class="footer-right-cart"
-        :disabled="cartCount === 0"
-      >
-        <span class="footer-right-cart-badge">
-          {{ displayCartCount }}
-        </span>
-      </ButtonCommon>
+      <PressLayer @touchend="onMousedownOpenCart">
+        <ButtonCommon
+          v-if="showCart"
+          :type="cartCount === 0 ? 'neutral' : 'accent'"
+          :icon="cartIcon"
+          textColor="inverse"
+          :iconSize="70"
+          class="footer-right-cart"
+          :disabled="cartCount === 0"
+        >
+          <span class="footer-right-cart-badge">
+            {{ displayCartCount }}
+          </span>
+        </ButtonCommon>
+      </PressLayer>
 
       <div>
         <div class="footer-right-date">
@@ -305,7 +306,6 @@ export default defineComponent({
 .footer-right-cart-badge {
   display: flex;
   align-items: center;
-  justify-content: center;
   color: var(--text-inverse);
   font-weight: 600;
   font-size: 70px;

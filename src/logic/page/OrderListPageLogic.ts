@@ -70,12 +70,12 @@ export class OrderListPageLogic {
   }
 
   /** 
-   * handle confirm from edit dialog: close, move item to top, and sync cart 
+   * handle confirm from edit dialog: close, move item to top if changed, and sync cart 
    */
-  handleEditConfirm(): void {
+  handleEditConfirm(result: { item: any; hasChanges: boolean } | null): void {
     const index = this.editingIndex.value;
     this.closeEdit();
-    if (index >= 0) {
+    if (index >= 0 && result && result.hasChanges) {
       CartStorage.moveToTop(index);
     }
     this.syncCart();

@@ -31,11 +31,11 @@
     @on-open-allergen="onOpenAllergen"
   />
 
-    <AllergenDialog
-      v-if="showAllergen"
-      :currentLang="currentLang"
-      @on-close="onCloseAllergen"
-    />
+  <AllergenDialog
+    v-if="showAllergen"
+    :currentLang="currentLang"
+    @on-close="onCloseAllergen"
+  />
 </template>
 
 <script lang="ts">
@@ -107,7 +107,7 @@ export default defineComponent({
 }
 
 .splash-page-header {
-  height: 1615px;
+  width: 1615px;
   height: 272px;
   display: flex;
   align-items: center;

@@ -90,7 +90,7 @@ export class GlobalEvent {
 
   public goToCategoryPage() {
     this.emitChangeScreen(
-      new PageArgs('CategoryListPage', PageStackType.Back)
+      new PageArgs('CategoryListPage', PageStackType.SingleTop)
     );
   }
 
@@ -104,13 +104,13 @@ export class GlobalEvent {
 
   public goToOrderListPage() {
     this.emitChangeScreen(
-      new PageArgs('OrderListPage', PageStackType.SingleTop)
+      new PageArgs('OrderListPage', PageStackType.New)
     );
   }
 
   public backToPreviousPage() {
     this.emitChangeScreen(
-      new PageArgs('CategoryListPage', PageStackType.Back, null, -1, true)
+      new PageArgs('', PageStackType.Back)
     );
   }
 

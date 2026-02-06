@@ -24,17 +24,23 @@
               />
 
               <div class="menu-detail-price">
-                <span>{{ formatPrice(displayPrice) }}￥</span>
+                <span class="menu-detail-price-detail"
+                  >{{ formatPrice(displayPrice) }}￥</span
+                >
               </div>
             </div>
           </div>
         </div>
 
-        <div class="menu-detail-label" v-if="logic.toppings.length">
-          <DictText keyName="HAS_TOPPING_LABEL" />
+        <div v-if="logic.toppings.length">
+          <span class="menu-detail-label"
+            ><DictText keyName="HAS_TOPPING_LABEL"
+          /></span>
         </div>
-        <div class="menu-detail-label" v-else>
-          <DictText keyName="SINGLE_MENU_LABEL" />
+        <div v-else>
+          <span class="menu-detail-label"
+            ><DictText keyName="SINGLE_MENU_LABEL"
+          /></span>
         </div>
 
         <div class="menu-detail-toppings">
@@ -161,9 +167,9 @@ export default defineComponent({
       playLeave(dialogEl, 'anim-leave', 250, () => emit('on-close'));
     };
 
-    const onConfirm = () => {
-      const item = logic.confirm(props.editMode, props.cartIndex);
-      emit('on-confirm', item);
+    const onConfirm = async () => {
+      const result = await logic.confirm(props.editMode, props.cartIndex);
+      emit('on-confirm', result);
       onClose();
     };
 
@@ -250,7 +256,7 @@ export default defineComponent({
 
 .menu-detail-info-name {
   width: 1101px;
-  height: 110px;
+  height: 111px;
   font-size: 40px;
   font-weight: 600;
   line-height: 50px;
@@ -288,10 +294,8 @@ export default defineComponent({
 .menu-detail-price {
   height: 58px;
   width: 319px;
-  margin-left: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
   font-size: 50px;
   font-weight: 700;
   line-height: 30px;
@@ -304,17 +308,27 @@ export default defineComponent({
   color: var(--text-inverse);
 }
 
-.menu-detail-label {
-  width: 471;
-  height: 63;
-  font-weight: 700;
-  font-style: Bold;
-  font-size: 50px;
-  line-height: 64px;
+.menu-detail-price-detail {
+  width: 266px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  vertical-align: middle;
+.menu-detail-label {
+  width: 471px;
+  height: 63px;
+  display: inline-block;
   margin-top: 15px;
   margin-left: 20px;
+}
+
+.menu-detail-label:deep(*) {
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 64px;
+  vertical-align: middle;
 }
 
 .menu-detail-toppings {

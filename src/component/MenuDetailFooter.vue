@@ -33,20 +33,21 @@
       <div class="menu-detail-total">{{ formatPrice(totalPrice) }}￥</div>
     </div>
 
-    <ButtonCommon
-      class="menu-detail-btn-confirm"
-      @touchend="onConfirm"
-      text-color="inverse"
-      type="accent"
-      :class="{ disabled: quantity >= maxQuantity + 1 }"
-    >
-      <DictText keyName="CONFIRM_BUTTON" />
-    </ButtonCommon>
+    <PressLayer @touchend="onConfirm">
+      <ButtonCommon
+        class="menu-detail-btn-confirm"
+        text-color="inverse"
+        type="accent"
+        :class="{ disabled: quantity >= maxQuantity + 1 || isProcessing }"
+      >
+        <DictText keyName="CONFIRM_BUTTON" />
+      </ButtonCommon>
+    </PressLayer>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import DictText from '@/component/common/DictText.vue';
 import PressLayer from '@/component/common/PressLayer.vue';
@@ -81,10 +82,22 @@ export default defineComponent({
   },
   emits: ['on-cancel', 'on-confirm', 'on-increase', 'on-decrease', 'on-delete'],
   setup(_, { emit }) {
+    const isProcessing = ref(false);
+
+    const onConfirm = () => {
+      if (isProcessing.value) return;
+      isProcessing.value = true;
+      emit('on-confirm');
+      setTimeout(() => {
+        isProcessing.value = false;
+      }, 500);
+    };
+
     return {
       formatPrice,
+      isProcessing,
       onCancel: () => emit('on-cancel'),
-      onConfirm: () => emit('on-confirm'),
+      onConfirm,
       onIncrease: () => emit('on-increase'),
       onDecrease: () => emit('on-decrease'),
       onDelete: () => emit('on-delete'),
