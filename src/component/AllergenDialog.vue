@@ -32,7 +32,7 @@ import PopupCommon from '@/component/common/PopupCommon.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import DictText from '@/component/common/DictText.vue';
 import { Language } from '@/model/Enums';
-import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpeg';
+import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpg';
 import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
 import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
 import ImageView from '@/component/common/ImageView.vue';
@@ -129,19 +129,23 @@ export default defineComponent({
   flex: 1;
   border-radius: 6px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   overflow-y: auto;
   margin-top: -20px;
   height: 630px;
-  width: 1450px; 
+  width: 1450px;
+}
+
+.allergen-content-image {
+  width: 1200px;
+  min-width: 1200px;
 }
 
 .allergen-content-image :deep(img) {
-  width: 1200px;
-  min-width: 1200px;
-  height: 1022px;
-  object-fit: contain;
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .allergen-actions {

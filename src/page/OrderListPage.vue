@@ -44,12 +44,8 @@
         /></ButtonCommon>
       </PressLayer>
 
-      <PressLayer>
-        <ButtonCommon
-          class="btn-order"
-          @touchend="onConfirmOrder"
-          text-color="inverse"
-          type="red"
+      <PressLayer @touchend="onConfirmOrder">
+        <ButtonCommon class="btn-order" text-color="inverse" type="red"
           ><DictText keyName="ORDER_BUTTON"
         /></ButtonCommon>
       </PressLayer>
@@ -70,7 +66,13 @@ import PressLayer from '@/component/common/PressLayer.vue';
 
 export default defineComponent({
   name: 'OrderListPage',
-  components: { OrderItem, DictText, MenuDetailDialog, ButtonCommon, PressLayer },
+  components: {
+    OrderItem,
+    DictText,
+    MenuDetailDialog,
+    ButtonCommon,
+    PressLayer,
+  },
 
   setup() {
     const pageEl = ref<HTMLElement | null>(null);
