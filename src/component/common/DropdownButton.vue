@@ -1,16 +1,17 @@
 <template>
   <div class="dropdown-wrapper">
-    <ButtonCommon
-      :type="type"
-      :textColor="textColor"
-      :icon="icon"
-      iconPosition="right"
-      :iconSize="48"
-      @touchend="onMousedownToggle"
-      class="dropdown-wrapper-button"
-    >
-      <slot name="label" />
-    </ButtonCommon>
+    <PressLayer @touchend="onMousedownToggle">
+      <ButtonCommon
+        :type="type"
+        :textColor="textColor"
+        :icon="icon"
+        iconPosition="right"
+        :iconSize="48"
+        class="dropdown-wrapper-button"
+      >
+        <slot name="label" />
+      </ButtonCommon>
+    </PressLayer>
 
     <div
       v-show="open"
@@ -34,6 +35,7 @@
 import { defineComponent, nextTick, ref, watch } from 'vue';
 import ButtonCommon from './ButtonCommon.vue';
 import { playEnter, playLeave } from '@/util/AnimationUtil';
+import PressLayer from './PressLayer.vue';
 
 export interface DropdownItem {
   label: string;
@@ -42,7 +44,7 @@ export interface DropdownItem {
 
 export default defineComponent({
   name: 'DropdownButton',
-  components: { ButtonCommon },
+  components: { ButtonCommon, PressLayer },
   props: {
     modelValue: {
       type: [String, Number],
@@ -115,7 +117,7 @@ export default defineComponent({
   z-index: var(--z-dropdown);
 }
 
-.dropdown-wrapper-button{
+.dropdown-wrapper-button {
   padding: 0 21px 0 24px;
 }
 
@@ -123,6 +125,8 @@ export default defineComponent({
   position: absolute;
   bottom: 100%;
   left: 0;
+  display: flex;
+  flex-direction: column-reverse;
   width: 100%;
   overflow: hidden;
   border-radius: 6px;

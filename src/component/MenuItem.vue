@@ -67,7 +67,7 @@ export default defineComponent({
   height: 300px;
   width: 740px;
   background: var(--background-items);
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   overflow: hidden;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -91,6 +91,7 @@ export default defineComponent({
   pointer-events: none;
   font-weight: 600;
   line-height: 18px;
+  letter-spacing: 0%;
 }
 
 .menu-item-soldout {

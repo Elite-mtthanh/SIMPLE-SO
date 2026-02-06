@@ -147,22 +147,22 @@ export class MenuDetailLogic {
   async increase(editIndex: number = -1): Promise<boolean> {
     const cart = CartStorage.getCart();
     let totalItemsInCart = 0;
-    
+
     for (let i = 0; i < cart.length; i++) {
       if (editIndex === -1 || i !== editIndex) {
         totalItemsInCart += cart[i].quantity;
       }
     }
-    
+
     const totalAfterIncrease = totalItemsInCart + this.quantity + 1;
-    
+
     if (totalAfterIncrease > 99) {
       await this.showOverQuantityDialog();
       return false;
     }
 
     const maxQuantity = this.getMaxQuantity(editIndex);
-    
+
     if (this.quantity < maxQuantity) {
       this.quantity++;
       return true;
@@ -289,14 +289,30 @@ export class MenuDetailLogic {
    * confirm add/update cart item and return the item
    * @param editMode true when editing existing cart item
    * @param cartIndex index of cart item when editMode is true
-   * @returns the confirmed cart item
+   * @returns the confirmed cart item or null if quantity exceeds limit
    */
-  confirm(
+  async confirm(
     editMode: boolean,
     cartIndex: number
-  ): CartItem {
+  ): Promise<CartItem | null> {
     const lang = AppConfig.Instance.currentLang.value;
     const item = this.getConfirmData();
+
+    const cart = CartStorage.getCart();
+    let totalItemsInCart = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+      if (!editMode || i !== cartIndex) {
+        totalItemsInCart += cart[i].quantity;
+      }
+    }
+
+    const totalAfterConfirm = totalItemsInCart + this.quantity;
+
+    if (totalAfterConfirm > 99) {
+      await this.showOverQuantityDialog();
+      return null;
+    }
 
     const cartItem: CartItem = {
       ...item,
@@ -331,15 +347,15 @@ export class MenuDetailLogic {
   async increaseQuantity(editIndex: number): Promise<boolean> {
     const cart = CartStorage.getCart();
     let totalItemsInCart = 0;
-    
+
     for (let i = 0; i < cart.length; i++) {
       if (i !== editIndex) {
         totalItemsInCart += cart[i].quantity;
       }
     }
-    
+
     const totalAfterIncrease = totalItemsInCart + this.quantity + 1;
-    
+
     if (totalAfterIncrease > 99) {
       await this.showOverQuantityDialog();
       return false;

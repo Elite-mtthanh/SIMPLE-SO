@@ -28,7 +28,7 @@
       <div class="cart-item-right">
         <div class="cart-item-quantity">× {{ item.quantity }}</div>
 
-        <div class="cart-item-price">{{ formatPrice(item.total) }}￥</div>
+        <div class="cart-item-price">{{ formatPrice(itemTotalPrice) }}￥</div>
       </div>
     </div>
   </PressLayer>
@@ -57,13 +57,31 @@ export default defineComponent({
     };
 
     const toppingsText = computed(() => {
-      return props.item.toppings.map((t) => t.name).join(', ');
+      return props.item.toppings.map((t) => t.name).join(' + ');
+    });
+
+    // Tính giá tổng của một món (basePrice + size + toppings) chưa nhân số lượng
+    const itemTotalPrice = computed(() => {
+      let total = props.item.basePrice;
+      
+      // Cộng giá size nếu có
+      if (props.item.size) {
+        total += props.item.size.price;
+      }
+      
+      // Cộng giá các topping
+      if (props.item.toppings && props.item.toppings.length > 0) {
+        total += props.item.toppings.reduce((sum, topping) => sum + topping.price, 0);
+      }
+      
+      return total;
     });
 
     return {
       formatPrice,
       onTouchend,
       toppingsText,
+      itemTotalPrice,
     };
   },
 });

@@ -2,7 +2,9 @@
   <div class="footer">
     <div class="footer-left">
       <div v-if="showBack" class="footer-left-back-icon">
-        <ImageView :src="backIcon" @mousedown.prevent="onBack" />
+        <PressLayer @touchend="onBack">
+          <ImageView :src="backIcon" />
+        </PressLayer>
       </div>
 
       <div class="footer-left-buttons">
@@ -27,7 +29,9 @@
           :iconSize="48"
           class="footer-left-bell"
         >
-          <DictText keyName="CALL_STAFF_BUTTON" />
+          <span class="footer-left-bell-badge">
+            <DictText keyName="CALL_STAFF_BUTTON" />
+          </span>
         </ButtonCommon>
 
         <ButtonCommon
@@ -95,6 +99,7 @@ import arrowDownIcon from '@/assets/Image/icon/arrow-down-icon.png';
 import backIcon from '@/assets/Image/icon/back-icon.png';
 import cartIcon from '@/assets/Image/icon/cart-icon.png';
 import ImageView from './ImageView.vue';
+import PressLayer from './PressLayer.vue';
 
 export default defineComponent({
   name: 'AppFooter',
@@ -103,6 +108,7 @@ export default defineComponent({
     DropdownButtonCommon,
     DictText,
     ImageView,
+    PressLayer,
   },
   props: {
     mode: {
@@ -284,29 +290,42 @@ export default defineComponent({
   position: relative;
   width: 240px;
   height: 89px;
-  padding-left: 12px;
+  padding: 10px 0 9px 12px;
+  gap: 9px;
+}
+
+:deep(.footer-right-cart) {
+  justify-content: flex-start !important;
+}
+
+.footer-right-cart :deep(.base-button-has-icon) {
+  justify-content: flex-start !important;
 }
 
 .footer-right-cart-badge {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 286px;
-  pointer-events: none;
   color: var(--text-inverse);
   font-weight: 600;
   font-size: 70px;
   line-height: 18px;
-  margin-left: 9px;
+  letter-spacing: 0%;
+  height: 88px;
+  width: 137px;
 }
 
 .footer-left-bell {
   padding: 0 24px 0 23px;
 }
 
+.footer-left-bell-badge {
+  width: 180px;
+  height: 18px;
+}
+
 .footer-left-allergen {
   padding-right: 24px;
+  border: 1px solid #475191;
 }
 </style>
