@@ -289,12 +289,12 @@ export class MenuDetailLogic {
    * confirm add/update cart item and return the item
    * @param editMode true when editing existing cart item
    * @param cartIndex index of cart item when editMode is true
-   * @returns the confirmed cart item or null if quantity exceeds limit
+   * @returns object with cart item and hasChanges flag, or null if quantity exceeds limit
    */
   async confirm(
     editMode: boolean,
     cartIndex: number
-  ): Promise<CartItem | null> {
+  ): Promise<{ item: CartItem; hasChanges: boolean } | null> {
     const lang = AppConfig.Instance.currentLang.value;
     const item = this.getConfirmData();
 
@@ -320,13 +320,74 @@ export class MenuDetailLogic {
       imagePath: item.imagePath || '',
     };
 
+    let hasChanges = true;
+
     if (editMode && cartIndex >= 0) {
-      CartStorage.updateItem(cartIndex, cartItem);
+      const existingItem = cart[cartIndex];
+      hasChanges = this.hasItemChanged(existingItem, cartItem);
+
+      if (hasChanges) {
+        CartStorage.updateItem(cartIndex, cartItem);
+      }
     } else {
       CartStorage.addItem(cartItem);
     }
 
-    return cartItem;
+    return { item: cartItem, hasChanges };
+  }
+
+  /**
+   * check if cart item has been modified
+   * @param existing existing cart item
+   * @param updated updated cart item
+   * @returns true if items are different
+   */
+  private hasItemChanged(existing: CartItem, updated: CartItem): boolean {
+    console.log('Checking changes:', {
+      existing: {
+        quantity: existing.quantity,
+        size: existing.size?.selectCd,
+        toppings: existing.toppings.map(t => t.selectCd)
+      },
+      updated: {
+        quantity: updated.quantity,
+        size: updated.size?.selectCd,
+        toppings: updated.toppings.map(t => t.selectCd)
+      }
+    });
+
+    // Check quantity
+    if (existing.quantity !== updated.quantity) {
+      console.log('Quantity changed');
+      return true;
+    }
+
+    // Check size - handle null/undefined cases properly
+    const existingSizeCd = existing.size?.selectCd || null;
+    const updatedSizeCd = updated.size?.selectCd || null;
+    if (existingSizeCd !== updatedSizeCd) {
+      console.log('Size changed');
+      return true;
+    }
+
+    // Check toppings
+    if (existing.toppings.length !== updated.toppings.length) {
+      console.log('Toppings length changed');
+      return true;
+    }
+
+    const existingToppingCds = existing.toppings.map(t => t.selectCd).sort();
+    const updatedToppingCds = updated.toppings.map(t => t.selectCd).sort();
+
+    for (let i = 0; i < existingToppingCds.length; i++) {
+      if (existingToppingCds[i] !== updatedToppingCds[i]) {
+        console.log('Toppings changed');
+        return true;
+      }
+    }
+
+    console.log('No changes detected');
+    return false;
   }
 
   /**

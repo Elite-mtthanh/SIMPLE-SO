@@ -72,11 +72,11 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   font-size: 50px;
-  letter-spacing: 1px;
   color: var(--text-inverse);
   pointer-events: none;
-  font-weight: 600;
+  font-weight: 600px;
   border-radius: 6px;
+  line-height: 18px;
 }
 
 .category-content-block-image {

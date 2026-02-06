@@ -56,7 +56,7 @@ export class CartStorage {
             name: menuSelect
               ? normalizeTextWithLineLimit(
                 getMenuSelectName(menuSelect, lang),
-                2
+                1
               )
               : '',
           };

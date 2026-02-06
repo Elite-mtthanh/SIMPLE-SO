@@ -305,7 +305,6 @@ export default defineComponent({
 .footer-right-cart-badge {
   display: flex;
   align-items: center;
-  justify-content: center;
   color: var(--text-inverse);
   font-weight: 600;
   font-size: 70px;

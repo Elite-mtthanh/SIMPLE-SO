@@ -86,7 +86,6 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   font-size: 50px;
-  letter-spacing: 1px;
   color: var(--text-inverse);
   pointer-events: none;
   font-weight: 600;

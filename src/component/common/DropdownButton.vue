@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-wrapper">
+  <div class="dropdown-wrapper" :class="{ open: open }">
     <PressLayer @touchend="onMousedownToggle">
       <ButtonCommon
         :type="type"
@@ -36,6 +36,7 @@ import { defineComponent, nextTick, ref, watch } from 'vue';
 import ButtonCommon from './ButtonCommon.vue';
 import { playEnter, playLeave } from '@/util/AnimationUtil';
 import PressLayer from './PressLayer.vue';
+import { PageStack } from '@/model/PageStack';
 
 export interface DropdownItem {
   label: string;
@@ -81,6 +82,15 @@ export default defineComponent({
       }
     );
 
+    watch(
+      () => PageStack.Instance.currentPageName.value,
+      () => {
+        if (open.value) {
+          open.value = false;
+        }
+      }
+    );
+
     const closePanel = () => {
       playLeave(panelEl, 'anim-leave', 250, () => {
         open.value = false;
@@ -117,6 +127,10 @@ export default defineComponent({
   z-index: var(--z-dropdown);
 }
 
+.dropdown-wrapper.open {
+  border-radius: 0 0 6px 6px;
+}
+
 .dropdown-wrapper-button {
   padding: 0 21px 0 24px;
 }
@@ -124,17 +138,17 @@ export default defineComponent({
 .dropdown-wrapper-panel {
   position: absolute;
   bottom: 100%;
-  left: 0;
+  left: -1px;
+  right: -1px;
   display: flex;
   flex-direction: column-reverse;
-  width: 100%;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 6px 6px 0 0;
 }
 
 .dropdown-wrapper-panel-item {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   padding: 16px;
   font-size: 20px;
@@ -143,9 +157,20 @@ export default defineComponent({
   transition: background 0.15s ease;
   color: var(--text-link);
   height: 90px;
-  border: 1px solid #475197;
-  width: 300px;
+  border: 1px solid #475191;
+  border-top: none;
   gap: 8px;
+  border-radius: 0;
+}
+
+.dropdown-wrapper-panel-item:first-child {
+  border-radius: 0;
+  border-top: 1px solid #475191;
+}
+
+.dropdown-wrapper-panel-item:last-child {
+  border-radius: 6px 6px 0 0;
+  border-top: 1px solid #475191;
 }
 
 .dropdown-wrapper-panel-item.active {
