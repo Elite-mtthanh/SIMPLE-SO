@@ -169,7 +169,19 @@ export default defineComponent({
   color: var(--text-price);
 }
 
-.menu-detail-btn-cancel :deep(*),
+.menu-detail-btn-cancel :deep(*) {
+  font-weight: 600;
+  font-size: 45px;
+  line-height: 64px;
+  border-radius: 6px;
+  height: 100px;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--btn-neutral);
+}
+
 .menu-detail-btn-confirm :deep(*) {
   font-weight: 600;
   font-size: 45px;
@@ -180,5 +192,6 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--btn-accent);
 }
 </style>

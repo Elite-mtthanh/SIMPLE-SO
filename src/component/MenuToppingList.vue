@@ -206,6 +206,7 @@ export default defineComponent({
   height: 75px;
   background: #ff3b30;
   border-color: #ff3b30;
+  margin-left: 3px;
 }
 
 .menu-topping-checkbox.checked::after {
