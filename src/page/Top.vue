@@ -65,6 +65,6 @@ export default defineComponent({
   width: var(--display-resolution-width);
   height: var(--display-resolution-height);
   background-color: var(--background-app);
-  position: relative;
+  /* position: relative; */
 }
 </style>
