@@ -93,14 +93,14 @@ export default defineComponent({
   height: 70px;
   font-size: 40px;
   font-weight: 600;
-  line-height: 18px;
-  text-align: center;
+  line-height: 70px;
   color: var(--text-link);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical; 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
 }
 </style>

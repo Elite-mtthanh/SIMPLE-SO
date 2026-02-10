@@ -41,7 +41,7 @@ export class MenuListPageLogic {
     if (!cd) return '';
     const category = this.dataPool.getCategoryByCd(cd);
     if (!category) return '';
-    return getMenuName(category, this.currentLang.value);
+    return normalizeTextWithLineLimit(getMenuName(category, this.currentLang.value), 1);
   });
 
   /** get menus for current page */
@@ -198,7 +198,7 @@ export class MenuListPageLogic {
 
     this.menus.value = limitedMenus.map(menu => {
       let displayPrice = menu.price;
-      
+
       if (menu.select_size && menu.select_size !== '0' && menu.select_size !== '') {
         const sizes = this.dataPool.getMenuSizes(menu.select_size);
         if (sizes.length > 0) {

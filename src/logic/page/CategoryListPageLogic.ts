@@ -5,7 +5,7 @@ import { Language } from '@/model/Enums';
 import { Menu } from '@/model/Menu';
 import { GlobalEvent } from '../common/GlobalEvent';
 import { FooterLogic } from '../common/FooterLogic';
-import { getMenuName } from '@/util/DictNormalizerUtil';
+import { getMenuName, normalizeTextWithLineLimit } from '@/util/DictNormalizerUtil';
 import { CartStorage } from '@/storage/CartStorage';
 
 export class CategoryListPageLogic {
@@ -59,7 +59,7 @@ export class CategoryListPageLogic {
 
     return categories.map(menu => ({
       id: menu.id,
-      name: getMenuName(menu, lang),
+      name: normalizeTextWithLineLimit(getMenuName(menu, lang), 1),
       image_path: menu.image_path,
       menu_cd: menu.menu_cd,
       soldOut: this.dataPool.isCategoryStockout(menu.menu_cd),
