@@ -16,18 +16,16 @@
         />
       </div>
     </div>
-
-    <AppFooter
-      :mode="FooterMode.Category"
-      v-model:currentLang="currentLang"
-      :language-options="languageOptions"
-      :cartCount="cartCount"
-      @on-open-cart="openOrderList"
-      @on-call-staff="onCallStaff"
-      @on-open-allergen="onOpenAllergen"
-    />
   </div>
-
+  <AppFooter
+    :mode="FooterMode.Category"
+    v-model:currentLang="currentLang"
+    :language-options="languageOptions"
+    :cartCount="cartCount"
+    @on-open-cart="openOrderList"
+    @on-call-staff="onCallStaff"
+    @on-open-allergen="onOpenAllergen"
+  />
   <AllergenDialog
     v-if="showAllergen"
     :currentLang="currentLang"
@@ -127,6 +125,6 @@ export default defineComponent({
   justify-content: flex-start;
   gap: 17px 20px;
   width: 1580px;
-  height: 769px;
+  height: 757px;
 }
 </style>

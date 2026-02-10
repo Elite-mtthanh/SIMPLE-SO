@@ -47,20 +47,19 @@
         />
       </div>
     </div>
-
-    <div class="menu-footer">
-      <AppFooter
-        :mode="FooterMode.Menu"
-        :currentLang="currentLang"
-        :language-options="languageOptions"
-        :cartCount="cartCount"
-        @update:currentLang="onChangeLanguage"
-        @on-open-cart="onOpenOrderList"
-        @on-call-staff="onCallStaff"
-        @on-open-allergen="onOpenAllergen"
-        @on-back="onBack"
-      />
-    </div>
+  </div>
+  <div class="menu-footer">
+    <AppFooter
+      :mode="FooterMode.Menu"
+      :currentLang="currentLang"
+      :language-options="languageOptions"
+      :cartCount="cartCount"
+      @update:currentLang="onChangeLanguage"
+      @on-open-cart="onOpenOrderList"
+      @on-call-staff="onCallStaff"
+      @on-open-allergen="onOpenAllergen"
+      @on-back="onBack"
+    />
   </div>
 
   <keep-alive>
