@@ -115,6 +115,7 @@ export default defineComponent({
       panelEl,
       onMousedownToggle,
       select,
+      closePanel,
     };
   },
 });
@@ -128,6 +129,11 @@ export default defineComponent({
 }
 
 .dropdown-wrapper.open {
+  border-radius: 0 0 6px 6px;
+  border-top: none;
+}
+
+.dropdown-wrapper.open :deep(.base-button) {
   border-radius: 0 0 6px 6px;
 }
 
