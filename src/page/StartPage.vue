@@ -112,7 +112,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 30px 20px 0;
+  margin: 20px 36px 15px 29px;
 }
 
 .splash-page-header-desk-label {
@@ -141,7 +141,7 @@ export default defineComponent({
   font-weight: 600;
   color: var(--text-error);
   font-style: Semi Bold;
-  margin-top: 111px;
+  margin-top: 133px;
   margin-bottom: 44px;
 }
 </style>

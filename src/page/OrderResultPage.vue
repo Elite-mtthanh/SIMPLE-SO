@@ -3,12 +3,12 @@
     <div class="order-result-image">
       <ImageView
         v-if="success"
-        src="/Image/order/human-order-complete.png"
+        src="/Image/human-order-complete.png"
         class="order-result-image-success"
       />
       <ImageView
         v-else
-        src="/Image/order/human-order-error.png"
+        src="/Image/human-order-error.png"
         class="order-result-image-error"
       />
     </div>

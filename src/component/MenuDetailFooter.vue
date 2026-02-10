@@ -16,7 +16,7 @@
           @touchend="(editMode ? quantity > 0 : quantity > 1) && onDecrease()"
           :class="{ disabled: editMode ? quantity <= 0 : quantity <= 1 }"
         >
-          <ImageView src="/Image/menu/minus.png" />
+          <ImageView src="Image/minus.png" />
         </PressLayer>
 
         <span>{{ quantity }}</span>
@@ -26,7 +26,7 @@
           @touchend="quantity < maxQuantity && onIncrease()"
           :class="{ disabled: quantity >= maxQuantity }"
         >
-          <ImageView src="/Image/menu/plus.png" />
+          <ImageView src="../Image/plus.png" />
         </PressLayer>
       </div>
 

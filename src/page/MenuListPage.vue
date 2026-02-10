@@ -24,7 +24,7 @@
         @click="onPrev"
         @touchend.prevent="onPrev"
       >
-        <ImageView src="/Image/menu/prev.png" />
+        <ImageView src="/Image/prev.png" />
       </div>
 
       <div
@@ -33,7 +33,7 @@
         @click="onNext"
         @touchend.prevent="onNext"
       >
-        <ImageView src="/Image/menu/next.png" />
+        <ImageView src="/Image/next.png" />
       </div>
     </div>
 
