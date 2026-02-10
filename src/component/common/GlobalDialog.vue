@@ -157,8 +157,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: start;
-  line-height: 18px;
+  line-height: 60px;
   margin-top: 36px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .dialog-card-header-label-icon {

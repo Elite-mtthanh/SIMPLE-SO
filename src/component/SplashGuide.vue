@@ -10,7 +10,9 @@
           <ImageView :src="item.image" alt="" />
         </div>
         <div class="splash-item-step-card-text">
-          <DictText :keyName="item.key" />
+          <span class="splash-item-step-card-text-inner">
+            <DictText :keyName="item.key" />
+          </span>
         </div>
       </div>
 
@@ -106,15 +108,19 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 250px;
+  height: 97px;
+  margin-top: 29px;
+}
+
+.splash-item-step-card-text-inner {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   color: var(--text-link);
   font-size: 30px;
   line-height: 35px;
   font-weight: 600;
-  width: 250px;
-  height: 97px;
-  margin-top: 29px;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
