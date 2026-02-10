@@ -111,7 +111,7 @@ export default defineComponent({
   display: grid;
   grid-template-columns: 300px 1fr 300px;
   align-items: center;
-  padding: 0 32px 28px;
+  padding: 0 26px 19px 14px;
 }
 
 .menu-detail-footer-price {
