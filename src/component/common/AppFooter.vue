@@ -9,6 +9,7 @@
 
       <div class="footer-left-buttons">
         <DropdownButtonCommon
+          ref="languageDropdown"
           v-model="localLang"
           :items="languageOptions"
           type="soft"
@@ -138,6 +139,7 @@ export default defineComponent({
   ],
   setup(props, { emit }) {
     const localLang = ref(props.currentLang);
+    const languageDropdown = ref<any>(null);
 
     watch(
       () => props.currentLang,
@@ -196,19 +198,28 @@ export default defineComponent({
     };
 
     const onMousedownCallStaff = () => {
+      if (languageDropdown.value?.closePanel) {
+        languageDropdown.value.closePanel();
+      }
       emit('on-call-staff');
     };
 
     const onMousedownOpenAllergen = () => {
+      if (languageDropdown.value?.closePanel) {
+        languageDropdown.value.closePanel();
+      }
       emit('on-open-allergen');
     };
 
     const onMousedownOpenCart = () => {
-      emit('on-open-cart');
+      if (props.cartCount > 0) {
+        emit('on-open-cart');
+      }
     };
 
     return {
       localLang,
+      languageDropdown,
       showBack,
       showCart,
       onChangeLang,
@@ -235,6 +246,7 @@ export default defineComponent({
 .footer {
   padding-left: 51px;
   padding-right: 20px;
+  padding-bottom: 53px;
   display: flex;
   align-items: center;
   justify-content: space-between;
