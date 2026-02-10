@@ -40,7 +40,7 @@ import allergenIcon from '@/assets/Image/icon/allergen-icon.png';
 import { playEnter, playLeave } from '@/util/AnimationUtil';
 
 export default defineComponent({
-  name: 'AllergenDialog'ş
+  name: 'AllergenDialog',
   components: {
     PopupCommon,
     ButtonCommon,
