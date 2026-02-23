@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     // https://www.typescriptlang.org/tsconfig#target
-    "target": "esnext",
+    "target": "es2020",
     // https://www.typescriptlang.org/tsconfig#module
-    "module": "esnext",
+    "module": "es2020",
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",
@@ -22,7 +22,7 @@
       "@/*": ["src/*"]
     },
     // https://www.typescriptlang.org/tsconfig#lib
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": ["es2020", "dom", "dom.iterable", "scripthost"]
   },
   "include": [
     "src/**/*.ts",

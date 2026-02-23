@@ -2,7 +2,7 @@
   <div ref="pageEl" class="order-result anim-fade-scale">
     <div class="order-result-image">
       <ImageView
-        v-if="success"
+        v-if="isSuccess"
         src="/Image/human-order-complete.png"
         class="order-result-image-success"
       />
@@ -14,7 +14,7 @@
     </div>
 
     <div class="order-result-subtext">
-      <div class="order-result-subtext-success" v-if="success">
+      <div class="order-result-subtext-success" v-if="isSuccess">
         <DictText keyName="ORDER_SUCCESS_MESSAGE" />
       </div>
       <div class="order-result-subtext-error" v-else>
@@ -32,10 +32,12 @@ import {
   onMounted,
   onBeforeUnmount,
   onActivated,
+  PropType,
+  computed,
 } from 'vue';
 import DictText from '@/component/common/DictText.vue';
 import ImageView from '@/component/common/ImageView.vue';
-import { GlobalEvent } from '@/logic/common/GlobalEvent';
+import { GlobalEvent, PageArgs } from '@/logic/common/GlobalEvent';
 import { CartStorage } from '@/storage/CartStorage';
 import { playEnter } from '@/util/AnimationUtil';
 import { AppConfig } from '@/model/AppConfig';
@@ -43,12 +45,15 @@ import { AppConfig } from '@/model/AppConfig';
 export default defineComponent({
   name: 'OrderResultPage',
   components: { DictText, ImageView },
-
-  setup() {
+  props: {
+    pageArgs: {
+      type: Object as PropType<PageArgs>,
+      required: false,
+    },
+  },
+  setup(props) {
     const pageEl = ref<HTMLElement | null>(null);
-    const success = ref(
-      GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true
-    );
+    const isSuccess = computed(() => props.pageArgs?.Data?.success === true);
     let timerId: ReturnType<typeof setTimeout> | null = null;
 
     const startTimer = () => {
@@ -66,9 +71,9 @@ export default defineComponent({
         clearTimeout(timerId);
         timerId = null;
       }
-      const args = GlobalEvent.Instance.getCurrentPageArgs();
-      const isSuccess = args?.Data?.success === true;
-      if (isSuccess) {
+      
+      console.log(isSuccess.value)
+      if (isSuccess.value) {
         CartStorage.clear();
         GlobalEvent.Instance.emitEvent('cart-updated');
         AppConfig.Instance.currentLang.value = AppConfig.Instance.languages[0];
@@ -79,15 +84,11 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      success.value =
-        GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
       triggerEnterAnimation();
       startTimer();
     });
 
     onActivated(() => {
-      success.value =
-        GlobalEvent.Instance.getCurrentPageArgs()?.Data?.success === true;
       triggerEnterAnimation();
       startTimer();
     });
@@ -99,7 +100,7 @@ export default defineComponent({
       }
     });
 
-    return { pageEl, success };
+    return { pageEl, isSuccess };
   },
 });
 </script>

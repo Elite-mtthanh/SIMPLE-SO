@@ -28,9 +28,10 @@ module.exports = defineConfig({
         ? 'source-map'
         : process.env.npm_config_build_type == 'DEBUG'
           ? 'inline-source-map'
-          : false,
+          : 'source-map'
+        ,
   },
-  productionSourceMap: false,
+  productionSourceMap: true,
   chainWebpack: (config) => {
     config.performance.maxAssetSize(1024 * 1000).maxEntrypointSize(1024 * 1000);
     const mediaRule = config.module.rule('media');

@@ -4,7 +4,6 @@
       <component
         :is="currentPageName"
         :page-args="currentPageArgs"
-        v-bind="currentPageArgs?.Data || {}"
       />
     </keep-alive>
 
