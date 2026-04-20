@@ -32,7 +32,7 @@ import PopupCommon from '@/component/common/PopupCommon.vue';
 import ButtonCommon from '@/component/common/ButtonCommon.vue';
 import DictText from '@/component/common/DictText.vue';
 import { Language } from '@/model/Enums';
-import allergenListJapan from '@/assets/Image/guide/allergen-list-japan.jpg';
+import allergenListJapan from '@/assets/Image/guide/allergen-list-japan2.jpg';
 import allergenListChina from '@/assets/Image/guide/allergen-list-china.jpg';
 import allergenListEnglish from '@/assets/Image/guide/allergen-list-english.jpg';
 import ImageView from '@/component/common/ImageView.vue';
